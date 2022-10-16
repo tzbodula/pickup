@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const db = require('../config/DatabaseConfig')
+const db = require('../config/databaseConfig')
 
 const router = Router();
 

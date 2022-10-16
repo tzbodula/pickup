@@ -1,6 +1,6 @@
 const express = require('express');
-const usersRoute = require('./routes/Users');
-const eventsRoute = require('./routes/Events');
+const usersRoute = require('./routes/users');
+const eventsRoute = require('./routes/events');
 
 const app = express();
 const PORT = 3000;
