@@ -9,4 +9,9 @@ router.get('/', async (request, response) => {
     response.send(users[0]);
 })
 
+router.get('/:id', async (req, res) => {
+    let users = await db.query('SELECT * FROM accounts');
+    response.send(users[0]);
+})
+
 module.exports = router;
