@@ -3,7 +3,7 @@ const db = require('../config/databaseConfig')
 
 const router = Router();
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req, res) => {
     let users = await db.query(
     `SELECT account_username, account_id, first_name, last_name FROM accounts 
         WHERE accounts.account_id = ` + db.escape(req.params.id));
@@ -26,7 +26,7 @@ router.get('/:id/sports', async (req, res) => {
         return res.status(400).send("Not found");
     }
 
-    res.send(favoriteSportsQuery[0]);
+    return res.status(200).send(favoriteSportsQuery[0]);
 });
 
 module.exports = router;
