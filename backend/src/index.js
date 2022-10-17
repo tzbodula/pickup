@@ -1,4 +1,8 @@
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
 const usersRoute = require('./routes/users');
 const eventsRoute = require('./routes/events');
 
@@ -13,4 +17,12 @@ app.use(express.urlencoded());
 app.use('/users', usersRoute);
 app.use('/events', eventsRoute);
 
-app.listen(PORT, () => console.log("app started"));
+const sslServer = https.createServer(
+    {
+        cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem')),
+        key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem'))
+    },
+    app
+)
+
+sslServer.listen(PORT, () => console.log("app started"));
