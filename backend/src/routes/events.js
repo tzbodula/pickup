@@ -8,6 +8,10 @@ router.get('/sport', async (req, res) => {
     `SELECT * FROM pickup_events 
         WHERE sport_id = ` + db.escape(req.query.sport));
 
+    if (events[0].length == 0) {
+        return res.status(400).send("Not found");
+    }
+    
     res.send(filteredEvents[0]);
 });
 
@@ -16,6 +20,10 @@ router.get('/:id', async (req, res) => {
     `SELECT * FROM pickup_events 
         WHERE event_id = ` + db.escape(req.params.id)
     );
+
+    if (events[0].length == 0) {
+        return res.status(400).send("Not found");
+    }
 
     res.send(events[0]);
 });

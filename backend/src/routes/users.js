@@ -3,12 +3,16 @@ const db = require('../config/databaseConfig')
 
 const router = Router();
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     let users = await db.query(
-    `SELECT * FROM accounts 
+    `SELECT account_username, account_id, first_name, last_name FROM accounts 
         WHERE accounts.account_id = ` + db.escape(req.params.id));
 
-    res.send(users[0]);
+    if (users[0].length == 0) {
+        return res.status(400).send("Not found");
+    }
+
+    return res.status(200).send(users[0]);
 });
 
 // Sends back list of ids of all of the user's favorite sports
@@ -18,6 +22,10 @@ router.get('/:id/sports', async (req, res) => {
         JOIN sports ON sports.sport_id = player_sport_favorite.sport_id 
         WHERE account_id = ` + db.escape(req.params.id));
     
+    if (favoriteSportsQuery[0].length == 0) {
+        return res.status(400).send("Not found");
+    }
+
     res.send(favoriteSportsQuery[0]);
 });
 
