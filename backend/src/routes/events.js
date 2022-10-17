@@ -12,7 +12,7 @@ router.get('/sport', async (req, res) => {
         return res.status(400).send("Not found");
     }
     
-    res.send(filteredEvents[0]);
+    return res.status(200).send(filteredEvents[0]);
 });
 
 router.get('/:id', async (req, res) => {
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
         return res.status(400).send("Not found");
     }
 
-    res.send(events[0]);
+    return res.status(200).send(events[0]);
 });
 
 

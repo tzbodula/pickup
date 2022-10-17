@@ -3,7 +3,7 @@ const db = require('../config/databaseConfig')
 
 const router = Router();
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req, res) => {
     let users = await db.query(
     `SELECT account_username, account_id, first_name, last_name FROM accounts 
         WHERE accounts.account_id = ` + db.escape(req.params.id));
