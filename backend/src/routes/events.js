@@ -7,6 +7,7 @@ router.get('/', (request, response) => {
     response.send("Welcome to the Events route");
 })
 
+// Sends back list of events filtered by the sport entered in as query parameter
 router.get('/sport', async (request, response) => {
     let filteredEvents = await db.query("SELECT* FROM pickup_events WHERE sport_id = " + db.escape(request.query.sport));
     response.send(filteredEvents[0]);
