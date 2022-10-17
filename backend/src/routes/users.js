@@ -26,7 +26,7 @@ router.get('/:id/sports', async (req, res) => {
         return res.status(400).send("Not found");
     }
 
-    res.send(favoriteSportsQuery[0]);
+    return res.status(200).send(favoriteSportsQuery[0]);
 });
 
 module.exports = router;
