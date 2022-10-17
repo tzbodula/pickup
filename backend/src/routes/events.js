@@ -2,28 +2,24 @@ const { Router } = require('express');
 const db = require('../config/databaseConfig')
 
 const router = Router();
-
-router.get('/', async (request, response) => {
-    let events = await db.query('SELECT * FROM pickup_events');
-    response.send(events[0]);
-})
-
-router.get('/:id', async (req, res) => {
-    let id = req.params.id
-    let events = await db.query("SELECT * FROM pickup_events WHERE event_id = " + db.escape(id));
-    res.send(events[0]);
-})
-
-router.get('/:id', async (req, res) => {
-    let id = req.params.id
-    let events = await db.query("SELECT * FROM pickup_events WHERE event_id = " + db.escape(id));
-    res.send(events[0]);
-})
-
 // Sends back list of events filtered by the sport entered in as query parameter
-router.get('/sport', async (request, response) => {
-    let filteredEvents = await db.query("SELECT* FROM pickup_events WHERE sport_id = " + db.escape(request.query.sport));
-    response.send(filteredEvents[0]);
-})
+router.get('/sport', async (req, res) => {
+    let filteredEvents = await db.query(
+    `SELECT * FROM pickup_events 
+        WHERE sport_id = ` + db.escape(req.query.sport));
+
+    res.send(filteredEvents[0]);
+});
+
+router.get('/:id', async (req, res) => {
+    let events = await db.query(
+    `SELECT * FROM pickup_events 
+        WHERE event_id = ` + db.escape(req.params.id)
+    );
+
+    res.send(events[0]);
+});
+
+
 
 module.exports = router;
