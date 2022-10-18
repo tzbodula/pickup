@@ -5,7 +5,7 @@ export default function App() {
   
   const [eventList, setData] = useState([]);
   const getData = () => {
-    fetch(`http://${LOCAL_IP}:3000/events/sport?sport=1`)
+    fetch(`http://${LOCAL_IP}:3000/users/1/sports`)
     .then(
       (res) => {
         return res.json()
@@ -25,7 +25,7 @@ export default function App() {
   } else {
     return (
       <Text>
-        {eventList.map(x => <Text>{x.event_location} + "\n"</Text> )}
+        {eventList.map(x => <Text>{x.sport_name + " Sport Name " + x.sport_id} {'\n'} </Text>)}
       </Text>
     );
   }
