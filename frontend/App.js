@@ -15,20 +15,16 @@ export default function App() {
     })
   }
 
-  useEffect(() => getData(),[])
-  if (eventList.length == 0) {
-    return(
-      <Text>
-        ...
-      </Text>
-    )
-  } else {
-    return (
-      <Text>
-        {eventList.map(x => <Text>{x.sport_name + " Sport Name " + x.sport_id} {'\n'} </Text>)}
-      </Text>
-    );
-  }
+  useEffect(() => getData(), [eventList])
+
+  return eventList.length == 0 ? 
+  <Text>
+  Loading...
+  </Text>
+  :
+  <Text>
+  {eventList.map(x => <Text key={x.sport_id}>{x.sport_name + " Sport Name " + x.sport_id} {'\n'} </Text>)}
+  </Text>
   
   
 }
