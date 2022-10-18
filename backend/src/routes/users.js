@@ -16,10 +16,10 @@ router.get('/:id', async (req, res) => {
 });
 
 // Sends back list of ids of all of the user's favorite sports
-router.get('/:id/sports', async (req, res) => {
+router.get('/:account_id/sports', async (req, res) => {
     let favoriteSportsQuery = await db.query(
     `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
-        JOIN sports ON sports.sport_id = player_sport_favorite.sport_id 
+        JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
         WHERE account_id = ` + db.escape(req.params.id));
     
     if (favoriteSportsQuery[0].length == 0) {
