@@ -1,13 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-
+import {useEffect, useState} from 'react';
+import {LOCAL_IP} from '@env'
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  
+  const [eventList, setData] = useState([]);
+  const getData = () => {
+    fetch(`http://${LOCAL_IP}:3000/events/sport?sport=1`)
+    .then(
+      (res) => {
+        return res.json()
+      }
+    ) .then((data) => {
+      setData(data);
+    })
+  }
+
+  useEffect(() => getData(),[])
+  if (eventList.length == 0) {
+    return(
+      <Text>
+        ...
+      </Text>
+    )
+  } else {
+    return (
+      <Text>
+        {eventList.map(x => <Text>{x.event_location} + "\n"</Text> )}
+      </Text>
+    );
+  }
+  
+  
 }
 
 const styles = StyleSheet.create({
