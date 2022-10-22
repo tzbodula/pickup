@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
         0
     ];
     
-    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ?`
+    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
     let existingAccounts = await db.query(query, [req.body.username, req.body.password], (err, res) => {
         //handle any errors
     });
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     const insertStatement =
         `INSERT INTO accounts
             (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
 
     await db.query(insertStatement, userToAdd);
 
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 
     const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
-    WHERE accounts.account_id = ?`
+    WHERE accounts.account_id = ? ;`
 
     const users = await db.query(query, [req.params.id], (err, res) => {
         // Handle any errors
@@ -63,7 +63,7 @@ router.get('/:id/sports', async (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
-    WHERE account_id = ? `
+    WHERE account_id = ? ;`
 
     let favoriteSportsQuery = await db.query(query, [req.params.id], (err, res) => {
         // Handle any errors
