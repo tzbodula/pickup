@@ -11,7 +11,7 @@ router.post('/', (req, res, next) => {
     const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
     db.query(query, [req.body.username, req.body.password], (err, result) => {
         //handle any errors
-        if(result[0]){
+        if (result[0]) {
             return res.status(400).send('Username or Password is already in use');
         }
         next();
@@ -72,7 +72,7 @@ router.get('/:id/sports', checkSession, (req, res) => {
     WHERE account_id = ? ;`
 
     db.query(query, [req.params.id], (err, result) => {
-        if (!result[0]) {
+        if (!result) {
             return res.status(400).send("Not found");
         }
     
