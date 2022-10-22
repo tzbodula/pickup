@@ -41,7 +41,7 @@ router.get('/logout', (req, res) => {
 /**
  * This post route creates an event based on the currently logged in user
  */
-router.post('/event', checkSession, (req,res) => {
+router.post('/event', checkSession, (req, res, next) => {
     const eventToAdd = [
         req.body.event_name,
         req.session.user_id, //This will always be the current session user_id
@@ -52,37 +52,36 @@ router.post('/event', checkSession, (req,res) => {
         req.body.location,
         1, //always at least 1
     ];
-
-    let insertStatement =
+    
+    const insertStatement =
         `INSERT INTO pickup_events
             (event_name, account_id, sport_id, maximum_players, event_location, event_date, event_time, current_players)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
     
     // Return this back to the frontend people so that they can add the user to the event
     db.query(insertStatement, eventToAdd, (err, result) => {
-        return res.status(200).send({"event_id":result.insertId});
+        const event_id = result.insertId;
+        res.locals.event_id = event_id;
+        next();
     })
-})
-
-// Front end people should call this route after they create an event
-router.post('/event/join', checkSession, (req, res) => {
-    const userToAdd = [
-        req.session.user_id,
-        req.body.event_id,
-        req.body.is_leader        
-    ]
-
-    insertStatement =  
+    
+}, (req, res) => {
+    const insertStatement =  
         `
         INSERT INTO player_event
             (account_id, event_id, is_leader)
             VALUES (?, ?, ?);
         `;
     
-    db.query(insertStatement, userToAdd, (err, result) => {
+    db.query(insertStatement, [req.session.user_id, res.locals.event_id, true], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
         return res.status(200).send('User has been added to the event!');
     });
 })
+
+
 
 
 module.exports = router;

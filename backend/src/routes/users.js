@@ -16,7 +16,7 @@ router.post('/', (req, res, next) => {
         }
         next();
     });
-}, (req, res, next) => {
+}, (req, res) => {
     // TODO hash the password before saving
     const userToAdd = [
         req.body.first_name,
@@ -43,43 +43,43 @@ router.post('/', (req, res, next) => {
 );
 
 // Get's the information of the currently logged in user (this is assuming a session has been implemented)
-router.get('/', checkSession, async (req, res) => {
+router.get('/', checkSession, (req, res) => {
 
 });
 
 // Gets the ID of some other user
-router.get('/:id', checkSession, async (req, res) => {
+router.get('/:id', checkSession, (req, res) => {
 
     const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
     WHERE accounts.account_id = ? ;`
 
-    const users = await db.query(query, [req.params.id], (err, res) => {
-        // Handle any errors
+    db.query(query, [req.params.id], (err, result) => {
+        if (!result[0]) {
+            return res.status(400).send("Not found");
+        }
+    
+        return res.status(200).send(result[0]);
     });
 
-    if (users[0].length == 0) {
-        return res.status(400).send("Not found");
-    }
-
-    return res.status(200).send(users[0]);
+    
 });
 
 // Sends the list of this player's favorite sport
-router.get('/:id/sports', checkSession, async (req, res) => {
+router.get('/:id/sports', checkSession, (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
     WHERE account_id = ? ;`
 
-    let favoriteSportsQuery = await db.query(query, [req.params.id], (err, res) => {
-        // Handle any errors
+    db.query(query, [req.params.id], (err, result) => {
+        if (!result[0]) {
+            return res.status(400).send("Not found");
+        }
+    
+        return res.status(200).send(result[0]);
     });
     
-    if (favoriteSportsQuery[0].length == 0) {
-        return res.status(400).send("Not found");
-    }
-
-    return res.status(200).send(favoriteSportsQuery[0]);
+    
 });
 
 module.exports = router;
