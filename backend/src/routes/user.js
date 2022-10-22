@@ -8,7 +8,6 @@ const router = Router();
 
 //TODO. using user sessions, obtain my information
 router.get('/', (req, res) => {
-    console.log(req.session);
     return res.status(200).send('This is me. I am logged in');
 });
 
@@ -30,7 +29,12 @@ router.post('/login', async (req, res) => {
     req.session.user_id = userData[0][0].account_id;
     req.session.account_username = userData[0][0].account_username;
     
-    console.log(req.session);
     return res.status(200).send(userData[0]);
 })
+
+router.get('/logout', async (req, res) => {
+    req.session.destroy();
+    return res.status(200).send('Logged our successfully');
+})
+
 module.exports = router;
