@@ -1,3 +1,6 @@
+/**
+ * This file is used for operations on OTHER users, NOT the current user.
+ */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')
 
@@ -26,8 +29,14 @@ router.post('/', async (req, res) => {
     await db.query(insertStatement, userToAdd);
 
     return res.status(200).send('Successful Creation');
-})
+});
 
+// Get's the information of the currently logged in user (this is assuming a session has been implemented)
+router.get('/', async (req, res) => {
+
+});
+
+// Gets the ID of some other user
 router.get('/:id', async (req, res) => {
 
     const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
@@ -44,7 +53,7 @@ router.get('/:id', async (req, res) => {
     return res.status(200).send(users[0]);
 });
 
-// Sends back list of ids of all of the user's favorite sports
+// Sends the list of this player's favorite sport
 router.get('/:id/sports', async (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
