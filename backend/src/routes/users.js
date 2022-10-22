@@ -24,15 +24,19 @@ router.post('/', async (req, res) => {
     let existingAccounts = await db.query(query, [req.body.username, req.body.password], (err, res) => {
         //handle any errors
     });
+
     if(existingAccounts[0].length != 0){
         return res.status(400).send('Username or Password is already in use');
     }
+    
     const insertStatement =
         `INSERT INTO accounts
             (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
 
-    await db.query(insertStatement, userToAdd);
+    await db.query(insertStatement, userToAdd, (err, res) => {
+        //Handle any errors
+    });
 
     return res.status(200).send('Successful Creation');
 });
