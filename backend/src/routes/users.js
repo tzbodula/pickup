@@ -3,6 +3,7 @@
  */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')
+const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
@@ -37,12 +38,12 @@ router.post('/', async (req, res) => {
 });
 
 // Get's the information of the currently logged in user (this is assuming a session has been implemented)
-router.get('/', async (req, res) => {
+router.get('/', checkSession, async (req, res) => {
 
 });
 
 // Gets the ID of some other user
-router.get('/:id', async (req, res) => {
+router.get('/:id', checkSession, async (req, res) => {
 
     const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
     WHERE accounts.account_id = ? ;`
@@ -59,7 +60,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Sends the list of this player's favorite sport
-router.get('/:id/sports', async (req, res) => {
+router.get('/:id/sports', checkSession, async (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 

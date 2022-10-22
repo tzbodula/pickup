@@ -8,6 +8,7 @@ const router = Router();
 
 //TODO. using user sessions, obtain my information
 router.get('/', (req, res) => {
+    console.log(req.session);
     return res.status(200).send('This is me. I am logged in');
 });
 
@@ -25,7 +26,11 @@ router.post('/login', async (req, res) => {
         console.log("Doesnt exist...");
         return res.status(401).send('Invalid credentials')
     }
+
+    req.session.user_id = userData[0][0].account_id;
+    req.session.account_username = userData[0][0].account_username;
     
+    console.log(req.session);
     return res.status(200).send(userData[0]);
 })
 module.exports = router;
