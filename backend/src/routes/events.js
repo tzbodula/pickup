@@ -23,7 +23,7 @@ router.get('/sport', checkSession, (req, res) => {
 
 });
 
-router.get('/home', checkSession, (req, res) => {
+router.get('/', checkSession, (req, res) => {
 
     const query = `SELECT * FROM pickup_events;`
 
