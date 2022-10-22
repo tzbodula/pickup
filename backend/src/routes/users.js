@@ -7,7 +7,16 @@ const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res, next) => {
+    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
+    db.query(query, [req.body.username, req.body.password], (err, result) => {
+        //handle any errors
+        if(result[0]){
+            return res.status(400).send('Username or Password is already in use');
+        }
+        next();
+    });
+}, (req, res, next) => {
     // TODO hash the password before saving
     const userToAdd = [
         req.body.first_name,
@@ -19,27 +28,19 @@ router.post('/', async (req, res) => {
         0,
         0
     ];
-    
-    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
-    let existingAccounts = await db.query(query, [req.body.username, req.body.password], (err, res) => {
-        //handle any errors
-    });
 
-    if(existingAccounts[0].length != 0){
-        return res.status(400).send('Username or Password is already in use');
-    }
-    
     const insertStatement =
         `INSERT INTO accounts
             (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
 
-    await db.query(insertStatement, userToAdd, (err, res) => {
+    db.query(insertStatement, userToAdd, (err, res) => {
         //Handle any errors
     });
 
-    return res.status(200).send('Successful Creation');
-});
+    return res.status(200).send('Successful Creation'); 
+}
+);
 
 // Get's the information of the currently logged in user (this is assuming a session has been implemented)
 router.get('/', checkSession, async (req, res) => {

@@ -12,28 +12,28 @@ router.get('/', checkSession, (req, res) => {
     return res.status(200).send('This is me. I am logged in');
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password; //TODO hash the password and compare it to the password field in the DB
 
     const query = `SELECT account_id, account_username, email FROM accounts WHERE account_username = ? AND account_password = ?;`
 
-    const userData = await db.query(query, [username, password], (err, res) => {
-        //handle any errors
+    db.query(query, [username, password], (err, result) => {
+        
+        if (!result[0]) {
+            return res.status(401).send('Invalid credentials')
+        }
+    
+        req.session.user_id = result[0].account_id;
+        req.session.account_username = result[0].account_username;
+        
+        return res.status(200).send(result[0]);
     })
 
-    if (userData[0].length == 0) {
-        console.log("Doesnt exist...");
-        return res.status(401).send('Invalid credentials')
-    }
-
-    req.session.user_id = userData[0][0].account_id;
-    req.session.account_username = userData[0][0].account_username;
     
-    return res.status(200).send(userData[0]);
 })
 
-router.get('/logout', async (req, res) => {
+router.get('/logout', (req, res) => {
     req.session.destroy();
     return res.status(200).send('Logged our successfully');
 })
@@ -41,8 +41,7 @@ router.get('/logout', async (req, res) => {
 /**
  * This post route creates an event based on the currently logged in user
  */
-
-router.post('/event', checkSession, async (req,res) => {
+router.post('/event', checkSession, (req,res) => {
     const eventToAdd = [
         req.body.event_name,
         req.session.user_id, //This will always be the current session user_id
@@ -54,18 +53,25 @@ router.post('/event', checkSession, async (req,res) => {
         1, //always at least 1
     ];
 
-    
     let insertStatement =
         `INSERT INTO pickup_events
             (event_name, account_id, sport_id, maximum_players, event_location, event_date, event_time, current_players)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
-
-    const dbResponse = await db.query(insertStatement, eventToAdd, (err, result) => {
-        //handle errors
-    })
-
-    const event_id = dbResponse[0].insertId;
     
+    // Return this back to the frontend people so that they can add the user to the event
+    db.query(insertStatement, eventToAdd, (err, result) => {
+        return res.status(200).send({"event_id":result.insertId});
+    })
+})
+
+// Front end people should call this route after they create an event
+router.post('/event/join', checkSession, (req, res) => {
+    const userToAdd = [
+        req.session.user_id,
+        req.body.event_id,
+        req.body.is_leader        
+    ]
+
     insertStatement =  
         `
         INSERT INTO player_event
@@ -73,12 +79,10 @@ router.post('/event', checkSession, async (req,res) => {
             VALUES (?, ?, ?);
         `;
     
-    await db.query(insertStatement, [req.session.user_id, event_id, true], (err, res) => {
-        //hanlde any errors
-    })
-
-    return res.status(200).send('Event added!');
-    
+    db.query(insertStatement, userToAdd, (err, result) => {
+        return res.status(200).send('User has been added to the event!');
+    });
 })
+
 
 module.exports = router;
