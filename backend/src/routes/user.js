@@ -20,7 +20,7 @@ router.post('/login', (req, res) => {
 
     db.query(query, [username, password], (err, result) => {
         
-        if (!result[0]) {
+        if (result === undefined || result.length == 0) {
             return res.status(401).send('Invalid credentials')
         }
     

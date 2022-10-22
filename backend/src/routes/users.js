@@ -54,7 +54,7 @@ router.get('/:id', checkSession, (req, res) => {
     WHERE accounts.account_id = ? ;`
 
     db.query(query, [req.params.id], (err, result) => {
-        if (!result[0]) {
+        if (result === undefined || result.length == 0) {
             return res.status(400).send("Not found");
         }
     
@@ -72,11 +72,11 @@ router.get('/:id/sports', checkSession, (req, res) => {
     WHERE account_id = ? ;`
 
     db.query(query, [req.params.id], (err, result) => {
-        if (!result) {
+        if (result === undefined || result.length == 0) {
             return res.status(400).send("Not found");
         }
     
-        return res.status(200).send(result[0]);
+        return res.status(200).send(result);
     });
     
     

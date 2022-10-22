@@ -14,11 +14,11 @@ router.get('/sport', checkSession, (req, res) => {
             return;
         }
         
-        if (!result[0]) {
+        if (result === undefined || result.length == 0) {
             return res.status(400).send("Not found");
         }
         
-        return res.status(200).send(result[0]);
+        return res.status(200).send(result);
     });
 
 });
@@ -43,11 +43,11 @@ router.get('/:id', checkSession, (req, res) => {
     db.query(query, [req.params.id], (err, result) => {
         //handle any errors
 
-        if (!result[0]) {
+        if (result === undefined || result.length == 0) {
             return res.status(400).send("Not found");
         }
     
-        return res.status(200).send(result[0]);
+        return res.status(200).send(result);
     });
 
     
@@ -60,11 +60,11 @@ router.get('/:id/players', checkSession, (req, res) => {
     WHERE event_id = ? ;`
 
     db.query(query, [req.params.id], (err, result) => {
-        if (!result[0]) {
+        if (result === undefined || result.length == 0) {
             return res.status(400).send("Not found");
         }
     
-        return res.status(200).send(result[0]);
+        return res.status(200).send(result);
     });
     
 });
