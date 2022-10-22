@@ -2,19 +2,19 @@ const { Router } = require('express');
 const db = require('../config/databaseConfig')
 
 const router = Router();
-// Sends back list of events filtered by the sport entered in as query parameter
-router.get('/sport', async (req, res) => {
 
-    const query = `SELECT * FROM pickup_events WHERE sport_id = ?`
+router.get('/', async (req, res) => {
 
-    let events = await db.query(query, [req.query.sport], (err, res) => {
+    const query = `SELECT * FROM pickup_events`
+
+    let events = await db.query(query, [req.params.id], (err, res) => {
         //handle any errors
     });
 
     if (events[0].length == 0) {
         return res.status(400).send("Not found");
     }
-    
+
     return res.status(200).send(events[0]);
 });
 
@@ -47,6 +47,22 @@ router.get('/:id/players', async (req, res) => {
         return res.status(400).send("Not found");
     }
 
+    return res.status(200).send(events[0]);
+});
+
+// Sends back list of events filtered by the sport entered in as query parameter
+router.get('/sport', async (req, res) => {
+
+    const query = `SELECT * FROM pickup_events WHERE sport_id = ?`
+
+    let events = await db.query(query, [req.query.sport], (err, res) => {
+        //handle any errors
+    });
+
+    if (events[0].length == 0) {
+        return res.status(400).send("Not found");
+    }
+    
     return res.status(200).send(events[0]);
 });
 
