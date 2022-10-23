@@ -37,7 +37,7 @@ router.get('/', checkSession, (req, res) => {
 });
 
 // Event deletion
-router.get('/:id/delete', (req, res) => {
+router.get('/:id/delete', checkSession, (req, res) => {
     // Possibly better solution here (like a cascade delete) but I'm not sure
     const query = `DELETE FROM pickup_events WHERE event_id = ?`
 
