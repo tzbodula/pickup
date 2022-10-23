@@ -27,13 +27,12 @@ router.post('/login', (req, res) => {
         req.session.user_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send(result[0]);
+        return res.status(200).send("Logged in successfully");
     })
-
     
 })
 
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
     req.session.destroy();
     return res.status(200).send('Logged our successfully');
 })

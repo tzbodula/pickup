@@ -46,8 +46,7 @@ router.post('/:id/delete', checkSession, (req, res) => {
             return res.status(400).send("Error. Event cannot be found.")
         }
 
-        //return res.status(200).send(Event deleted.);
-        return res.redirect('/events');
+        return res.status(200).send("Event deleted.");
     });
     
 });
