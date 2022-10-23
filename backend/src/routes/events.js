@@ -34,20 +34,19 @@ router.get('/:id', async (req, res) => {
 });
 
 // Event deletion
-router.get('/:id/delete', async (req, res) => {
+router.get('/:id/delete', (req, res) => {
     // Possibly better solution here (like a cascade delete) but I'm not sure
-    const query1 = `DELETE FROM player_event WHERE event_id = ?`
-    const query2 = `DELETE FROM pickup_events WHERE event_id = ?`
+    const query = `DELETE FROM pickup_events WHERE event_id = ?`
 
-    await db.query(query1, [req.params.id], (err, res) => {
-        //handle any errors
-    });
-    await db.query(query2, [req.params.id], (err, res) => {
-        //handle any errors
+    db.query(query, [req.params.id], (err, res) => {
+        if(err){
+            return res.status(400).send("Error. Event cannot be found.")
+        }
+
+        //return res.status(200).send(Event deleted.);
+        return res.redirect('/events');
     });
     
-    //return res.status(200).send(Event deleted.);
-    return res.redirect('/events');
 });
 
 router.get('/:id/players', async (req, res) => {
