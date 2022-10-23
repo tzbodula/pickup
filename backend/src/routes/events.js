@@ -41,7 +41,7 @@ router.get('/:id/delete', checkSession, (req, res) => {
     // Possibly better solution here (like a cascade delete) but I'm not sure
     const query = `DELETE FROM pickup_events WHERE event_id = ?`
 
-    db.query(query, [req.params.id], (err, res) => {
+    db.query(query, [req.params.id], (err, result) => {
         if(err){
             return res.status(400).send("Error. Event cannot be found.")
         }
