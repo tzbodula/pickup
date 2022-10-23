@@ -1,32 +1,45 @@
 import * as React from "react";
+
+import { Dimensions } from 'react-native';
+
 import {
   Image,
   StyleSheet,
   Text,
-  View,
+  SafeAreaView,
   Pressable,
   ImageBackground,
+  
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+import { StatusBar } from 'expo-status-bar';
 
 const MainPage = () => {
   const navigation = useNavigation();
 
+
   return (
-    <View style={styles.mainPageView}>
-      <View style={styles.footerView}>
+    <SafeAreaView style={styles.mainPageView} >
+      <StatusBar
+        animated={true}
+        backgroundColor="#61dafb"
+        barStyle="dark-content"
+        showHideTransition="fade"
+        hidden="false" />
+      <SafeAreaView style={styles.footerView} >
         <Pressable
           style={styles.singleTabPressable}
           onPress={() => navigation.navigate("ProfileUser")}
         >
-          <View style={styles.iconAndText}>
+          <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
               source={require("../assets/home.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
         <Pressable
           style={styles.framePressable}
@@ -39,8 +52,8 @@ const MainPage = () => {
           />
           <Text style={styles.text1}>+</Text>
         </Pressable>
-      </View>
-      <View style={styles.rectangleView} />
+      </SafeAreaView>
+      <SafeAreaView style={styles.rectangleView} />
       <Image
         style={styles.ellipseIcon1}
         resizeMode="cover"
@@ -82,25 +95,11 @@ const MainPage = () => {
         />
       </Pressable>
       <ImageBackground
-        style={styles.chestnut1Icon}
+        style={styles.eventImage}
         resizeMode="cover"
         source={require("../assets/chestnut1.png")}
       />
-      <ImageBackground
-        style={styles.chestnut2Icon}
-        resizeMode="cover"
-        source={require("../assets/chestnut2.png")}
-      />
-      <ImageBackground
-        style={styles.chestnut3Icon}
-        resizeMode="cover"
-        source={require("../assets/chestnut3.png")}
-      />
-      <ImageBackground
-        style={styles.chestnut4Icon}
-        resizeMode="cover"
-        source={require("../assets/chestnut4.png")}
-      />
+
       <Pressable
         style={styles.rectanglePressable}
         onPress={() => navigation.navigate("EventDetails")}
@@ -117,30 +116,15 @@ const MainPage = () => {
         style={styles.rectanglePressable3}
         onPress={() => navigation.navigate("EventDetails")}
       />
-      <Text style={styles.v4FLAGText}>{`4v4 FLAG `}</Text>
-      <Text style={styles.v3CASUALText}>3V3 CASUAL</Text>
-      <Text style={styles.v7TACKLEText}>{`7V7 TACKLE `}</Text>
-      <Text style={styles.v1ROUTESText}>1V1 ROUTES</Text>
+      <Text style={styles.v4FLAGText}>4v4 FLAG</Text>
       <Text style={styles.pMText}>7:30 PM</Text>
-      <Text style={styles.pMText1}>2:30 PM</Text>
-      <Text style={styles.pMText2}>1:30 PM</Text>
-      <Text style={styles.pMText3}>4:00 PM</Text>
       <Text style={styles.iNDIANTRAILNC}>INDIAN TRAIL, NC</Text>
-      <Text style={styles.cHARLOTTENCText}>CHARLOTTE, NC</Text>
-      <Text style={styles.mATTHEWSNCText}>MATTHEWS, NC</Text>
-      <Text style={styles.mINTHILLNC}>MINT HILL, NC</Text>
       <Text style={styles.wHOWANTSMOKEText}>WHOWANTSMOKE?</Text>
-      <Text style={styles.bruhmomentText}>bruhmoment</Text>
-      <Text style={styles.rAYLEWISFAN52Text}>RAYLEWISFAN52</Text>
-      <Text style={styles.tAKEYAANKLESText}>TAKEYAANKLES</Text>
       <Text style={styles.text2}>10/25/2022</Text>
       <Text style={styles.text3}>10/26/2022</Text>
       <Text style={styles.text4}>10/27/2022</Text>
       <Text style={styles.text5}>10/28/2022</Text>
       <Text style={styles.pLAYERSText}>6/8 PLAYERS</Text>
-      <Text style={styles.pLAYERSText1}>5/6 PLAYERS</Text>
-      <Text style={styles.pLAYERSText2}>9/14 PLAYERS</Text>
-      <Text style={styles.pLAYERSText3}>1/2 PLAYERS</Text>
       <Image
         style={styles.football1Icon}
         resizeMode="cover"
@@ -186,37 +170,23 @@ const MainPage = () => {
         resizeMode="cover"
         source={require("../assets/crown1.png")}
       />
-      <ImageBackground
-        style={styles.crown2Icon}
-        resizeMode="cover"
-        source={require("../assets/crown1.png")}
-      />
-      <ImageBackground
-        style={styles.crown3Icon}
-        resizeMode="cover"
-        source={require("../assets/crown1.png")}
-      />
-      <ImageBackground
-        style={styles.crown4Icon}
-        resizeMode="cover"
-        source={require("../assets/crown1.png")}
-      />
-      <View style={styles.changeMilesView}>
+
+      <SafeAreaView style={styles.changeMilesView}>
         <Text style={styles.mILESMAXText}>30 MILES MAX</Text>
-        <View style={styles.rectangleView1} />
+        <SafeAreaView style={styles.rectangleView1} />
         <Image
           style={styles.vectorIcon}
           resizeMode="cover"
           source={require("../assets/vector1.png")}
         />
-        <View style={styles.rectangleView2} />
+        <SafeAreaView style={styles.rectangleView2} />
         <Image
           style={styles.vectorIcon1}
           resizeMode="cover"
           source={require("../assets/vector2.png")}
         />
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 
@@ -311,8 +281,8 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "#00060a",
-    width: 375,
-    height: 82,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height / 10,
   },
   ellipseIcon1: {
     position: "absolute",
@@ -365,32 +335,11 @@ const styles = StyleSheet.create({
     right: "13.88%",
     bottom: "95.69%",
   },
-  chestnut1Icon: {
+  eventImage: {
     position: "absolute",
-    top: 96,
-    left: 13,
-    width: 348,
-    height: 139,
-  },
-  chestnut2Icon: {
-    position: "absolute",
-    top: 255,
-    left: 13,
-    width: 348,
-    height: 139,
-  },
-  chestnut3Icon: {
-    position: "absolute",
-    top: 414,
-    left: 13,
-    width: 348,
-    height: 139,
-  },
-  chestnut4Icon: {
-    position: "absolute",
-    top: 573,
-    left: 13,
-    width: 348,
+    top: 89,
+    left: 0,
+    width: Dimensions.get('window').width,
     height: 139,
   },
   rectanglePressable: {
@@ -425,6 +374,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 140,
     left: 106,
+    paddingTop: 18,
     fontSize: 24,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -663,6 +613,7 @@ const styles = StyleSheet.create({
   },
   pLAYERSText: {
     position: "absolute",
+    paddingTop: 6,
     top: 166,
     left: 130,
     fontSize: 11,
@@ -675,6 +626,7 @@ const styles = StyleSheet.create({
   },
   pLAYERSText1: {
     position: "absolute",
+    paddingTop: 6,
     top: 325,
     left: 130,
     fontSize: 11,
@@ -864,6 +816,7 @@ const styles = StyleSheet.create({
     height: 14,
   },
   mainPageView: {
+    top: 50,
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
