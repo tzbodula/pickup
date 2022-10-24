@@ -8,7 +8,7 @@ const checkSession = require('../utils/sessionChecker')
 const router = Router();
 
 //TODO. using user sessions, obtain my information
-router.get('/', checkSession, (req, res) => {
+router.get('/',  (req, res) => {
     return res.status(200).send('This is me. I am logged in');
 });
 
@@ -40,7 +40,7 @@ router.post('/logout', (req, res) => {
 /**
  * This post route creates an event based on the currently logged in user
  */
-router.post('/event', checkSession, (req, res, next) => {
+router.post('/event',  (req, res, next) => {
     const eventToAdd = [
         req.body.event_name,
         req.session.user_id, //This will always be the current session user_id
