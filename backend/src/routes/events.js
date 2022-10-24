@@ -5,7 +5,7 @@ const router = Router();
 
 
 // Sends back list of events filtered by the sport entered in as query parameter
-router.get('/sport', checkSession, (req, res) => {
+router.get('/sport',  (req, res) => {
     
     const query = `SELECT * FROM pickup_events WHERE sport_id = ? ;`
     db.query(query, [req.query.sport_id], (err, result) => {
@@ -23,7 +23,7 @@ router.get('/sport', checkSession, (req, res) => {
 
 });
 
-router.get('/', checkSession, (req, res) => {
+router.get('/',  (req, res) => {
 
     const query = `SELECT * FROM pickup_events;`
 
@@ -37,7 +37,7 @@ router.get('/', checkSession, (req, res) => {
 });
 
 // Event deletion
-router.post('/:id/delete', checkSession, (req, res) => {
+router.post('/:id/delete',  (req, res) => {
     // Possibly better solution here (like a cascade delete) but I'm not sure
     const query = `DELETE FROM pickup_events WHERE event_id = ?`
 
@@ -51,7 +51,7 @@ router.post('/:id/delete', checkSession, (req, res) => {
     
 });
 
-router.get('/:id', checkSession, (req, res) => {
+router.get('/:id',  (req, res) => {
 
     const query = `SELECT * FROM pickup_events WHERE event_id = ? ;`
 
@@ -68,7 +68,7 @@ router.get('/:id', checkSession, (req, res) => {
     
 });
 
-router.get('/:id/players', checkSession, (req, res) => {
+router.get('/:id/players',  (req, res) => {
 
     const query = `SELECT accounts.account_username, accounts.games_joined, accounts.games_attended FROM player_event 
     JOIN accounts ON player_event.account_id = accounts.account_id 

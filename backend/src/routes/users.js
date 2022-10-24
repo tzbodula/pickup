@@ -43,12 +43,12 @@ router.post('/', (req, res, next) => {
 );
 
 // Get's the information of the currently logged in user (this is assuming a session has been implemented)
-router.get('/', checkSession, (req, res) => {
+router.get('/', (req, res) => {
 
 });
 
 // Gets the ID of some other user
-router.get('/:id', checkSession, (req, res) => {
+router.get('/:id', (req, res) => {
 
     const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
     WHERE accounts.account_id = ? ;`
@@ -65,7 +65,7 @@ router.get('/:id', checkSession, (req, res) => {
 });
 
 // Sends the list of this player's favorite sport
-router.get('/:id/sports', checkSession, (req, res) => {
+router.get('/:id/sports',  (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
