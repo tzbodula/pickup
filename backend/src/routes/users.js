@@ -7,17 +7,7 @@ const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
-router.post('/', (req, res, next) => {
-    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
-    db.query(query, [req.body.username, req.body.password], (err, result) => {
-        //handle any errors
-        if (result[0]) {
-            return res.status(400).send('Username or Password is already in use');
-        }
-        next();
-    });
-}, (req, res) => {
-    // TODO hash the password before saving
+router.post('/', (req, res) => {
     const userToAdd = [
         req.body.first_name,
         req.body.last_name,
@@ -29,7 +19,13 @@ router.post('/', (req, res, next) => {
         0
     ];
 
-    const insertStatement =
+    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
+    db.query(query, [req.body.username, req.body.password], (err, result) => {
+        //handle any errors
+        if (result[0]) {
+            return res.status(400).send('Username or Password is already in use');
+        }
+        const insertStatement =
         `INSERT INTO accounts
             (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
@@ -39,16 +35,16 @@ router.post('/', (req, res, next) => {
     });
 
     return res.status(200).send('Successful Creation'); 
-}
-);
+    });
+});
 
 // Get's the information of the currently logged in user (this is assuming a session has been implemented)
-router.get('/', checkSession, (req, res) => {
+router.get('/', (req, res) => {
 
 });
 
 // Gets the ID of some other user
-router.get('/:id', checkSession, (req, res) => {
+router.get('/:id', (req, res) => {
 
     const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
     WHERE accounts.account_id = ? ;`
@@ -65,7 +61,7 @@ router.get('/:id', checkSession, (req, res) => {
 });
 
 // Sends the list of this player's favorite sport
-router.get('/:id/sports', checkSession, (req, res) => {
+router.get('/:id/sports',  (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
