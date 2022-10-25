@@ -38,7 +38,7 @@ export default function App() {
           'Calibri': require('./assets/fonts/Calibri.otf'),
           'Arsenal': require('./assets/fonts/Arsenal.otf'),
           'GearUp': require('./assets/fonts/GearUp.otf'),
-          'GearUp Soft': require('./assets/fonts/GearUp Soft.otf')
+          'GearUp Soft': require('./assets/fonts/GearUp.otf')
         });
       } catch (e) {
         console.warn(e);

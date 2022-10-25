@@ -26,7 +26,7 @@ const MainPage = () => {
         backgroundColor="#61dafb"
         barStyle="dark-content"
         showHideTransition="fade"
-        hidden="false" />
+        hidden={false} />
       <SafeAreaView style={styles.footerView} >
         <Pressable
           style={styles.singleTabPressable}
