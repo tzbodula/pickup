@@ -61,7 +61,7 @@ router.post('/:id/join',  (req, res) => {
             return res.status(400).send("Error. Event is already full.")
         }
         const usertoJoin = [
-            req.session.id,
+            req.session.user_id,
             req.params.id,
             0
         ];
@@ -70,6 +70,7 @@ router.post('/:id/join',  (req, res) => {
             (account_id, event_id, is_leader)
             VALUES (?, ?, ?) ;`;
         db.query(query2, usertoJoin, (err, result) => {
+            console.log(result[0]);
             if (result === undefined || result.length == 0) {
                 return res.status(400).send("Error. Couldn't join event.")
             }
@@ -79,10 +80,8 @@ router.post('/:id/join',  (req, res) => {
                     return res.status(400).send("Error. Couldn't increment current players in event.")
                 }
                   
-    
                 return res.status(200).send("Player joined event.");
             });
-
         });
     });
             
