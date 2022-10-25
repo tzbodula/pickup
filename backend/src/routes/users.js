@@ -7,17 +7,7 @@ const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
-router.post('/', (req, res, next) => {
-    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
-    db.query(query, [req.body.username, req.body.password], (err, result) => {
-        //handle any errors
-        if (result[0]) {
-            return res.status(400).send('Username or Password is already in use');
-        }
-        next();
-    });
-}, (req, res) => {
-    // TODO hash the password before saving
+router.post('/', (req, res) => {
     const userToAdd = [
         req.body.first_name,
         req.body.last_name,
@@ -29,7 +19,13 @@ router.post('/', (req, res, next) => {
         0
     ];
 
-    const insertStatement =
+    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
+    db.query(query, [req.body.username, req.body.password], (err, result) => {
+        //handle any errors
+        if (result[0]) {
+            return res.status(400).send('Username or Password is already in use');
+        }
+        const insertStatement =
         `INSERT INTO accounts
             (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
@@ -39,8 +35,8 @@ router.post('/', (req, res, next) => {
     });
 
     return res.status(200).send('Successful Creation'); 
-}
-);
+    });
+});
 
 // Get's the information of the currently logged in user (this is assuming a session has been implemented)
 router.get('/', (req, res) => {
