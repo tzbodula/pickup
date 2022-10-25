@@ -38,7 +38,6 @@ router.get('/',  (req, res) => {
 
 // Event deletion
 router.post('/:id/delete',  (req, res) => {
-    // Possibly better solution here (like a cascade delete) but I'm not sure
     const query = `DELETE FROM pickup_events WHERE event_id = ?`
 
     db.query(query, [req.params.id], (err, result) => {
@@ -49,6 +48,42 @@ router.post('/:id/delete',  (req, res) => {
         return res.status(200).send("Event deleted.");
     });
     
+});
+
+// Join event
+router.post('/:id/join',  (req, res) => {
+    const query1 = `SELECT * FROM pickup_events WHERE event_id = ?`
+    db.query(query1, [req.params.id], (err, result) => {
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send("Error. Couldn't find event.")
+        }
+        if(result[0].currentplayers == result[0].maximum_players){
+            return res.status(400).send("Error. Event is already full.")
+        }
+        const usertoJoin = [
+            req.session.user_id,
+            req.params.id,
+            0
+        ];
+        const query2 = 
+        `INSERT INTO player_event
+            (account_id, event_id, is_leader)
+            VALUES (?, ?, ?) ;`;
+        db.query(query2, usertoJoin, (err, result) => {
+            if (result === undefined || result.length == 0) {
+                return res.status(400).send("Error. Couldn't join event.")
+            }
+            const query3 = `UPDATE pickup_events SET current_players = current_players + 1 WHERE event_id = ?;`
+            db.query(query3, [req.params.id], (err, result) => {
+                if (result === undefined || result.length == 0) {
+                    return res.status(400).send("Error. Couldn't increment current players in event.")
+                }
+                  
+                return res.status(200).send("Player joined event.");
+            });
+        });
+    });
+            
 });
 
 router.get('/:id',  (req, res) => {
