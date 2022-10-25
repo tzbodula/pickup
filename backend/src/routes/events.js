@@ -61,20 +61,14 @@ router.post('/:id/join',  (req, res) => {
             return res.status(400).send("Error. Event is already full.")
         }
         const usertoJoin = [
-            result[0].event_name,
             req.session.id,
-            result[0].sport_id,    
-            result[0].maximum_players,
-            result[0].current_players,
-            result[0].event_location,
-            result[0].event_date,
-            result[0].event_time
+            req.params.id,
+            0
         ];
-        console.log(req.session.id);
         const query2 = 
-        `INSERT INTO pickup_events
-            (event_name, account_id, sport_id, maximum_players, current_players, event_location, event_date, event_time)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
+        `INSERT INTO player_event
+            (account_id, event_id, is_leader)
+            VALUES (?, ?, ?) ;`;
         db.query(query2, usertoJoin, (err, result) => {
             if (result === undefined || result.length == 0) {
                 return res.status(400).send("Error. Couldn't join event.")
