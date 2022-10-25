@@ -34,7 +34,7 @@ const MainPage = () => {
         >
           <SafeAreaView style={styles.iconAndText}>
             <Image
-              style={styles.homeIcon}
+              style={styles.accountIcon}
               resizeMode="cover"
               source={require("../assets/home.png")}
             />
@@ -46,11 +46,11 @@ const MainPage = () => {
           onPress={() => navigation.navigate("CreateEvent")}
         >
           <Image
-            style={styles.ellipseIcon}
+            style={styles.addEventCircle}
             resizeMode="cover"
             source={require("../assets/ellipse-1.png")}
           />
-          <Text style={styles.text1}>+</Text>
+          <Text style={styles.addEventPlus}>+</Text>
         </Pressable>
       </SafeAreaView>
       <SafeAreaView style={styles.rectangleView} />
@@ -116,39 +116,16 @@ const MainPage = () => {
         style={styles.rectanglePressable3}
         onPress={() => navigation.navigate("EventDetails")}
       />
-      <Text style={styles.v4FLAGText}>4v4 FLAG</Text>
-      <Text style={styles.pMText}>7:30 PM</Text>
-      <Text style={styles.iNDIANTRAILNC}>INDIAN TRAIL, NC</Text>
-      <Text style={styles.wHOWANTSMOKEText}>WHOWANTSMOKE?</Text>
-      <Text style={styles.text2}>10/25/2022</Text>
-      <Text style={styles.text3}>10/26/2022</Text>
-      <Text style={styles.text4}>10/27/2022</Text>
-      <Text style={styles.text5}>10/28/2022</Text>
-      <Text style={styles.pLAYERSText}>6/8 PLAYERS</Text>
+      <Text style={styles.eventTitle}>4v4 FLAG</Text>
+      <Text style={styles.eventTime}>7:30 PM</Text>
+      <Text style={styles.eventLocation}>INDIAN TRAIL, NC</Text>
+      <Text style={styles.eventHostName}>WHOWANTSMOKE?</Text>
+      <Text style={styles.eventDate}>10/25/2022</Text>
+      <Text style={styles.eventPlayerCount}>6/8 PLAYERS</Text>
       <Image
-        style={styles.football1Icon}
+        style={styles.sportIcon}
         resizeMode="cover"
         source={require("../assets/football-1.png")}
-      />
-      <ImageBackground
-        style={styles.football2Icon}
-        resizeMode="cover"
-        source={require("../assets/football2.png")}
-      />
-      <ImageBackground
-        style={styles.football3Icon}
-        resizeMode="cover"
-        source={require("../assets/football2.png")}
-      />
-      <ImageBackground
-        style={styles.football4Icon}
-        resizeMode="cover"
-        source={require("../assets/football2.png")}
-      />
-      <ImageBackground
-        style={styles.football5Icon}
-        resizeMode="cover"
-        source={require("../assets/football2.png")}
       />
       <Image
         style={styles.basketball1Icon}
@@ -166,7 +143,7 @@ const MainPage = () => {
         source={require("../assets/tennis-racket-1.png")}
       />
       <ImageBackground
-        style={styles.crown1Icon}
+        style={styles.crownIcon}
         resizeMode="cover"
         source={require("../assets/crown1.png")}
       />
@@ -236,7 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     overflow: "hidden",
   },
-  ellipseIcon: {
+  addEventCircle: {
     position: "absolute",
     height: "100%",
     width: "100%",
@@ -248,7 +225,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     maxHeight: "100%",
   },
-  text1: {
+  addEventPlus: {
+    paddingTop: 20,
     position: "absolute",
     height: "47.46%",
     width: "49.15%",
@@ -337,9 +315,9 @@ const styles = StyleSheet.create({
   },
   eventImage: {
     position: "absolute",
-    top: 89,
-    left: 0,
-    width: Dimensions.get('window').width,
+    top: 99,
+    left: 10,
+    width: Dimensions.get('window').width * .95,
     height: 139,
   },
   rectanglePressable: {
@@ -370,10 +348,10 @@ const styles = StyleSheet.create({
     width: 346,
     height: 126,
   },
-  v4FLAGText: {
+  eventTitle: {
     position: "absolute",
     top: 140,
-    left: 106,
+    left: 126,
     paddingTop: 18,
     fontSize: 24,
     lineHeight: 14,
@@ -419,10 +397,11 @@ const styles = StyleSheet.create({
     width: 180,
     height: 25,
   },
-  pMText: {
+  eventTime: {
     position: "absolute",
+    paddingTop: 4,
     top: 198,
-    left: 175,
+    left: 215,
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -467,9 +446,9 @@ const styles = StyleSheet.create({
     width: 180,
     height: 25,
   },
-  iNDIANTRAILNC: {
+  eventLocation: {
     position: "absolute",
-    top: 216,
+    top: 218,
     left: 17,
     fontSize: 10,
     lineHeight: 14,
@@ -515,10 +494,10 @@ const styles = StyleSheet.create({
     width: 180,
     height: 25,
   },
-  wHOWANTSMOKEText: {
+  eventHostName: {
     position: "absolute",
     top: 216,
-    left: 228,
+    left: 268,
     fontSize: 10,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -563,7 +542,8 @@ const styles = StyleSheet.create({
     width: 180,
     height: 25,
   },
-  text2: {
+  eventDate: {
+    paddingTop: 5,
     position: "absolute",
     top: 200,
     left: 17,
@@ -611,11 +591,11 @@ const styles = StyleSheet.create({
     width: 193,
     height: 16,
   },
-  pLAYERSText: {
+  eventPlayerCount: {
     position: "absolute",
     paddingTop: 6,
     top: 166,
-    left: 130,
+    left: 150,
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -661,7 +641,7 @@ const styles = StyleSheet.create({
     width: 145,
     height: 28,
   },
-  football1Icon: {
+  sportIcon: {
     position: "absolute",
     top: 13,
     left: 44,
@@ -717,31 +697,10 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
-  crown1Icon: {
+  crownIcon: {
     position: "absolute",
     top: 209,
-    left: 227,
-    width: 10,
-    height: 7,
-  },
-  crown2Icon: {
-    position: "absolute",
-    top: 368,
-    left: 256,
-    width: 10,
-    height: 7,
-  },
-  crown3Icon: {
-    position: "absolute",
-    top: 527,
-    left: 241,
-    width: 10,
-    height: 7,
-  },
-  crown4Icon: {
-    position: "absolute",
-    top: 686,
-    left: 247,
+    left: 267,
     width: 10,
     height: 7,
   },
