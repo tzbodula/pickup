@@ -27,23 +27,19 @@ import EventDetails from "./screens/EventDetails";
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false); //State to determine if our app is ready or not
 
   useEffect(() => {
     async function prepare() {
       try {
-        // Pre-load fonts, make any API calls you need to do here
-        await Font.loadAsync(Entypo.font);
+        // Let's load our fonts, using Font.loadAsync
         await Font.loadAsync({
           'Inter-Black': require('./assets/fonts/Inter-Black.otf'),
           'Calibri': require('./assets/fonts/Calibri.otf'),
           'Arsenal': require('./assets/fonts/Arsenal.otf'),
           'GearUp': require('./assets/fonts/GearUp.otf'),
-          'GearUp Soft': require('./assets/fonts/GearUp Soft.otf')
+          'GearUp Soft': require('./assets/fonts/GearUp.otf')
         });
-        // Artificially delay for two seconds to simulate a slow loading
-        // experience. Please remove this if you copy and paste the code!
-        await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
