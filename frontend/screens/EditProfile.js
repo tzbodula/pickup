@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
   },
   footerView: {
     position: "absolute",
-    top: Dimensions.get('window').height * 0.89,
+    top: Dimensions.get('window').height * 0.85,
     left: 0,
     width: Dimensions.get('window').width,
     height: 68,
@@ -880,6 +880,7 @@ const styles = StyleSheet.create({
     height: 243,
   },
   editProfileView: {
+    top: 35,
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
