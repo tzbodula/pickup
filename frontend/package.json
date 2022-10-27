@@ -11,6 +11,8 @@
   "dependencies": {
     "@expo/webpack-config": "^0.17.0",
     "@react-navigation/native-stack": "^6.9.1",
+    "@rneui/base": "^4.0.0-rc.6",
+    "@rneui/themed": "^4.0.0-rc.6",
     "expo": "~46.0.16",
     "expo-app-loading": "^2.1.0",
     "expo-font": "^10.2.1",

@@ -1,153 +1,183 @@
 import * as React from "react";
+
+import { useState } from "react";
+
 import {
   Text,
+  TextInput,
   StyleSheet,
   Image,
-  View,
+  Dimensions,
+  SafeAreaView,
   Pressable,
   ImageBackground,
 } from "react-native";
+
+
+import { Button, CheckBox, Icon } from "@rneui/themed";
+
 import { useNavigation } from "@react-navigation/native";
+
 
 const AccountRegistration = () => {
   const navigation = useNavigation();
 
+  const [isChecked, setIsChecked] = useState(false);
+
   return (
-    <View style={styles.accountRegistrationView}>
-      <View style={styles.createAccountView}>
+    <SafeAreaView style={styles.accountRegistrationView}>
+      <SafeAreaView style={styles.createAccountView}>
         <ImageBackground
           style={styles.property1DefaultIcon}
           resizeMode="cover"
           source={require("../assets/property1default.png")}
         >
           <Text style={styles.pickUpText}>PickUp</Text>
-          <View style={styles.textFieldView}>
+          <SafeAreaView style={styles.textFieldLastName}>
             <Image
               style={styles.trailingIcon}
               resizeMode="cover"
               source={require("../assets/trailing-icon.png")}
             />
-            <View style={styles.iconText}>
+            <SafeAreaView style={styles.iconText}>
               <Image
                 style={styles.leadingIcon}
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <Text style={[styles.text, styles.ml8]}>Last Name</Text>
-            </View>
+              <TextInput style={styles.input}>Last Name</TextInput>
+            </SafeAreaView>
             <Text style={styles.labelText}>Last Name</Text>
-          </View>
-          <View style={styles.textFieldView1}>
+          </SafeAreaView>
+          <SafeAreaView style={styles.textFieldPassword}>
             <Image
               style={styles.trailingIcon1}
               resizeMode="cover"
               source={require("../assets/trailing-icon.png")}
             />
-            <View style={styles.iconText1}>
+            <SafeAreaView style={styles.iconText1}>
               <Image
                 style={styles.leadingIcon1}
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <Text style={[styles.text1, styles.ml8]}>Password</Text>
-            </View>
+              <TextInput style={styles.input}>Password</TextInput>
+            </SafeAreaView>
             <Text style={styles.labelText1}>Enter your password</Text>
-          </View>
-          <View style={styles.textFieldView2}>
+          </SafeAreaView>
+          <SafeAreaView style={styles.textFieldPasswordConfirm}>
             <Image
               style={styles.trailingIcon2}
               resizeMode="cover"
               source={require("../assets/trailing-icon.png")}
             />
-            <View style={styles.iconText2}>
+            <SafeAreaView style={styles.iconText2}>
               <Image
                 style={styles.leadingIcon2}
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <Text style={[styles.text2, styles.ml8]}>Password</Text>
-            </View>
+              <TextInput style={styles.input}>Password</TextInput>
+            </SafeAreaView>
             <Text style={styles.labelText2}>CONFIRM YOUR PASSWORD</Text>
-          </View>
-          <View style={styles.textFieldView3}>
+          </SafeAreaView>
+          <SafeAreaView style={styles.textFieldUsername}>
             <Image
               style={styles.trailingIcon3}
               resizeMode="cover"
               source={require("../assets/trailing-icon.png")}
             />
-            <View style={styles.iconText3}>
+            <SafeAreaView style={styles.iconText3}>
               <Image
                 style={styles.leadingIcon3}
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <Text style={[styles.text3, styles.ml8]}>Username</Text>
-            </View>
+              <TextInput style={styles.input}>Username</TextInput>
+            </SafeAreaView>
             <Text style={styles.labelText3}>Enter your username</Text>
-          </View>
+          </SafeAreaView>
           <Pressable
             style={styles.leftButtonPressable}
             onPress={() => navigation.navigate("MainPage")}
           >
-            <View style={styles.iconAndText}>
+            <SafeAreaView style={styles.iconAndText}>
               <Image
                 style={styles.leadingIcon4}
                 resizeMode="cover"
                 source={require("../assets/leading-icon7.png")}
               />
-              <Text style={[styles.text4, styles.ml4]}>Register</Text>
-            </View>
+              <Button 
+                titleStyle={{
+                    color: "white",
+                    fontFamily: "GearUp",
+                    fontSize: 12,
+                    bottom: "11%",
+                    right: "17%",
+                }} 
+                title="Register"
+                color="#00060a"
+              ></Button>
+            </SafeAreaView>
           </Pressable>
-          <View style={styles.textFieldView4}>
+          <SafeAreaView style={styles.textFieldFirstName}>
             <Image
               style={styles.trailingIcon4}
               resizeMode="cover"
               source={require("../assets/trailing-icon.png")}
             />
-            <View style={styles.iconText4}>
+            <SafeAreaView style={styles.iconText4}>
               <Image
                 style={styles.leadingIcon5}
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <Text style={[styles.text5, styles.ml8]}>First Name</Text>
-            </View>
+              <TextInput style={styles.input}>First Name</TextInput>
+            </SafeAreaView>
             <Text style={styles.labelText4}>First Name</Text>
-          </View>
-          <View style={styles.textFieldView5}>
+          </SafeAreaView>
+          <SafeAreaView style={styles.textFieldEmail}>
             <Image
               style={styles.trailingIcon5}
               resizeMode="cover"
               source={require("../assets/trailing-icon.png")}
             />
-            <View style={styles.iconText5}>
+            <SafeAreaView style={styles.iconText5}>
               <Image
                 style={styles.leadingIcon6}
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <Text style={[styles.text6, styles.ml8]}>Email</Text>
-            </View>
+              <TextInput style={styles.input}>Email</TextInput>
+            </SafeAreaView>
             <Text style={styles.labelText5}>Enter your email</Text>
-          </View>
-          <Image
-            style={styles.rectangleIcon}
-            resizeMode="cover"
-            source={require("../assets/rectangle-1.png")}
+          </SafeAreaView>
+          
+          <CheckBox
+            title="I agree to pickup's terms and conditions"
+            checked={isChecked}
+            onPress={() => setIsChecked(!isChecked)}
+            containerStyle={{
+              backgroundColor: 'rgba(0,0,0,0)',
+              top: "72%",
+              alignItems: "center",
+            }}
+            textStyle={{
+              color: "#ffffff",
+              fontFamily: "GearUp",
+              fontSize: 10,
+            }}
+            checkedColor="#80ced7"
           />
-          <Text style={styles.iAgreeToThePickUpTermsAn}>
-            I agree to the PickUp terms and conditions
-          </Text>
-          <Text style={styles.cREATEANACCOUNT}>CREATE AN ACCOUNT</Text>
         </ImageBackground>
-      </View>
+      </SafeAreaView>
       <Pressable
         style={styles.cancelPressable}
         onPress={() => navigation.navigate("Login")}
       >
         <Text style={styles.cancelText}>Cancel</Text>
       </Pressable>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -158,7 +188,14 @@ const styles = StyleSheet.create({
   ml4: {
     marginLeft: 4,
   },
+  submitButton: {
+    fontFamily: "GearUp",
+    color: "#80ced7",
+    top: 500,
+  },
   pickUpText: {
+    paddingTop: "15%",
+    paddingLeft: "5%",
     position: "absolute",
     top: 40,
     left: 90,
@@ -224,10 +261,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "flex-end",
   },
-  textFieldView: {
+  textFieldLastName: {
+    top: "26%",
+    left: "13%",
     position: "absolute",
-    top: 201,
-    left: 42,
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -292,10 +329,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "flex-end",
   },
-  textFieldView1: {
+  textFieldPassword: {
     position: "absolute",
-    top: 429,
-    left: 42,
+    top: "50%",
+    left: "13%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -360,10 +397,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "flex-end",
   },
-  textFieldView2: {
+  textFieldPasswordConfirm: {
     position: "absolute",
-    top: 505,
-    left: 42,
+    top: "58%",
+    left: "13%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -428,10 +465,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "flex-end",
   },
-  textFieldView3: {
+  textFieldUsername: {
     position: "absolute",
-    top: 353,
-    left: 42,
+    top: "42%",
+    left: "13%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -450,6 +487,8 @@ const styles = StyleSheet.create({
   },
   text4: {
     position: "relative",
+    right: "2%",
+    bottom: "3%",
     fontSize: 13,
     lineHeight: 18,
     fontFamily: "GearUp",
@@ -475,7 +514,7 @@ const styles = StyleSheet.create({
   leftButtonPressable: {
     position: "absolute",
     width: "38.93%",
-    top: 573,
+    top: "65.38%",
     right: "30.67%",
     left: "30.4%",
     backgroundColor: "#00060a",
@@ -541,10 +580,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "flex-end",
   },
-  textFieldView4: {
+  textFieldFirstName: {
     position: "absolute",
-    top: 132,
-    left: 42,
+    top: "18%",
+    left: "13%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -609,10 +648,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "flex-end",
   },
-  textFieldView5: {
+  textFieldEmail: {
     position: "absolute",
-    top: 277,
-    left: 42,
+    top: "34%",
+    left: "13%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -623,15 +662,15 @@ const styles = StyleSheet.create({
   },
   rectangleIcon: {
     position: "absolute",
-    top: 647,
-    left: 29,
+    top: "72%",
+    left: "9%",
     width: 19,
     height: 19,
   },
   iAgreeToThePickUpTermsAn: {
     position: "absolute",
-    top: 649,
-    left: 56,
+    top: "72%",
+    left: "16%",
     fontSize: 9,
     lineHeight: 16,
     fontFamily: "GearUp",
@@ -639,6 +678,9 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   cREATEANACCOUNT: {
+
+    paddingTop: "9%",
+    paddingLeft: "5%",
     position: "absolute",
     top: 79,
     left: 109,
@@ -650,10 +692,10 @@ const styles = StyleSheet.create({
   },
   property1DefaultIcon: {
     position: "absolute",
-    top: 15,
-    left: 20,
-    width: 375,
-    height: 812,
+    top: 0,
+    left: 0,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     overflow: "hidden",
   },
   createAccountView: {
@@ -669,6 +711,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   cancelText: {
+    paddingTop: "4%",
     fontSize: 16,
     lineHeight: 18,
     fontFamily: "GearUp",
