@@ -10,7 +10,10 @@ const EditProfile = () => {
   return (
     <SafeAreaView style={styles.editProfileView}>
       <SafeAreaView style={styles.footerView}>
-        <SafeAreaView style={styles.singleTabView}>
+        <Pressable
+          style={styles.singleTabPressable}
+          onPress={() => navigation.navigate("ProfileUser")}
+        >
           <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.homeIcon}
@@ -19,9 +22,9 @@ const EditProfile = () => {
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
           </SafeAreaView>
-        </SafeAreaView>
+        </Pressable>
         <Pressable
-          style={styles.singleTabPressable}
+          style={styles.singleTabPressable1}
           onPress={() => navigation.navigate("Friends")}
         >
           <SafeAreaView style={styles.iconAndText1}>
@@ -34,7 +37,7 @@ const EditProfile = () => {
           </SafeAreaView>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable1}
+          style={styles.singleTabPressable2}
           onPress={() => navigation.navigate("Map")}
         >
           <SafeAreaView style={styles.iconAndText2}>
@@ -58,7 +61,7 @@ const EditProfile = () => {
           <Text style={styles.addEventPlus}>+</Text>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable2}
+          style={styles.singleTabPressable3}
           onPress={() => navigation.navigate("MainPage")}
         >
           <SafeAreaView style={styles.iconAndText3}>
@@ -259,7 +262,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabView: {
+  singleTabPressable: {
     position: "absolute",
     height: "82.35%",
     width: "21.33%",
@@ -301,7 +304,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable: {
+  singleTabPressable1: {
     position: "absolute",
     height: "82.35%",
     width: "21.32%",
@@ -343,7 +346,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable1: {
+  singleTabPressable2: {
     position: "absolute",
     height: "82.35%",
     width: "21.32%",
@@ -351,6 +354,17 @@ const styles = StyleSheet.create({
     right: "21.35%",
     bottom: "0%",
     left: "57.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  singleTabPressable3: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.33%",
+    top: "17.65%",
+    right: "78.67%",
+    bottom: "0%",
+    left: "0%",
     backgroundColor: "#fff",
     overflow: "hidden",
   },
@@ -419,17 +433,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable2: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.33%",
-    top: "17.65%",
-    right: "78.67%",
-    bottom: "0%",
-    left: "0%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
   footerView: {
     position: "absolute",
     top: Dimensions.get('window').height * 0.85,
@@ -479,11 +482,11 @@ const styles = StyleSheet.create({
   lineView: {
     position: "absolute",
     top: 297.54,
-    left: -0.51,
+    left: 0,
     borderStyle: "solid",
     borderColor: "#000",
     borderTopWidth: 1,
-    width: 376.02,
+    width: Dimensions.get('window').width,
     height: 1,
   },
   icon: {
@@ -875,12 +878,12 @@ const styles = StyleSheet.create({
   addOrRemoveSportsView: {
     position: "absolute",
     top: 326,
-    left: 13,
+    left: "8%",
     width: 344,
     height: 243,
   },
   editProfileView: {
-    top: 35,
+    top: "4%",
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,

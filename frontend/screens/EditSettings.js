@@ -10,7 +10,10 @@ const EditSettings = () => {
   return (
     <SafeAreaView style={styles.editSettingsView}>
       <SafeAreaView style={styles.footerView}>
-        <SafeAreaView style={styles.singleTabView}>
+      <Pressable
+          style={styles.singleTabPressable}
+          onPress={() => navigation.navigate("ProfileUser")}
+        >
           <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.homeIcon}
@@ -19,9 +22,9 @@ const EditSettings = () => {
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
           </SafeAreaView>
-        </SafeAreaView>
+        </Pressable>
         <Pressable
-          style={styles.singleTabPressable}
+          style={styles.singleTabPressable1}
           onPress={() => navigation.navigate("Friends")}
         >
           <SafeAreaView style={styles.iconAndText1}>
@@ -34,7 +37,7 @@ const EditSettings = () => {
           </SafeAreaView>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable1}
+          style={styles.singleTabPressable2}
           onPress={() => navigation.navigate("Map")}
         >
           <SafeAreaView style={styles.iconAndText2}>
@@ -58,7 +61,7 @@ const EditSettings = () => {
           <Text style={styles.addEventPlus}>+</Text>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable2}
+          style={styles.singleTabPressable3}
           onPress={() => navigation.navigate("MainPage")}
         >
           <SafeAreaView style={styles.iconAndText3}>
@@ -181,7 +184,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabView: {
+  singleTabPressable: {
     position: "absolute",
     height: "82.35%",
     width: "21.33%",
@@ -223,17 +226,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.32%",
-    top: "17.65%",
-    right: "57.35%",
-    bottom: "0%",
-    left: "21.33%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
   compassIcon: {
     position: "relative",
     width: 24,
@@ -270,9 +262,9 @@ const styles = StyleSheet.create({
     height: "82.35%",
     width: "21.32%",
     top: "17.65%",
-    right: "21.35%",
+    right: "57.35%",
     bottom: "0%",
-    left: "57.33%",
+    left: "21.33%",
     backgroundColor: "#fff",
     overflow: "hidden",
   },
@@ -342,6 +334,17 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   singleTabPressable2: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.32%",
+    top: "17.65%",
+    right: "21.35%",
+    bottom: "0%",
+    left: "57.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  singleTabPressable3: {
     position: "absolute",
     height: "82.35%",
     width: "21.33%",
@@ -594,7 +597,7 @@ const styles = StyleSheet.create({
     height: 16,
   },
   editSettingsView: {
-    top: 35,
+    top: "4%",
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
