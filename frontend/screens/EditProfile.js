@@ -1,74 +1,79 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View, Pressable } from "react-native";
+import { Image, StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Dimensions } from 'react-native';
+
 
 const EditProfile = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.editProfileView}>
-      <View style={styles.footerView}>
-        <View style={styles.singleTabView}>
-          <View style={styles.iconAndText}>
+    <SafeAreaView style={styles.editProfileView}>
+      <SafeAreaView style={styles.footerView}>
+        <Pressable
+          style={styles.singleTabPressable}
+          onPress={() => navigation.navigate("ProfileUser")}
+        >
+          <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
               source={require("../assets/home3.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
-          </View>
-        </View>
+          </SafeAreaView>
+        </Pressable>
         <Pressable
-          style={styles.singleTabPressable}
+          style={styles.singleTabPressable1}
           onPress={() => navigation.navigate("Friends")}
         >
-          <View style={styles.iconAndText1}>
+          <SafeAreaView style={styles.iconAndText1}>
             <Image
               style={styles.userIcon}
               resizeMode="cover"
               source={require("../assets/user.png")}
             />
             <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable1}
+          style={styles.singleTabPressable2}
           onPress={() => navigation.navigate("Map")}
         >
-          <View style={styles.iconAndText2}>
+          <SafeAreaView style={styles.iconAndText2}>
             <Image
               style={styles.compassIcon}
               resizeMode="cover"
               source={require("../assets/compass.png")}
             />
             <Text style={[styles.text2, styles.mt2]}>Map</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
         <Pressable
           style={styles.framePressable}
           onPress={() => navigation.navigate("CreateEvent")}
         >
           <Image
-            style={styles.ellipseIcon}
+            style={styles.addEventCircle}
             resizeMode="cover"
             source={require("../assets/ellipse-1.png")}
           />
-          <Text style={styles.text3}>+</Text>
+          <Text style={styles.addEventPlus}>+</Text>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable2}
+          style={styles.singleTabPressable3}
           onPress={() => navigation.navigate("MainPage")}
         >
-          <View style={styles.iconAndText3}>
+          <SafeAreaView style={styles.iconAndText3}>
             <Image
               style={styles.searchIcon}
               resizeMode="cover"
               source={require("../assets/search4.png")}
             />
             <Text style={[styles.text4, styles.mt2]}>Events</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
-      </View>
+      </SafeAreaView>
       <Image
         style={styles.ellipseIcon1}
         resizeMode="cover"
@@ -81,7 +86,7 @@ const EditProfile = () => {
       />
       <Text style={styles.dOTUNIVERSITY4Text}>DOTUNIVERSITY4</Text>
       <Text style={styles.mySportsText}>My Sports</Text>
-      <View style={styles.lineView} />
+      <SafeAreaView style={styles.lineView} />
       <Pressable
         style={styles.vectorPressable}
         onPress={() => navigation.navigate("EditSettings")}
@@ -92,28 +97,28 @@ const EditProfile = () => {
           source={require("../assets/vector9.png")}
         />
       </Pressable>
-      <View style={styles.textFieldView}>
+      <SafeAreaView style={styles.textFieldView}>
         <Image
           style={styles.trailingIcon}
           resizeMode="cover"
           source={require("../assets/trailing-icon.png")}
         />
-        <View style={styles.iconText}>
+        <SafeAreaView style={styles.iconText}>
           <Text style={styles.text5}>ALL I KNOW ARE DOTS</Text>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
             source={require("../assets/leading-icon13.png")}
           />
-        </View>
+        </SafeAreaView>
         <Text style={styles.labelText}>Bio</Text>
-      </View>
+      </SafeAreaView>
       <Image
         style={styles.football2Icon}
         resizeMode="cover"
         source={require("../assets/football2.png")}
       />
-      <View style={styles.addOrRemoveSportsView}>
+      <SafeAreaView style={styles.addOrRemoveSportsView}>
         <Text style={styles.addSportText}>Add Sport</Text>
         <Image
           style={styles.vectorIcon}
@@ -214,8 +219,8 @@ const EditProfile = () => {
         <Text style={styles.tENNISText}>TENNIS</Text>
         <Text style={styles.sOCCERText}>SOCCER</Text>
         <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 
@@ -257,7 +262,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabView: {
+  singleTabPressable: {
     position: "absolute",
     height: "82.35%",
     width: "21.33%",
@@ -299,7 +304,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable: {
+  singleTabPressable1: {
     position: "absolute",
     height: "82.35%",
     width: "21.32%",
@@ -341,7 +346,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable1: {
+  singleTabPressable2: {
     position: "absolute",
     height: "82.35%",
     width: "21.32%",
@@ -352,30 +357,42 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     overflow: "hidden",
   },
-  ellipseIcon: {
+  singleTabPressable3: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.33%",
+    top: "17.65%",
+    right: "78.67%",
+    bottom: "0%",
+    left: "0%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  addEventCircle: {
     position: "absolute",
     height: "100%",
     width: "100%",
     top: "0%",
     right: "0%",
     bottom: "0%",
-    left: "0%",
+    left: "30%",
     maxWidth: "100%",
     overflow: "hidden",
     maxHeight: "100%",
   },
-  text3: {
+  addEventPlus: {
+    paddingTop: 20,
     position: "absolute",
     height: "47.46%",
     width: "49.15%",
     top: "27.12%",
     right: "25.42%",
     bottom: "25.42%",
-    left: "25.42%",
+    left: "53.42%",
     fontSize: 48,
     lineHeight: 18,
     fontFamily: "Arsenal",
-    color: "#1eabbb",
+    color: "#80ced7",
     textAlign: "center",
   },
   framePressable: {
@@ -416,22 +433,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable2: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.33%",
-    top: "17.65%",
-    right: "78.67%",
-    bottom: "0%",
-    left: "0%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
   footerView: {
     position: "absolute",
-    top: 729,
+    top: Dimensions.get('window').height * 0.85,
     left: 0,
-    width: 375,
+    width: Dimensions.get('window').width,
     height: 68,
   },
   ellipseIcon1: {
@@ -441,9 +447,9 @@ const styles = StyleSheet.create({
     bottom: 657,
     left: 25,
     borderRadius: 50,
-    maxWidth: "100%",
+    maxWidth: "33%",
     overflow: "hidden",
-    maxHeight: "100%",
+    maxHeight: "33%",
   },
   stockUserImageIcon: {
     position: "absolute",
@@ -457,7 +463,7 @@ const styles = StyleSheet.create({
     top: 60,
     left: 143,
     fontSize: 13,
-    lineHeight: 14,
+    lineHeight: 25,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
@@ -476,11 +482,11 @@ const styles = StyleSheet.create({
   lineView: {
     position: "absolute",
     top: 297.54,
-    left: -0.51,
+    left: 0,
     borderStyle: "solid",
     borderColor: "#000",
     borderTopWidth: 1,
-    width: 376.02,
+    width: Dimensions.get('window').width,
     height: 1,
   },
   icon: {
@@ -872,17 +878,18 @@ const styles = StyleSheet.create({
   addOrRemoveSportsView: {
     position: "absolute",
     top: 326,
-    left: 13,
+    left: "8%",
     width: 344,
     height: 243,
   },
   editProfileView: {
+    top: "4%",
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
-    width: "100%",
-    height: 812,
     overflow: "hidden",
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 });
 

@@ -1,12 +1,14 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View, Pressable } from "react-native";
+import { Image, StyleSheet, Text, SafeAreaView, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Dimensions } from 'react-native';
+
 
 const FriendProfile = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.friendProfileView}>
+    <SafeAreaView style={styles.friendProfileView}>
       <Image
         style={styles.ellipseIcon}
         resizeMode="cover"
@@ -29,11 +31,6 @@ const FriendProfile = () => {
         source={require("../assets/vector36.png")}
       />
       <Image
-        style={styles.vectorIcon2}
-        resizeMode="cover"
-        source={require("../assets/vector31.png")}
-      />
-      <Image
         style={styles.vectorIcon3}
         resizeMode="cover"
         source={require("../assets/vector36.png")}
@@ -51,20 +48,24 @@ const FriendProfile = () => {
       <Text style={styles.yOURANKLESWONTEXISTAFTERM}>
         YOUR ANKLES WONT EXIST AFTER ME
       </Text>
-      <View style={styles.buttonView}>
-        <Image
-          style={styles.leadingIcon}
-          resizeMode="cover"
-          source={require("../assets/leading-icon19.png")}
-        />
-        <Text style={[styles.mediumText, styles.ml6]}>Remove Friend</Text>
-        <Image
-          style={[styles.trailingIcon, styles.ml6]}
-          resizeMode="cover"
-          source={require("../assets/trailing-icon12.png")}
-        />
-      </View>
-      <View style={styles.buttonView1}>
+      <Pressable
+        onPress={() => navigation.navigate("ProfileOfAnotherUser")}
+      >
+        <SafeAreaView style={styles.buttonView}>
+          <Image
+            style={styles.leadingIcon}
+            resizeMode="cover"
+            source={require("../assets/leading-icon19.png")}
+          />
+          <Text style={[styles.mediumText, styles.ml6]}>Remove Friend</Text>
+          <Image
+            style={[styles.trailingIcon, styles.ml6]}
+            resizeMode="cover"
+            source={require("../assets/trailing-icon12.png")}
+          />
+        </SafeAreaView>
+      </Pressable>
+      <SafeAreaView style={styles.buttonView1}>
         <Image
           style={styles.leadingIcon1}
           resizeMode="cover"
@@ -76,7 +77,7 @@ const FriendProfile = () => {
           resizeMode="cover"
           source={require("../assets/trailing-icon12.png")}
         />
-      </View>
+      </SafeAreaView>
       <Pressable
         style={styles.buttonPressable}
         onPress={() => navigation.navigate("DirectMessaging")}
@@ -103,71 +104,71 @@ const FriendProfile = () => {
           source={require("../assets/vector9.png")}
         />
       </Pressable>
-      <View style={styles.footerView}>
+      <SafeAreaView style={styles.footerView}>
         <Pressable
           style={styles.singleTabPressable}
-          onPress={() => navigation.navigate("ProfileOfAnotherUser")}
+          onPress={() => navigation.navigate("ProfileUser")}
         >
-          <View style={styles.iconAndText}>
+          <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
               source={require("../assets/home7.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
         <Pressable
           style={styles.singleTabPressable1}
           onPress={() => navigation.navigate("Friends")}
         >
-          <View style={styles.iconAndText1}>
+          <SafeAreaView style={styles.iconAndText1}>
             <Image
               style={styles.userIcon}
               resizeMode="cover"
               source={require("../assets/user8.png")}
             />
             <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
         <Pressable
           style={styles.singleTabPressable2}
           onPress={() => navigation.navigate("Map")}
         >
-          <View style={styles.iconAndText2}>
+          <SafeAreaView style={styles.iconAndText2}>
             <Image
               style={styles.compassIcon}
               resizeMode="cover"
               source={require("../assets/compass.png")}
             />
             <Text style={[styles.text2, styles.mt2]}>Map</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
         <Pressable
           style={styles.framePressable}
           onPress={() => navigation.navigate("CreateEvent")}
         >
           <Image
-            style={styles.ellipseIcon1}
+            style={styles.addEventCircle}
             resizeMode="cover"
             source={require("../assets/ellipse-1.png")}
           />
-          <Text style={styles.text3}>+</Text>
+          <Text style={styles.addEventPlus}>+</Text>
         </Pressable>
         <Pressable
           style={styles.singleTabPressable3}
           onPress={() => navigation.navigate("MainPage")}
         >
-          <View style={styles.iconAndText3}>
+          <SafeAreaView style={styles.iconAndText3}>
             <Image
               style={styles.searchIcon}
               resizeMode="cover"
               source={require("../assets/search4.png")}
             />
             <Text style={[styles.text4, styles.mt2]}>Events</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
-      </View>
+      </SafeAreaView>
       <Text style={styles.text5}>24</Text>
       <Text style={styles.text6}>85%</Text>
       <Text style={styles.gamesPlayedText}>Games Played</Text>
@@ -218,7 +219,7 @@ const FriendProfile = () => {
         source={require("../assets/football-1.png")}
       />
       <Text style={styles.aLLTIMESPORTSPLAYED}>ALL TIME SPORTS PLAYED</Text>
-      <View style={styles.lineView} />
+      <SafeAreaView style={styles.lineView} />
       <Text style={styles.footballText}>Football</Text>
       <Text style={styles.timESText}>timES</Text>
       <Text style={styles.timESText1}>timES</Text>
@@ -231,7 +232,7 @@ const FriendProfile = () => {
       <Text style={styles.text8}>3</Text>
       <Text style={styles.text9}>2</Text>
       <Text style={styles.text10}>2</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -243,26 +244,26 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   ellipseIcon: {
+    top: "2%",
     position: "absolute",
-    top: 50,
     right: 245,
     bottom: 657,
     left: 25,
     borderRadius: 50,
-    maxWidth: "100%",
+    maxWidth: "33%",
     overflow: "hidden",
-    maxHeight: "100%",
+    maxHeight: "33%",
   },
   stockUserImageIcon: {
     position: "absolute",
-    top: 55,
+    top: "2.5%",
     left: 30,
     width: 95,
     height: 95,
   },
   wATCHYASELFText: {
     position: "absolute",
-    top: 56,
+    top: "4%",
     left: 138,
     fontSize: 13,
     lineHeight: 14,
@@ -271,12 +272,13 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: 200,
     height: 30,
+    paddingTop: 10,
   },
   vectorIcon: {
     position: "absolute",
     height: "2.46%",
     width: "5.33%",
-    top: "9.73%",
+    top: "7.73%",
     right: "58.13%",
     bottom: "87.81%",
     left: "36.53%",
@@ -288,22 +290,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "2.46%",
     width: "5.33%",
-    top: "9.73%",
+    top: "7.73%",
     right: "38.13%",
     bottom: "87.81%",
     left: "56.53%",
-    maxWidth: "100%",
-    overflow: "hidden",
-    maxHeight: "100%",
-  },
-  vectorIcon2: {
-    position: "absolute",
-    height: "2.46%",
-    width: "5.33%",
-    top: "9.73%",
-    right: "31.47%",
-    bottom: "87.81%",
-    left: "63.2%",
     maxWidth: "100%",
     overflow: "hidden",
     maxHeight: "100%",
@@ -312,7 +302,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "2.46%",
     width: "5.33%",
-    top: "9.73%",
+    top: "7.73%",
     right: "44.8%",
     bottom: "87.81%",
     left: "49.87%",
@@ -324,7 +314,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "2.46%",
     width: "5.33%",
-    top: "9.73%",
+    top: "7.73%",
     right: "51.47%",
     bottom: "87.81%",
     left: "43.2%",
@@ -336,7 +326,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "2.46%",
     width: "5.33%",
-    top: "9.73%",
+    top: "7.73%",
     right: "31.47%",
     bottom: "87.81%",
     left: "63.2%",
@@ -346,7 +336,7 @@ const styles = StyleSheet.create({
   },
   yOURANKLESWONTEXISTAFTERM: {
     position: "absolute",
-    top: 106,
+    top: "11%",
     left: 139,
     fontSize: 8,
     lineHeight: 16,
@@ -381,7 +371,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     position: "absolute",
-    top: 175,
+    top: 165,
     left: 26,
     borderRadius: 4,
     backgroundColor: "#ff5858",
@@ -624,26 +614,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     overflow: "hidden",
   },
-  ellipseIcon1: {
+  addEventCircle: {
     position: "absolute",
     height: "100%",
     width: "100%",
     top: "0%",
     right: "0%",
     bottom: "0%",
-    left: "0%",
+    left: "30%",
     maxWidth: "100%",
     overflow: "hidden",
     maxHeight: "100%",
   },
-  text3: {
+  addEventPlus: {
+    paddingTop: 20,
     position: "absolute",
     height: "47.46%",
     width: "49.15%",
     top: "27.12%",
     right: "25.42%",
     bottom: "25.42%",
-    left: "25.42%",
+    left: "53.42%",
     fontSize: 48,
     lineHeight: 18,
     fontFamily: "Arsenal",
@@ -701,15 +692,15 @@ const styles = StyleSheet.create({
   },
   footerView: {
     position: "absolute",
-    top: 729,
+    top: Dimensions.get('window').height * 0.85,
     left: 0,
-    width: 375,
+    width: Dimensions.get('window').width,
     height: 68,
   },
   text5: {
     position: "absolute",
     top: 227,
-    left: 48,
+    left: "15%",
     fontSize: 20,
     lineHeight: 16,
     fontFamily: "GearUp",
@@ -717,11 +708,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 60,
     height: 25,
+    paddingTop: 10
   },
   text6: {
     position: "absolute",
     top: 227,
-    left: 263,
+    left: "65%",
     fontSize: 20,
     lineHeight: 16,
     fontFamily: "GearUp",
@@ -729,11 +721,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 60,
     height: 25,
+    paddingTop: 10
   },
   gamesPlayedText: {
     position: "absolute",
-    top: 250,
-    left: 21,
+    top: 255,
+    left: "9%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp",
@@ -744,8 +737,8 @@ const styles = StyleSheet.create({
   },
   attendanceRateText: {
     position: "absolute",
-    top: 253,
-    left: 234,
+    top: 255,
+    left: "58%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp",
@@ -829,11 +822,10 @@ const styles = StyleSheet.create({
   lineView: {
     position: "absolute",
     top: 325.5,
-    left: -0.5,
     borderStyle: "solid",
     borderColor: "#000",
     borderTopWidth: 1,
-    width: 376.02,
+    width: Dimensions.get('window').width,
     height: 1,
   },
   footballText: {
@@ -910,7 +902,7 @@ const styles = StyleSheet.create({
   },
   text7: {
     position: "absolute",
-    top: 353,
+    top: 342,
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -919,10 +911,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 60,
     height: 25,
+    paddingTop: 10,
   },
   text8: {
     position: "absolute",
-    top: 399,
+    top: 391,
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -931,10 +924,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 60,
     height: 25,
+    paddingTop: 10,
   },
   text9: {
     position: "absolute",
-    top: 449,
+    top: 441,
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -943,10 +937,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 60,
     height: 25,
+    paddingTop: 10,
   },
   text10: {
     position: "absolute",
-    top: 497,
+    top: 489,
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -955,13 +950,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 60,
     height: 25,
+    paddingTop: 10,
   },
   friendProfileView: {
+    top: "4%",
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
-    width: "100%",
-    height: 812,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     overflow: "hidden",
   },
 });
