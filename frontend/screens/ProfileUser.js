@@ -4,10 +4,15 @@ import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
 
 
-const EditSettings = () => {
+const ProfileUser = () => {
   const navigation = useNavigation();
 
   return (
+    <View style={styles.profileUserView}>
+      <View style={styles.footerView}>
+        <View style={styles.singleTabView}>
+          <View style={styles.iconAndText}>
+
     <SafeAreaView style={styles.editSettingsView}>
       <SafeAreaView style={styles.footerView}>
       <Pressable
@@ -15,10 +20,11 @@ const EditSettings = () => {
           onPress={() => navigation.navigate("ProfileUser")}
         >
           <SafeAreaView style={styles.iconAndText}>
+
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
-              source={require("../assets/home3.png")}
+              source={require("../assets/home6.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
           </SafeAreaView>
@@ -68,17 +74,63 @@ const EditSettings = () => {
             <Image
               style={styles.searchIcon}
               resizeMode="cover"
-              source={require("../assets/search4.png")}
+              source={require("../assets/search6.png")}
             />
             <Text style={[styles.text4, styles.mt2]}>Events</Text>
           </SafeAreaView>
         </Pressable>
+
+      </View>
+      <Image
+        style={styles.ellipseIcon1}
+        resizeMode="cover"
+        source={require("../assets/ellipse-122.png")}
+      />
+      <Image
+        style={styles.stockUserImageIcon}
+        resizeMode="cover"
+        source={require("../assets/stockuserimage.png")}
+      />
+      <Text style={styles.dOTUNIVERSITY4Text}>dOTUNIVERSITY4</Text>
+      <Image
+        style={styles.vectorIcon}
+        resizeMode="cover"
+        source={require("../assets/vector26.png")}
+      />
+      <Image
+        style={styles.vectorIcon1}
+        resizeMode="cover"
+        source={require("../assets/vector26.png")}
+      />
+      <Image
+        style={styles.vectorIcon2}
+        resizeMode="cover"
+        source={require("../assets/vector26.png")}
+      />
+      <Image
+        style={styles.vectorIcon3}
+        resizeMode="cover"
+        source={require("../assets/vector26.png")}
+      />
+      <Image
+        style={styles.vectorIcon4}
+        resizeMode="cover"
+        source={require("../assets/vector30.png")}
+      />
+      <Text style={styles.allIKnowAreDots}>All I Know Are Dots</Text>
+      <Text style={styles.text5}>30</Text>
+      <Text style={styles.text6}>92%</Text>
+      <Text style={styles.gamesPlayedText}>Games Played</Text>
+      <Text style={styles.attendanceRateText}>Attendance Rate</Text>
+
       </SafeAreaView>
+
       <Pressable
-        style={styles.vectorPressable}
-        onPress={() => navigation.navigate("ProfileUser")}
+        style={styles.buttonPressable}
+        onPress={() => navigation.navigate("EditSettings")}
       >
         <Image
+
           style={styles.icon}
           resizeMode="cover"
           source={require("../assets/vector9.png")}
@@ -86,15 +138,19 @@ const EditSettings = () => {
       </Pressable>
       <SafeAreaView style={styles.buttonView}>
         <Image
+
           style={styles.leadingIcon}
           resizeMode="cover"
-          source={require("../assets/leading-icon14.png")}
+          source={require("../assets/leading-icon17.png")}
         />
-        <Text style={[styles.mediumText, styles.ml6]}>Delete Account</Text>
+        <Text style={[styles.mediumText, styles.ml6]}>Edit Profile</Text>
         <Image
           style={[styles.trailingIcon, styles.ml6]}
           resizeMode="cover"
-          source={require("../assets/trailing-icon10.png")}
+
+          source={require("../assets/trailing-icon13.png")}
+
+
         />
       </SafeAreaView>
       <Pressable
@@ -111,38 +167,83 @@ const EditSettings = () => {
           style={[styles.trailingIcon1, styles.ml6]}
           resizeMode="cover"
           source={require("../assets/trailing-icon11.png")}
-        />
-      </Pressable>
-      <Text style={styles.deletEYourAccount}>DeletE Your Account</Text>
-      <Text style={styles.sIGNOUTOFACCOUNT}>SIGN OUT OF ACCOUNT</Text>
-      <Text style={styles.notificationsText}>Notifications</Text>
-      <Text style={styles.labelText}>Disable Notifications</Text>
-      <Text style={styles.tHISACTIONISIRREVERSIBLE}>
-        THIS ACTION IS IRREVERSIBLE
-      </Text>
-      <Text style={styles.accountSettingsText}>Account Settings</Text>
-      <Pressable
-        style={styles.buttonPressable1}
-        onPress={() => navigation.navigate("EditProfile")}
-      >
-        <Image
-          style={styles.leadingIcon2}
-          resizeMode="cover"
-          source={require("../assets/leading-icon16.png")}
-        />
-        <Text style={[styles.mediumText2, styles.ml6]}>Edit Profile</Text>
-        <Image
-          style={[styles.trailingIcon2, styles.ml6]}
-          resizeMode="cover"
-          source={require("../assets/trailing-icon12.png")}
+
         />
       </Pressable>
       <Image
-        style={styles.checkIcon}
+        style={styles.icon}
         resizeMode="cover"
-        source={require("../assets/check.png")}
+        source={require("../assets/70314-1.png")}
       />
+      <Pressable
+        style={styles.vectorPressable}
+        onPress={() => navigation.navigate("MainPage")}
+      >
+        <Image
+          style={styles.icon1}
+          resizeMode="cover"
+          source={require("../assets/vector31.png")}
+        />
+      </Pressable>
+      <Image
+        style={styles.ellipseIcon2}
+        resizeMode="cover"
+        source={require("../assets/ellipse-181.png")}
+      />
+      <Image
+        style={styles.ellipseIcon3}
+        resizeMode="cover"
+        source={require("../assets/ellipse-193.png")}
+      />
+      <Image
+        style={styles.ellipseIcon4}
+        resizeMode="cover"
+        source={require("../assets/ellipse-201.png")}
+      />
+      <Image
+        style={styles.ellipseIcon5}
+        resizeMode="cover"
+        source={require("../assets/ellipse-193.png")}
+      />
+
+      <Image
+        style={styles.basketball1Icon}
+        resizeMode="cover"
+        source={require("../assets/basketball-1.png")}
+      />
+      <Image
+        style={styles.soccerBall1}
+        resizeMode="cover"
+        source={require("../assets/soccer-ball-1.png")}
+      />
+      <Image
+        style={styles.tennisRacket1}
+        resizeMode="cover"
+        source={require("../assets/tennis-racket-1.png")}
+      />
+      <Image
+        style={styles.football1Icon}
+        resizeMode="cover"
+        source={require("../assets/football-1.png")}
+      />
+      <Text style={styles.footballText}>Football</Text>
+      <Text style={styles.timESText}>timES</Text>
+      <Text style={styles.timESText1}>timES</Text>
+      <Text style={styles.timESText2}>timES</Text>
+      <Text style={styles.timESText3}>timES</Text>
+      <Text style={styles.tENNISText}>TENNIS</Text>
+      <Text style={styles.sOCCERText}>SOCCER</Text>
+      <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
+      <Text style={styles.text7}>25</Text>
+      <Text style={styles.text8}>3</Text>
+      <Text style={styles.text9}>1</Text>
+      <Text style={styles.text10}>1</Text>
+      <Text style={styles.aLLTIMESPORTSPLAYED}>ALL TIME SPORTS PLAYED</Text>
+      <View style={styles.lineView} />
+    </View>
+
     </SafeAreaView>
+
   );
 };
 
@@ -286,13 +387,15 @@ const styles = StyleSheet.create({
     height: "47.46%",
     width: "49.15%",
     top: "27.12%",
+
     right: "25.42%",
     bottom: "25.42%",
     left: "53.42%",
+
     fontSize: 48,
     lineHeight: 18,
     fontFamily: "Arsenal",
-    color: "#80ced7",
+    color: "#1eabbb",
     textAlign: "center",
   },
   framePressable: {
@@ -362,7 +465,207 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: 68,
   },
+  ellipseIcon1: {
+    position: "absolute",
+    top: 50,
+    right: 245,
+    bottom: 657,
+    left: 25,
+    borderRadius: 50,
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  stockUserImageIcon: {
+    position: "absolute",
+    top: 55,
+    left: 30,
+    width: 95,
+    height: 95,
+  },
+  dOTUNIVERSITY4Text: {
+    position: "absolute",
+    top: 56,
+    left: 138,
+    fontSize: 14,
+    lineHeight: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+    width: 200,
+    height: 30,
+  },
+  vectorIcon: {
+    position: "absolute",
+    height: "2.46%",
+    width: "5.33%",
+    top: "10.22%",
+    right: "57.33%",
+    bottom: "87.32%",
+    left: "37.33%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon1: {
+    position: "absolute",
+    height: "2.46%",
+    width: "5.33%",
+    top: "10.22%",
+    right: "37.33%",
+    bottom: "87.32%",
+    left: "57.33%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon2: {
+    position: "absolute",
+    height: "2.46%",
+    width: "5.33%",
+    top: "10.22%",
+    right: "44%",
+    bottom: "87.32%",
+    left: "50.67%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon3: {
+    position: "absolute",
+    height: "2.46%",
+    width: "5.33%",
+    top: "10.22%",
+    right: "50.67%",
+    bottom: "87.32%",
+    left: "44%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon4: {
+    position: "absolute",
+    height: "2.46%",
+    width: "5.33%",
+    top: "10.22%",
+    right: "30.67%",
+    bottom: "87.32%",
+    left: "64%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  allIKnowAreDots: {
+    position: "absolute",
+    top: 113,
+    left: 140,
+    fontSize: 10,
+    lineHeight: 16,
+    fontFamily: "GearUp Soft",
+    color: "#000",
+    textAlign: "left",
+    width: 177,
+  },
+  text5: {
+    position: "absolute",
+    top: 205,
+    left: 48,
+    fontSize: 20,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "center",
+    width: 60,
+    height: 25,
+  },
+  text6: {
+    position: "absolute",
+    top: 205,
+    left: 263,
+    fontSize: 20,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "center",
+    width: 60,
+    height: 25,
+  },
+  gamesPlayedText: {
+    position: "absolute",
+    top: 228,
+    left: 21,
+    fontSize: 8,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "center",
+    width: 113,
+    height: 23,
+  },
+  attendanceRateText: {
+    position: "absolute",
+    top: 231,
+    left: 234,
+    fontSize: 8,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "center",
+    width: 113,
+    height: 23,
+  },
+  leadingIcon: {
+    position: "relative",
+    width: 18,
+    height: 18,
+    flexShrink: 0,
+    overflow: "hidden",
+    display: "none",
+  },
+  mediumText: {
+    position: "relative",
+    fontSize: 20,
+    lineHeight: 18,
+    fontFamily: "Akshar",
+    color: "#000",
+    textAlign: "left",
+    display: "none",
+  },
+  trailingIcon: {
+    position: "relative",
+    width: 18,
+    height: 18,
+    flexShrink: 0,
+    overflow: "hidden",
+    display: "none",
+  },
+  buttonPressable: {
+    position: "absolute",
+    top: 136,
+    left: 272,
+    borderRadius: 4,
+    backgroundColor: "#fff",
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderWidth: 2,
+    width: 29,
+    height: 29,
+    overflow: "hidden",
+    flexDirection: "row",
+    paddingHorizontal: 12,
+    paddingVertical: 0,
+    boxSizing: "border-box",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   icon: {
+    position: "absolute",
+    top: 141,
+    left: 276,
+    width: 21,
+    height: 19,
+  },
+  icon1: {
     height: "2.46%",
     width: "3.2%",
     maxWidth: "100%",
@@ -376,228 +679,209 @@ const styles = StyleSheet.create({
     right: "91.73%",
     bottom: "94.33%",
   },
-  leadingIcon: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
+  ellipseIcon2: {
+    position: "absolute",
+    top: 319,
+    left: 13,
+    width: 45,
+    height: 45,
   },
-  mediumText: {
-    position: "relative",
-    fontSize: 8,
-    lineHeight: 18,
+  ellipseIcon3: {
+    position: "absolute",
+    top: 372,
+    left: 14,
+    width: 43,
+    height: 43,
+  },
+  ellipseIcon4: {
+    position: "absolute",
+    top: 423,
+    left: 14,
+    width: 45,
+    height: 45,
+  },
+  ellipseIcon5: {
+    position: "absolute",
+    top: 479,
+    left: 14,
+    width: 43,
+    height: 43,
+  },
+  basketball1Icon: {
+    position: "absolute",
+    top: 377,
+    left: 21,
+    width: 30,
+    height: 33,
+  },
+  soccerBall1: {
+    position: "absolute",
+    top: 427,
+    left: 19,
+    width: 35,
+    height: 38,
+  },
+  tennisRacket1: {
+    position: "absolute",
+    top: 486,
+    left: 20,
+    width: 30,
+    height: 30,
+  },
+  football1Icon: {
+    position: "absolute",
+    top: 327,
+    left: 19,
+    width: 32,
+    height: 30,
+  },
+  footballText: {
+    position: "absolute",
+    top: 325,
+    left: 70,
+    fontSize: 14,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
   },
-  trailingIcon: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  buttonView: {
+  timESText: {
     position: "absolute",
-    top: 365,
-    left: 45,
-    borderRadius: 4,
-    backgroundColor: "#ff5858",
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderWidth: 2,
-    width: 128,
-    height: 24,
-    overflow: "hidden",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 0,
-    boxSizing: "border-box",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  leadingIcon1: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  mediumText1: {
-    position: "relative",
+    top: 344,
+    left: 311,
     fontSize: 10,
-    lineHeight: 18,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
   },
-  trailingIcon1: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  buttonPressable: {
+  timESText1: {
     position: "absolute",
-    top: 248,
-    left: 47,
-    borderRadius: 4,
-    backgroundColor: "#aaebff",
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderWidth: 2,
-    width: 128,
-    height: 24,
-    overflow: "hidden",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 0,
-    boxSizing: "border-box",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  deletEYourAccount: {
-    position: "absolute",
-    top: 316,
-    left: 47,
-    fontSize: 11,
-    lineHeight: 18,
+    top: 390,
+    left: 311,
+    fontSize: 10,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
-    display: "flex",
-    alignItems: "center",
-    width: 196,
-    height: 34,
   },
-  sIGNOUTOFACCOUNT: {
+  timESText2: {
     position: "absolute",
-    top: 213,
-    left: 47,
-    fontSize: 12,
-    lineHeight: 18,
+    top: 440,
+    left: 311,
+    fontSize: 10,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
-    display: "flex",
-    alignItems: "center",
-    width: 220,
-    height: 34,
   },
-  notificationsText: {
+  timESText3: {
     position: "absolute",
-    top: 124,
-    left: 45,
-    fontSize: 12,
-    lineHeight: 18,
+    top: 488,
+    left: 311,
+    fontSize: 10,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
-    display: "flex",
-    alignItems: "center",
-    width: 220,
-    height: 34,
   },
-  labelText: {
+  tENNISText: {
     position: "absolute",
-    top: 153,
-    left: 65,
-    fontSize: 9,
-    lineHeight: 18,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "center",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 151,
-    height: 22,
-  },
-  tHISACTIONISIRREVERSIBLE: {
-    position: "absolute",
-    top: 342,
-    left: 47,
-    fontSize: 8,
-    lineHeight: 10,
+    top: 481,
+    left: 73,
+    fontSize: 14,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
-    display: "flex",
-    alignItems: "center",
-    width: 232,
-    height: 24,
   },
-  accountSettingsText: {
+  sOCCERText: {
+    position: "absolute",
+    top: 427,
+    left: 71,
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
+  bASKETBALLText: {
     position: "absolute",
     top: 15,
     left: 45,
     fontSize: 15,
     lineHeight: 25,
-    fontFamily: "GearUp",
-    color: "#000",
-    textAlign: "left",
-    width: 250,
-    height: 30,
-  },
-  leadingIcon2: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  mediumText2: {
-    position: "relative",
-    fontSize: 12,
-    lineHeight: 18,
+
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
   },
-  trailingIcon2: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  buttonPressable1: {
+  text7: {
     position: "absolute",
-    top: 68,
-    left: 45,
-    borderRadius: 4,
-    backgroundColor: "#80ced7",
+    top: 331,
+    left: 302,
+    fontSize: 15,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#63bcc7",
+    textAlign: "center",
+    width: 60,
+    height: 25,
+  },
+  text8: {
+    position: "absolute",
+    top: 377,
+    left: 302,
+    fontSize: 15,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#63bcc7",
+    textAlign: "center",
+    width: 60,
+    height: 25,
+  },
+  text9: {
+    position: "absolute",
+    top: 475,
+    left: 302,
+    fontSize: 15,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#63bcc7",
+    textAlign: "center",
+    width: 60,
+    height: 25,
+  },
+  text10: {
+    position: "absolute",
+    top: 427,
+    left: 302,
+    fontSize: 15,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#63bcc7",
+    textAlign: "center",
+    width: 60,
+    height: 25,
+  },
+  aLLTIMESPORTSPLAYED: {
+    position: "absolute",
+    top: 265,
+    left: 15,
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
+  lineView: {
+    position: "absolute",
+    top: 303.5,
+    left: -0.5,
     borderStyle: "solid",
     borderColor: "#000",
-    borderWidth: 2,
-    width: 150,
-    height: 29,
-    overflow: "hidden",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 0,
-    boxSizing: "border-box",
-    alignItems: "center",
-    justifyContent: "center",
+    borderTopWidth: 1,
+    width: 376.02,
+    height: 1,
   },
-  checkIcon: {
-    position: "absolute",
-    top: 156,
-    left: 39,
-    borderRadius: 2,
-    width: 16,
-    height: 16,
-  },
+
+  profileUserView: {
+
   editSettingsView: {
     top: "4%",
+
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
@@ -607,4 +891,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditSettings;
+export default ProfileUser;
