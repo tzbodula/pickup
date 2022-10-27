@@ -1,26 +1,15 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
+import { Image, StyleSheet, Text, SafeAreaView, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Dimensions } from 'react-native';
-
 
 const ProfileUser = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.profileUserView}>
-      <View style={styles.footerView}>
-        <View style={styles.singleTabView}>
-          <View style={styles.iconAndText}>
-
-    <SafeAreaView style={styles.editSettingsView}>
+    <SafeAreaView style={styles.profileUserView}>
       <SafeAreaView style={styles.footerView}>
-      <Pressable
-          style={styles.singleTabPressable}
-          onPress={() => navigation.navigate("ProfileUser")}
-        >
+        <SafeAreaView style={styles.singleTabView}>
           <SafeAreaView style={styles.iconAndText}>
-
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
@@ -28,9 +17,9 @@ const ProfileUser = () => {
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
           </SafeAreaView>
-        </Pressable>
+        </SafeAreaView>
         <Pressable
-          style={styles.singleTabPressable1}
+          style={styles.singleTabPressable}
           onPress={() => navigation.navigate("Friends")}
         >
           <SafeAreaView style={styles.iconAndText1}>
@@ -43,7 +32,7 @@ const ProfileUser = () => {
           </SafeAreaView>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable2}
+          style={styles.singleTabPressable1}
           onPress={() => navigation.navigate("Map")}
         >
           <SafeAreaView style={styles.iconAndText2}>
@@ -60,14 +49,14 @@ const ProfileUser = () => {
           onPress={() => navigation.navigate("CreateEvent")}
         >
           <Image
-            style={styles.addEventCircle}
+            style={styles.ellipseIcon}
             resizeMode="cover"
             source={require("../assets/ellipse-1.png")}
           />
-          <Text style={styles.addEventPlus}>+</Text>
+          <Text style={styles.text3}>+</Text>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable3}
+          style={styles.singleTabPressable2}
           onPress={() => navigation.navigate("MainPage")}
         >
           <SafeAreaView style={styles.iconAndText3}>
@@ -79,8 +68,7 @@ const ProfileUser = () => {
             <Text style={[styles.text4, styles.mt2]}>Events</Text>
           </SafeAreaView>
         </Pressable>
-
-      </View>
+      </SafeAreaView>
       <Image
         style={styles.ellipseIcon1}
         resizeMode="cover"
@@ -122,23 +110,11 @@ const ProfileUser = () => {
       <Text style={styles.text6}>92%</Text>
       <Text style={styles.gamesPlayedText}>Games Played</Text>
       <Text style={styles.attendanceRateText}>Attendance Rate</Text>
-
-      </SafeAreaView>
-
       <Pressable
         style={styles.buttonPressable}
         onPress={() => navigation.navigate("EditSettings")}
       >
         <Image
-
-          style={styles.icon}
-          resizeMode="cover"
-          source={require("../assets/vector9.png")}
-        />
-      </Pressable>
-      <SafeAreaView style={styles.buttonView}>
-        <Image
-
           style={styles.leadingIcon}
           resizeMode="cover"
           source={require("../assets/leading-icon17.png")}
@@ -147,27 +123,7 @@ const ProfileUser = () => {
         <Image
           style={[styles.trailingIcon, styles.ml6]}
           resizeMode="cover"
-
           source={require("../assets/trailing-icon13.png")}
-
-
-        />
-      </SafeAreaView>
-      <Pressable
-        style={styles.buttonPressable}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Image
-          style={styles.leadingIcon1}
-          resizeMode="cover"
-          source={require("../assets/leading-icon15.png")}
-        />
-        <Text style={[styles.mediumText1, styles.ml6]}>Sign Out</Text>
-        <Image
-          style={[styles.trailingIcon1, styles.ml6]}
-          resizeMode="cover"
-          source={require("../assets/trailing-icon11.png")}
-
         />
       </Pressable>
       <Image
@@ -205,7 +161,6 @@ const ProfileUser = () => {
         resizeMode="cover"
         source={require("../assets/ellipse-193.png")}
       />
-
       <Image
         style={styles.basketball1Icon}
         resizeMode="cover"
@@ -239,11 +194,8 @@ const ProfileUser = () => {
       <Text style={styles.text9}>1</Text>
       <Text style={styles.text10}>1</Text>
       <Text style={styles.aLLTIMESPORTSPLAYED}>ALL TIME SPORTS PLAYED</Text>
-      <View style={styles.lineView} />
-    </View>
-
+      <SafeAreaView style={styles.lineView} />
     </SafeAreaView>
-
   );
 };
 
@@ -285,7 +237,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable: {
+  singleTabView: {
     position: "absolute",
     height: "82.35%",
     width: "21.33%",
@@ -327,6 +279,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  singleTabPressable: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.32%",
+    top: "17.65%",
+    right: "57.35%",
+    bottom: "0%",
+    left: "21.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
   compassIcon: {
     position: "relative",
     width: 24,
@@ -363,35 +326,30 @@ const styles = StyleSheet.create({
     height: "82.35%",
     width: "21.32%",
     top: "17.65%",
-    right: "57.35%",
+    right: "21.35%",
     bottom: "0%",
-    left: "21.33%",
+    left: "57.33%",
     backgroundColor: "#fff",
     overflow: "hidden",
   },
-  addEventCircle: {
+  ellipseIcon: {
     position: "absolute",
     height: "100%",
     width: "100%",
     top: "0%",
     right: "0%",
     bottom: "0%",
-    left: "30%",
+    left: "0%",
     maxWidth: "100%",
     overflow: "hidden",
     maxHeight: "100%",
   },
-  addEventPlus: {
-    paddingTop: 20,
+  text3: {
     position: "absolute",
     height: "47.46%",
     width: "49.15%",
     top: "27.12%",
-
-    right: "25.42%",
-    bottom: "25.42%",
-    left: "53.42%",
-
+    left: "25.42%",
     fontSize: 48,
     lineHeight: 18,
     fontFamily: "Arsenal",
@@ -439,17 +397,6 @@ const styles = StyleSheet.create({
   singleTabPressable2: {
     position: "absolute",
     height: "82.35%",
-    width: "21.32%",
-    top: "17.65%",
-    right: "21.35%",
-    bottom: "0%",
-    left: "57.33%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  singleTabPressable3: {
-    position: "absolute",
-    height: "82.35%",
     width: "21.33%",
     top: "17.65%",
     right: "78.67%",
@@ -460,9 +407,9 @@ const styles = StyleSheet.create({
   },
   footerView: {
     position: "absolute",
-    top: Dimensions.get('window').height * 0.85,
+    top: 729,
     left: 0,
-    width: Dimensions.get('window').width,
+    width: 375,
     height: 68,
   },
   ellipseIcon1: {
@@ -800,11 +747,9 @@ const styles = StyleSheet.create({
   },
   bASKETBALLText: {
     position: "absolute",
-    top: 15,
-    left: 45,
-    fontSize: 15,
-    lineHeight: 25,
-
+    top: 374,
+    left: 70,
+    fontSize: 14,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
@@ -876,18 +821,13 @@ const styles = StyleSheet.create({
     width: 376.02,
     height: 1,
   },
-
   profileUserView: {
-
-  editSettingsView: {
-    top: "4%",
-
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
+    width: "100%",
+    height: 812,
     overflow: "hidden",
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
   },
 });
 

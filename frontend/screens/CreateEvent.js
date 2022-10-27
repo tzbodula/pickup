@@ -26,7 +26,7 @@ const CreateEvent = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/vector55.png")}
+            source={require("../assets/vector51.png")}
           />
         </Pressable>
       </View>
@@ -39,22 +39,22 @@ const CreateEvent = () => {
         <Image
           style={styles.image1Icon}
           resizeMode="cover"
-          source={require("../assets/image-13.png")}
+          source={require("../assets/image-12.png")}
         />
         <Image
           style={styles.image3Icon}
           resizeMode="cover"
-          source={require("../assets/image-33.png")}
+          source={require("../assets/image-31.png")}
         />
         <Image
           style={styles.image5Icon}
           resizeMode="cover"
-          source={require("../assets/image-51.png")}
+          source={require("../assets/image-31.png")}
         />
         <Image
           style={styles.image4Icon}
           resizeMode="cover"
-          source={require("../assets/image-41.png")}
+          source={require("../assets/image-31.png")}
         />
       </View>
       <Pressable

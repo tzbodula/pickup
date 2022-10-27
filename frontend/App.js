@@ -1,10 +1,8 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import Entypo from '@expo/vector-icons/Entypo';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-import Navigator from './routes/homeStack'
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -16,7 +14,6 @@ import Login from "./screens/Login";
 import EditProfile from "./screens/EditProfile";
 import EditSettings from "./screens/EditSettings";
 import ProfileUser from "./screens/ProfileUser";
-import DirectMessaging from "./screens/DirectMessaging";
 import ProfileOfAnotherUser from "./screens/ProfileOfAnotherUser";
 import FriendProfile from "./screens/FriendProfile";
 import Friends from "./screens/Friends";
@@ -72,7 +69,7 @@ export default function App() {
   return (
     <View style={{flex: 1}} onLayout={onLayoutRootView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='CreateEvent'>
+        <Stack.Navigator initialRouteName='ProfileUser'>
           <Stack.Screen name="MainPage" component={MainPage} options={{ headerShown: false }} />
           <Stack.Screen name="AccountRecovery" component={AccountRecovery} options={{ headerShown: false }} />
           <Stack.Screen name="AccountRegistration" component={AccountRegistration} options={{ headerShown: false }} />
@@ -80,7 +77,6 @@ export default function App() {
           <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
           <Stack.Screen name="EditSettings" component={EditSettings} options={{ headerShown: false }} />
           <Stack.Screen name="ProfileUser" component={ProfileUser} options={{ headerShown: false }} />
-          <Stack.Screen name="DirectMessaging" component={DirectMessaging} options={{ headerShown: false }} />
           <Stack.Screen name="ProfileOfAnotherUser" component={ProfileOfAnotherUser} options={{ headerShown: false }} />
           <Stack.Screen name="FriendProfile" component={FriendProfile} options={{ headerShown: false }} />
           <Stack.Screen name="Friends" component={Friends} options={{ headerShown: false }} />
