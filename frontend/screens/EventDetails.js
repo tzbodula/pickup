@@ -16,7 +16,7 @@ const EventDetails = () => {
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
-              source={require("../assets/home7.png")}
+              source={require("../assets/home.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
           </View>
@@ -29,7 +29,7 @@ const EventDetails = () => {
             <Image
               style={styles.userIcon}
               resizeMode="cover"
-              source={require("../assets/user12.png")}
+              source={require("../assets/user.png")}
             />
             <Text style={[styles.text1, styles.mt2]}>Friends</Text>
           </View>
@@ -45,7 +45,7 @@ const EventDetails = () => {
             <Image
               style={styles.compassIcon}
               resizeMode="cover"
-              source={require("../assets/compass12.png")}
+              source={require("../assets/compass.png")}
             />
             <Text style={[styles.text2, styles.mt2]}>Map</Text>
           </Pressable>
@@ -57,7 +57,7 @@ const EventDetails = () => {
           <Image
             style={styles.ellipseIcon}
             resizeMode="cover"
-            source={require("../assets/ellipse-113.png")}
+            source={require("../assets/ellipse-10.png")}
           />
           <Text style={styles.text3}>+</Text>
         </Pressable>
@@ -69,7 +69,7 @@ const EventDetails = () => {
             <Image
               style={styles.searchIcon}
               resizeMode="cover"
-              source={require("../assets/search12.png")}
+              source={require("../assets/search.png")}
             />
             <Text style={[styles.text4, styles.mt2]}>Events</Text>
           </View>
@@ -83,7 +83,7 @@ const EventDetails = () => {
           <Image
             style={styles.homeIcon1}
             resizeMode="cover"
-            source={require("../assets/home7.png")}
+            source={require("../assets/home3.png")}
           />
           <Text style={[styles.text5, styles.mt2]}>Account</Text>
         </View>
@@ -101,7 +101,7 @@ const EventDetails = () => {
         <Image
           style={styles.icon}
           resizeMode="cover"
-          source={require("../assets/vector28.png")}
+          source={require("../assets/vector6.png")}
         />
       </Pressable>
       <Text style={styles.v3CASUALText}>{`3V3 CASUAL `}</Text>
@@ -242,7 +242,7 @@ const EventDetails = () => {
         <Image
           style={styles.compassIcon1}
           resizeMode="cover"
-          source={require("../assets/compass12.png")}
+          source={require("../assets/compass3.png")}
         />
         <Text style={[styles.text6, styles.mt2]}>Map</Text>
       </Pressable>
@@ -404,8 +404,6 @@ const styles = StyleSheet.create({
     height: "47.46%",
     width: "49.15%",
     top: "27.12%",
-    right: "25.42%",
-    bottom: "25.42%",
     left: "25.42%",
     fontSize: 48,
     lineHeight: 18,
@@ -1004,11 +1002,7 @@ const styles = StyleSheet.create({
   },
   joinText: {
     position: "absolute",
-    height: "21.54%",
-    width: "21.35%",
     top: "66.15%",
-    right: "61.24%",
-    bottom: "12.31%",
     left: "17.42%",
     fontSize: 13,
     lineHeight: 14,
@@ -1018,11 +1012,7 @@ const styles = StyleSheet.create({
   },
   pLAYER6Text: {
     position: "absolute",
-    height: "21.54%",
-    width: "38.2%",
     top: "6.15%",
-    right: "0%",
-    bottom: "72.31%",
     left: "61.8%",
     fontSize: 10,
     lineHeight: 14,
