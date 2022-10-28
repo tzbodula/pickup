@@ -41,15 +41,13 @@ const Login = () => {
         "username": username,
         "password": password
       })
-    }).then(
-      (res) => {
-        if (res.status == 200) {
+    }).then((res) => {return res.json()})
+    .then((data) => {
+      if (data.status == 200) {
         navigation.navigate("MainPage")
-        return;
-        }
-        console.log(res)
       }
-    )
+      console.log(data)
+    })
     
   } catch(e) {
     console.log(e)
