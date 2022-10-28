@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     left: "53.42%",
     fontSize: 48,
     lineHeight: 18,
-    fontFamily: "Arsenal",
+    fontFamily: "GearUp",
     color: "#80ced7",
     textAlign: "center",
   },

@@ -1,99 +1,84 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View, Pressable } from "react-native";
+import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const EventDetails = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.eventDetailsView}>
-      <View style={styles.footerView}>
-        <Pressable
+    <SafeAreaView style={styles.eventDetailsView}>
+      <SafeAreaView style={styles.footerView}>
+      <Pressable
           style={styles.singleTabPressable}
           onPress={() => navigation.navigate("ProfileUser")}
         >
-          <View style={styles.iconAndText}>
+          <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
-              source={require("../assets/home.png")}
+              source={require("../assets/home7.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
         <Pressable
           style={styles.singleTabPressable1}
           onPress={() => navigation.navigate("Friends")}
         >
-          <View style={styles.iconAndText1}>
+          <SafeAreaView style={styles.iconAndText1}>
             <Image
               style={styles.userIcon}
               resizeMode="cover"
               source={require("../assets/user.png")}
             />
             <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
-        <Pressable
-          style={styles.singleTabPressable2}
-          onPress={() => navigation.navigate("Map")}
-        >
-          <Pressable
-            style={styles.iconAndText2}
-            onPress={() => navigation.navigate("Map")}
-          >
-            <Image
-              style={styles.compassIcon}
-              resizeMode="cover"
-              source={require("../assets/compass.png")}
-            />
-            <Text style={[styles.text2, styles.mt2]}>Map</Text>
-          </Pressable>
-        </Pressable>
+
         <Pressable
           style={styles.framePressable}
           onPress={() => navigation.navigate("CreateEvent")}
         >
           <Image
-            style={styles.ellipseIcon}
+            style={styles.addEventCircle}
             resizeMode="cover"
-            source={require("../assets/ellipse-10.png")}
+            source={require("../assets/ellipse-1.png")}
           />
-          <Text style={styles.text3}>+</Text>
+          <Text style={styles.addEventPlus}>+</Text>
         </Pressable>
         <Pressable
           style={styles.singleTabPressable3}
           onPress={() => navigation.navigate("MainPage")}
         >
-          <View style={styles.iconAndText3}>
+          <SafeAreaView style={styles.iconAndText3}>
             <Image
               style={styles.searchIcon}
               resizeMode="cover"
               source={require("../assets/search.png")}
             />
             <Text style={[styles.text4, styles.mt2]}>Events</Text>
-          </View>
+          </SafeAreaView>
         </Pressable>
-      </View>
+      </SafeAreaView>
       <Pressable
         style={styles.singleTabPressable4}
         onPress={() => navigation.navigate("ProfileUser")}
       >
-        <View style={styles.iconAndText4}>
+        <SafeAreaView style={styles.iconAndText4}>
           <Image
             style={styles.homeIcon1}
             resizeMode="cover"
             source={require("../assets/home3.png")}
           />
           <Text style={[styles.text5, styles.mt2]}>Account</Text>
-        </View>
+        </SafeAreaView>
       </Pressable>
       <Image
         style={styles.vectorIcon}
         resizeMode="cover"
         source={require("../assets/vector-3.png")}
       />
-      <View style={styles.rectangleView} />
+      <SafeAreaView style={styles.rectangleView} />
       <Pressable
         style={styles.vectorPressable}
         onPress={() => navigation.navigate("MainPage")}
@@ -104,14 +89,14 @@ const EventDetails = () => {
           source={require("../assets/vector6.png")}
         />
       </Pressable>
-      <Text style={styles.v3CASUALText}>{`3V3 CASUAL `}</Text>
+      <Text style={styles.v3CASUALText}>3V3 CASUAL </Text>
       <Text style={styles.playersText}>Players</Text>
       <Image
         style={styles.vectorIcon1}
         resizeMode="cover"
         source={require("../assets/vector-5.png")}
       />
-      <View style={styles.rectangleView1} />
+      <SafeAreaView style={styles.rectangleView1} />
       <Text style={styles.oPENCHATText}>OPEN CHAT</Text>
       <Text style={styles.uREC400PMFOOTBALL}>UREC | 4:00 PM | FOOTBALL</Text>
       <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
@@ -204,17 +189,7 @@ const EventDetails = () => {
         resizeMode="cover"
         source={require("../assets/eye1915454-1280-7.png")}
       />
-      <View style={styles.rectangleView2} />
-      <View style={styles.rectangleView3} />
-      <View style={styles.rectangleView4} />
-      <View style={styles.rectangleView5} />
-      <View style={styles.rectangleView6} />
-      <View style={styles.rectangleView7} />
-      <View style={styles.rectangleView8} />
-      <View style={styles.rectangleView9} />
-      <View style={styles.rectangleView10} />
-      <View style={styles.rectangleView11} />
-      <View style={styles.rectangleView12} />
+
       <Image
         style={styles.image1Icon}
         resizeMode="cover"
@@ -223,7 +198,7 @@ const EventDetails = () => {
       <Text
         style={styles.craverRdCharlotteNC28262}
       >{`Craver Rd, Charlotte, NC 28262 `}</Text>
-      <View style={styles.rectangleView13} />
+      <SafeAreaView style={styles.rectangleView13} />
       <Text style={styles.vSText}>VS</Text>
       <Image
         style={styles.vectorIcon2}
@@ -239,19 +214,21 @@ const EventDetails = () => {
         style={styles.iconAndText5}
         onPress={() => navigation.navigate("Map")}
       >
-        <Image
-          style={styles.compassIcon1}
-          resizeMode="cover"
-          source={require("../assets/compass3.png")}
-        />
-        <Text style={[styles.text6, styles.mt2]}>Map</Text>
+        <SafeAreaView style={styles.iconAndText2}>
+          <Image
+            style={styles.compassIcon1}
+            resizeMode="cover"
+            source={require("../assets/compass3.png")}
+          />
+          <Text style={[styles.text6, styles.mt2]}>Map</Text>
+        </SafeAreaView>
       </Pressable>
-      <View style={styles.joinLeaveEventView}>
-        <View style={styles.rectangleView14} />
+      <SafeAreaView style={styles.joinLeaveEventView}>
+        <SafeAreaView style={styles.rectangleView14} />
         <Text style={styles.joinText}>join</Text>
         <Text style={styles.pLAYER6Text}>PLAYER 6</Text>
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 
@@ -356,7 +333,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#111",
     textAlign: "center",
   },
   iconAndText2: {
@@ -375,6 +352,44 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  singleTabPressable1: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.32%",
+    top: "17.65%",
+    right: "57.35%",
+    bottom: "0%",
+    left: "21.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  addEventCircle: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    top: "0%",
+    right: "0%",
+    bottom: "0%",
+    left: "30%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  addEventPlus: {
+    paddingTop: 20,
+    position: "absolute",
+    height: "47.46%",
+    width: "49.15%",
+    top: "27.12%",
+    right: "25.42%",
+    bottom: "25.42%",
+    left: "53.42%",
+    fontSize: 48,
+    lineHeight: 18,
+    fontFamily: "GearUp",
+    color: "#80ced7",
+    textAlign: "center",
+  },
   singleTabPressable2: {
     position: "absolute",
     height: "82.35%",
@@ -385,7 +400,6 @@ const styles = StyleSheet.create({
     left: "57.33%",
     backgroundColor: "#fff",
     overflow: "hidden",
-    display: "none",
   },
   ellipseIcon: {
     position: "absolute",
@@ -462,9 +476,9 @@ const styles = StyleSheet.create({
   },
   footerView: {
     position: "absolute",
-    top: 729,
+    top: Dimensions.get('window').height * 0.85,
     left: 0,
-    width: 375,
+    width: Dimensions.get('window').width,
     height: 68,
   },
   homeIcon1: {
@@ -524,8 +538,8 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "#00060a",
-    width: 375,
-    height: 104,
+    width: Dimensions.get('window').width,
+    height: '15%',
   },
   icon: {
     height: "2.46%",
@@ -543,8 +557,9 @@ const styles = StyleSheet.create({
   },
   v3CASUALText: {
     position: "absolute",
-    top: 17,
-    left: 24,
+    paddingTop: "10%",
+    top: "6%",
+    right: "9%",
     fontSize: 36,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -558,9 +573,10 @@ const styles = StyleSheet.create({
   },
   playersText: {
     position: "absolute",
-    top: 134,
-    left: 5,
-    fontSize: 36,
+    paddingTop: "8%",
+    top: "16%",
+    left: "26%",
+    fontSize: 28,
     lineHeight: 14,
     fontFamily: "GearUp",
     color: "#000",
@@ -595,9 +611,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   uREC400PMFOOTBALL: {
+    paddingTop: "10%",
     position: "absolute",
-    top: 58,
-    left: 24,
+    top: "8%",
+    left: "10%",
     fontSize: 13,
     lineHeight: 14,
     fontFamily: "GearUp Soft",
@@ -773,131 +790,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 8,
   },
-  rectangleView2: {
-    position: "absolute",
-    top: 208,
-    left: 351,
-    borderRadius: 4,
-    backgroundColor: "#000",
-    width: 4,
-    height: 12,
-  },
-  rectangleView3: {
-    position: "absolute",
-    top: 248,
-    left: 351,
-    borderRadius: 4,
-    backgroundColor: "#000",
-    width: 4,
-    height: 12,
-  },
-  rectangleView4: {
-    position: "absolute",
-    top: 212,
-    left: 359,
-    borderRadius: 4,
-    backgroundColor: "#000",
-    width: 4,
-    height: 12,
-    transform: [
-      {
-        rotate: "90deg",
-      },
-    ],
-  },
-  rectangleView5: {
-    position: "absolute",
-    top: 252,
-    left: 359,
-    borderRadius: 4,
-    backgroundColor: "#000",
-    width: 4,
-    height: 12,
-    transform: [
-      {
-        rotate: "90deg",
-      },
-    ],
-  },
-  rectangleView6: {
-    position: "absolute",
-    top: 248,
-    left: 351,
-    borderRadius: 4,
-    backgroundColor: "#000",
-    width: 4,
-    height: 12,
-    display: "none",
-  },
-  rectangleView7: {
-    position: "absolute",
-    top: 288,
-    left: 11,
-    borderRadius: 4,
-    backgroundColor: "#ccdbdc",
-    width: 4,
-    height: 12,
-  },
-  rectangleView8: {
-    position: "absolute",
-    top: 292,
-    left: 19,
-    borderRadius: 4,
-    backgroundColor: "#ccdbdc",
-    width: 4,
-    height: 12,
-    transform: [
-      {
-        rotate: "90deg",
-      },
-    ],
-  },
-  rectangleView9: {
-    position: "absolute",
-    top: 248,
-    left: 11,
-    borderRadius: 4,
-    backgroundColor: "#ccdbdc",
-    width: 4,
-    height: 12,
-  },
-  rectangleView10: {
-    position: "absolute",
-    top: 252,
-    left: 19,
-    borderRadius: 4,
-    backgroundColor: "#ccdbdc",
-    width: 4,
-    height: 12,
-    transform: [
-      {
-        rotate: "90deg",
-      },
-    ],
-  },
-  rectangleView11: {
-    position: "absolute",
-    top: 208,
-    left: 11,
-    borderRadius: 4,
-    backgroundColor: "#ccdbdc",
-    width: 4,
-    height: 12,
-  },
-  rectangleView12: {
-    position: "absolute",
-    top: 212,
-    left: 19,
-    borderRadius: 4,
-    backgroundColor: "#ccdbdc",
-    width: 4,
-    height: 12,
-    transform: [
-      {
-        rotate: "90deg",
-      },
-    ],
-  },
+  
   image1Icon: {
     position: "absolute",
     top: 481,
@@ -928,6 +821,7 @@ const styles = StyleSheet.create({
     height: 35,
   },
   vSText: {
+    paddingTop: "20%",
     position: "absolute",
     top: 228,
     left: 160,
@@ -975,10 +869,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     transform: [
       {
-        translateY: 343,
+        translateY: 393,
       },
       {
-        translateX: 57.5,
+        translateX: 65.5,
       },
     ],
     top: "50%",
@@ -1001,6 +895,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   joinText: {
+    paddingTop: "2%",
     position: "absolute",
     top: "66.15%",
     left: "17.42%",

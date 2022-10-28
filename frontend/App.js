@@ -69,7 +69,7 @@ export default function App() {
   return (
     <View style={{flex: 1}} onLayout={onLayoutRootView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='ProfileUser'>
+        <Stack.Navigator initialRouteName='Login'>
           <Stack.Screen name="MainPage" component={MainPage} options={{ headerShown: false }} />
           <Stack.Screen name="AccountRecovery" component={AccountRecovery} options={{ headerShown: false }} />
           <Stack.Screen name="AccountRegistration" component={AccountRegistration} options={{ headerShown: false }} />

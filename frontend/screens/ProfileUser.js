@@ -1,25 +1,32 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, SafeAreaView, Pressable } from "react-native";
+import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+import { Avatar } from "@rneui/base";
+
+import { AirbnbRating } from 'react-native-ratings';
 
 const ProfileUser = () => {
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.profileUserView}>
-      <SafeAreaView style={styles.footerView}>
-        <SafeAreaView style={styles.singleTabView}>
+     <SafeAreaView style={styles.footerView}>
+      <Pressable
+          style={styles.singleTabPressable}
+          onPress={() => navigation.navigate("ProfileUser")}
+        >
           <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.homeIcon}
               resizeMode="cover"
-              source={require("../assets/home6.png")}
+              source={require("../assets/home3.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
           </SafeAreaView>
-        </SafeAreaView>
+        </Pressable>
         <Pressable
-          style={styles.singleTabPressable}
+          style={styles.singleTabPressable1}
           onPress={() => navigation.navigate("Friends")}
         >
           <SafeAreaView style={styles.iconAndText1}>
@@ -32,7 +39,7 @@ const ProfileUser = () => {
           </SafeAreaView>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable1}
+          style={styles.singleTabPressable2}
           onPress={() => navigation.navigate("Map")}
         >
           <SafeAreaView style={styles.iconAndText2}>
@@ -49,63 +56,50 @@ const ProfileUser = () => {
           onPress={() => navigation.navigate("CreateEvent")}
         >
           <Image
-            style={styles.ellipseIcon}
+            style={styles.addEventCircle}
             resizeMode="cover"
             source={require("../assets/ellipse-1.png")}
           />
-          <Text style={styles.text3}>+</Text>
+          <Text style={styles.addEventPlus}>+</Text>
         </Pressable>
         <Pressable
-          style={styles.singleTabPressable2}
+          style={styles.singleTabPressable3}
           onPress={() => navigation.navigate("MainPage")}
         >
           <SafeAreaView style={styles.iconAndText3}>
             <Image
               style={styles.searchIcon}
               resizeMode="cover"
-              source={require("../assets/search6.png")}
+              source={require("../assets/search4.png")}
             />
             <Text style={[styles.text4, styles.mt2]}>Events</Text>
           </SafeAreaView>
         </Pressable>
       </SafeAreaView>
-      <Image
-        style={styles.ellipseIcon1}
-        resizeMode="cover"
-        source={require("../assets/ellipse-122.png")}
+      <Avatar
+        containerStyle={{
+          borderWidth: 3,
+          borderColor: "#80ced7",
+          borderStyle: "solid",
+          position: "relative",
+          left: 30,
+          top: 10,
+        }}
+        size={"large"}
+        imageProps={{
+          resizeMode: 'cover',
+          width: 200
+        }}
+        rounded
+        source={{
+          uri: 'https://i.postimg.cc/mr2ZPx6T/icon.png'
+        }}
+        icon='../assets/icon.png' 
       />
-      <Image
-        style={styles.stockUserImageIcon}
-        resizeMode="cover"
-        source={require("../assets/stockuserimage.png")}
-      />
-      <Text style={styles.dOTUNIVERSITY4Text}>dOTUNIVERSITY4</Text>
-      <Image
-        style={styles.vectorIcon}
-        resizeMode="cover"
-        source={require("../assets/vector26.png")}
-      />
-      <Image
-        style={styles.vectorIcon1}
-        resizeMode="cover"
-        source={require("../assets/vector26.png")}
-      />
-      <Image
-        style={styles.vectorIcon2}
-        resizeMode="cover"
-        source={require("../assets/vector26.png")}
-      />
-      <Image
-        style={styles.vectorIcon3}
-        resizeMode="cover"
-        source={require("../assets/vector26.png")}
-      />
-      <Image
-        style={styles.vectorIcon4}
-        resizeMode="cover"
-        source={require("../assets/vector30.png")}
-      />
-      <Text style={styles.allIKnowAreDots}>All I Know Are Dots</Text>
+
+      <Text style={styles.dOTUNIVERSITY4Text}>PICKUPDEVTEAM</Text>
+      <AirbnbRating size={20} defaultRating={4} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
+      <Text style={styles.allIKnowAreDots}>see you on the court</Text>
       <Text style={styles.text5}>30</Text>
       <Text style={styles.text6}>92%</Text>
       <Text style={styles.gamesPlayedText}>Games Played</Text>
@@ -282,11 +276,11 @@ const styles = StyleSheet.create({
   singleTabPressable: {
     position: "absolute",
     height: "82.35%",
-    width: "21.32%",
+    width: "21.33%",
     top: "17.65%",
-    right: "57.35%",
+    right: "0%",
     bottom: "0%",
-    left: "21.33%",
+    left: "78.67%",
     backgroundColor: "#fff",
     overflow: "hidden",
   },
@@ -326,11 +320,38 @@ const styles = StyleSheet.create({
     height: "82.35%",
     width: "21.32%",
     top: "17.65%",
-    right: "21.35%",
+    right: "57.35%",
     bottom: "0%",
-    left: "57.33%",
+    left: "21.33%",
     backgroundColor: "#fff",
     overflow: "hidden",
+  },
+  addEventCircle: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    top: "0%",
+    right: "0%",
+    bottom: "0%",
+    left: "30%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  addEventPlus: {
+    paddingTop: 20,
+    position: "absolute",
+    height: "47.46%",
+    width: "49.15%",
+    top: "27.12%",
+    right: "25.42%",
+    bottom: "25.42%",
+    left: "53.42%",
+    fontSize: 48,
+    lineHeight: 18,
+    fontFamily: "Arsenal",
+    color: "#80ced7",
+    textAlign: "center",
   },
   ellipseIcon: {
     position: "absolute",
@@ -397,6 +418,17 @@ const styles = StyleSheet.create({
   singleTabPressable2: {
     position: "absolute",
     height: "82.35%",
+    width: "21.32%",
+    top: "17.65%",
+    right: "21.35%",
+    bottom: "0%",
+    left: "57.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  singleTabPressable3: {
+    position: "absolute",
+    height: "82.35%",
     width: "21.33%",
     top: "17.65%",
     right: "78.67%",
@@ -407,9 +439,9 @@ const styles = StyleSheet.create({
   },
   footerView: {
     position: "absolute",
-    top: 729,
+    top: Dimensions.get('window').height * 0.85,
     left: 0,
-    width: 375,
+    width: Dimensions.get('window').width,
     height: 68,
   },
   ellipseIcon1: {
@@ -432,7 +464,8 @@ const styles = StyleSheet.create({
   },
   dOTUNIVERSITY4Text: {
     position: "absolute",
-    top: 56,
+    paddingTop: "5%",
+    top: "9%",
     left: 138,
     fontSize: 14,
     lineHeight: 14,
@@ -504,8 +537,8 @@ const styles = StyleSheet.create({
   },
   allIKnowAreDots: {
     position: "absolute",
-    top: 113,
-    left: 140,
+    top: "12.3%",
+    left: "34%",
     fontSize: 10,
     lineHeight: 16,
     fontFamily: "GearUp Soft",
@@ -513,8 +546,15 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: 177,
   },
+  userRating: {
+    color: "#34495e",
+    position: "absolute",
+    left: "32%",
+    top: "16%",
+  },
   text5: {
     position: "absolute",
+    paddingTop: "18%",
     top: 205,
     left: 48,
     fontSize: 20,
@@ -527,6 +567,7 @@ const styles = StyleSheet.create({
   },
   text6: {
     position: "absolute",
+    paddingTop: "18%",
     top: 205,
     left: 263,
     fontSize: 20,
@@ -573,7 +614,7 @@ const styles = StyleSheet.create({
     position: "relative",
     fontSize: 20,
     lineHeight: 18,
-    fontFamily: "Akshar",
+    fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
     display: "none",
@@ -588,7 +629,7 @@ const styles = StyleSheet.create({
   },
   buttonPressable: {
     position: "absolute",
-    top: 136,
+    top: "16%",
     left: 272,
     borderRadius: 4,
     backgroundColor: "#fff",
@@ -607,7 +648,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: 141,
+    top: "16.5%",
     left: 276,
     width: 21,
     height: 19,
@@ -684,7 +725,7 @@ const styles = StyleSheet.create({
   },
   footballText: {
     position: "absolute",
-    top: 325,
+    top: "40.5%",
     left: 70,
     fontSize: 14,
     fontFamily: "GearUp",
@@ -729,7 +770,7 @@ const styles = StyleSheet.create({
   },
   tENNISText: {
     position: "absolute",
-    top: 481,
+    top: "59.5%",
     left: 73,
     fontSize: 14,
     fontFamily: "GearUp",
@@ -738,7 +779,7 @@ const styles = StyleSheet.create({
   },
   sOCCERText: {
     position: "absolute",
-    top: 427,
+    top: "53.5%",
     left: 71,
     fontSize: 14,
     fontFamily: "GearUp",
@@ -747,7 +788,7 @@ const styles = StyleSheet.create({
   },
   bASKETBALLText: {
     position: "absolute",
-    top: 374,
+    top: "46.5%",
     left: 70,
     fontSize: 14,
     fontFamily: "GearUp",
@@ -756,7 +797,8 @@ const styles = StyleSheet.create({
   },
   text7: {
     position: "absolute",
-    top: 331,
+    paddingTop: "5%",
+    top: "40%",
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -768,7 +810,8 @@ const styles = StyleSheet.create({
   },
   text8: {
     position: "absolute",
-    top: 377,
+    paddingTop: "5%",
+    top: "46%",
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -780,7 +823,8 @@ const styles = StyleSheet.create({
   },
   text9: {
     position: "absolute",
-    top: 475,
+    paddingTop: "5%",
+    top: "52%",
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -792,7 +836,8 @@ const styles = StyleSheet.create({
   },
   text10: {
     position: "absolute",
-    top: 427,
+    paddingTop: "5%",
+    top: "58%",
     left: 302,
     fontSize: 15,
     lineHeight: 16,
@@ -828,6 +873,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 812,
     overflow: "hidden",
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 });
 
