@@ -2,10 +2,12 @@ import * as React from "react";
 import {
   Text,
   StyleSheet,
-  View,
+  SafeAreaView,
   Image,
   ImageBackground,
   Pressable,
+  Dimensions,
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -13,7 +15,7 @@ const AccountRecovery = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.accountRecoveryView}>
+    <SafeAreaView style={styles.accountRecoveryView}>
       <ImageBackground
         style={styles.accountRecoveryIcon}
         resizeMode="cover"
@@ -21,150 +23,6 @@ const AccountRecovery = () => {
       >
         <Text style={styles.forgotYourPassword}>Forgot your password?</Text>
         <Text style={styles.pickUpText}>PickUp</Text>
-        <View style={styles.loginCreateAccountElement}>
-          <View style={styles.bgView} />
-          <View style={styles.iPhoneXPortraitConte}>
-            <View style={styles.qView}>
-              <View style={styles.bgView1} />
-              <Text style={styles.letterText}>Q</Text>
-            </View>
-            <View style={styles.zView}>
-              <View style={styles.bgView2} />
-              <Text style={styles.letterText1}>Z</Text>
-            </View>
-            <View style={styles.xView}>
-              <View style={styles.bgView3} />
-              <Text style={styles.letterText2}>X</Text>
-            </View>
-            <View style={styles.cView}>
-              <View style={styles.bgView4} />
-              <Text style={styles.letterText3}>C</Text>
-            </View>
-            <View style={styles.vView}>
-              <View style={styles.bgView5} />
-              <Text style={styles.letterText4}>V</Text>
-            </View>
-            <View style={styles.bView}>
-              <View style={styles.bgView6} />
-              <Text style={styles.letterText5}>B</Text>
-            </View>
-            <View style={styles.nView}>
-              <View style={styles.bgView7} />
-              <Text style={styles.letterText6}>N</Text>
-            </View>
-            <View style={styles.mView}>
-              <View style={styles.bgView8} />
-              <Text style={styles.letterText7}>M</Text>
-            </View>
-            <View style={styles.aView}>
-              <View style={styles.bgView9} />
-              <Text style={styles.letterText8}>A</Text>
-            </View>
-            <View style={styles.sView}>
-              <View style={styles.bgView10} />
-              <Text style={styles.letterText9}>S</Text>
-            </View>
-            <View style={styles.dView}>
-              <View style={styles.bgView11} />
-              <Text style={styles.letterText10}>D</Text>
-            </View>
-            <View style={styles.fView}>
-              <View style={styles.bgView12} />
-              <Text style={styles.letterText11}>F</Text>
-            </View>
-            <View style={styles.gView}>
-              <View style={styles.bgView13} />
-              <Text style={styles.letterText12}>G</Text>
-            </View>
-            <View style={styles.hView}>
-              <View style={styles.bgView14} />
-              <Text style={styles.letterText13}>H</Text>
-            </View>
-            <View style={styles.jView}>
-              <View style={styles.bgView15} />
-              <Text style={styles.letterText14}>J</Text>
-            </View>
-            <View style={styles.kView}>
-              <View style={styles.bgView16} />
-              <Text style={styles.letterText15}>K</Text>
-            </View>
-            <View style={styles.lView}>
-              <View style={styles.bgView17} />
-              <Text style={styles.letterText16}>L</Text>
-            </View>
-            <View style={styles.wView}>
-              <View style={styles.bgView18} />
-              <Text style={styles.letterText17}>W</Text>
-            </View>
-            <View style={styles.eView}>
-              <View style={styles.bgView19} />
-              <Text style={styles.letterText18}>E</Text>
-            </View>
-            <View style={styles.rView}>
-              <View style={styles.bgView20} />
-              <Text style={styles.letterText19}>R</Text>
-            </View>
-            <View style={styles.tView}>
-              <View style={styles.bgView21} />
-              <Text style={styles.letterText20}>T</Text>
-            </View>
-            <View style={styles.yView}>
-              <View style={styles.bgView22} />
-              <Text style={styles.letterText21}>Y</Text>
-            </View>
-            <View style={styles.uView}>
-              <View style={styles.bgView23} />
-              <Text style={styles.letterText22}>U</Text>
-            </View>
-            <View style={styles.iView}>
-              <View style={styles.bgView24} />
-              <Text style={styles.letterText23}>I</Text>
-            </View>
-            <View style={styles.oView}>
-              <View style={styles.bgView25} />
-              <Text style={styles.letterText24}>O</Text>
-            </View>
-            <View style={styles.pView}>
-              <View style={styles.bgView26} />
-              <Text style={styles.letterText25}>P</Text>
-            </View>
-          </View>
-          <View style={styles.iPhoneXPortraitInput}>
-            <View style={styles.homeIndicatorView} />
-            <Image
-              style={styles.micIcon}
-              resizeMode="cover"
-              source={require("../assets/mic.png")}
-            />
-            <Image
-              style={styles.emojisIcon}
-              resizeMode="cover"
-              source={require("../assets/emojis.png")}
-            />
-            <Image
-              style={styles.buttonIconSmall}
-              resizeMode="cover"
-              source={require("../assets/button--icon-small.png")}
-            />
-            <Image
-              style={styles.shiftIcon}
-              resizeMode="cover"
-              source={require("../assets/shift.png")}
-            />
-            <View style={styles.spaceView}>
-              <View style={styles.bgView27} />
-              <Text style={styles.letterText26}>space</Text>
-            </View>
-            <View style={styles.returnView}>
-              <View style={styles.backgroundSecondaryBG} />
-              <Text style={styles.letterText27}>return</Text>
-            </View>
-            <View style={styles.view}>
-              <View style={styles.backgroundSecondaryBG1} />
-              <Text style={styles.letterText28}>123</Text>
-            </View>
-          </View>
-        </View>
       </ImageBackground>
       <Pressable
         style={styles.bACKTOLOGIN1}
@@ -172,47 +30,47 @@ const AccountRecovery = () => {
       >
         <Text style={styles.bACKTOLOGIN}>BACK TO LOGIN</Text>
       </Pressable>
-      <View style={styles.recoveryEmailSentView}>
-        <View style={styles.leftButtonView}>
-          <View style={styles.iconAndText}>
+      <SafeAreaView style={styles.recoveryEmailSentView}>
+        <SafeAreaView style={styles.leftButtonView}>
+          <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.leadingIcon}
               resizeMode="cover"
               source={require("../assets/leading-icon.png")}
             />
             <Text style={[styles.text, styles.ml4]}>Left Medium</Text>
-          </View>
-        </View>
-        <View style={styles.iconAndText1}>
+          </SafeAreaView>
+        </SafeAreaView>
+        <SafeAreaView style={styles.iconAndText1}>
           <Image
             style={styles.leadingIcon1}
             resizeMode="cover"
             source={require("../assets/leading-icon1.png")}
           />
           <Text style={[styles.text1, styles.ml4]}>Reset Password</Text>
-        </View>
-      </View>
-      <View style={styles.emailInputRecovery}>
-        <View style={styles.textFieldView}>
+        </SafeAreaView>
+      </SafeAreaView>
+      <SafeAreaView style={styles.emailInputRecovery}>
+        <SafeAreaView style={styles.textFieldView}>
           <Image
             style={styles.trailingIcon}
             resizeMode="cover"
             source={require("../assets/trailing-icon.png")}
           />
-          <View style={styles.iconText}>
+          <SafeAreaView style={styles.iconText}>
             <Image
               style={styles.leadingIcon2}
               resizeMode="cover"
               source={require("../assets/leading-icon2.png")}
             />
-            <Text style={[styles.text2, styles.ml8]}>Email</Text>
-          </View>
+            <TextInput style={[styles.text2, styles.ml8]}>Email</TextInput>
+          </SafeAreaView>
           <Text style={styles.labelText}>
             ENTER the EMAIL ATTACHED TO YOUR ACCOUNT
           </Text>
-        </View>
-      </View>
-    </View>
+        </SafeAreaView>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 
@@ -224,16 +82,20 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   forgotYourPassword: {
+    paddingLeft: 31,
+    paddingTop: 45,
     position: "absolute",
     top: 93,
     left: 88,
-    fontSize: 10,
+    fontSize: 9,
     lineHeight: 18,
     fontFamily: "GearUp",
     color: "#fff",
     textAlign: "left",
   },
   pickUpText: {
+    paddingTop: "15%",
+    paddingLeft: "5%",
     position: "absolute",
     top: 48,
     left: 85,
@@ -1604,8 +1466,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    width: 375,
-    height: 812,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     overflow: "hidden",
   },
   bACKTOLOGIN: {
@@ -1617,7 +1479,7 @@ const styles = StyleSheet.create({
   },
   bACKTOLOGIN1: {
     position: "absolute",
-    left: 133,
+    left: "37%",
     top: 313,
   },
   leadingIcon: {
@@ -1654,8 +1516,8 @@ const styles = StyleSheet.create({
   },
   leftButtonView: {
     position: "absolute",
-    height: "86.96%",
-    width: "96%",
+    height: "100%",
+    width: "100%",
     top: "0%",
     right: "4%",
     bottom: "13.04%",
@@ -1676,6 +1538,8 @@ const styles = StyleSheet.create({
   text1: {
     position: "relative",
     fontSize: 9,
+    top: "2%",
+    right: "10%",
     lineHeight: 18,
     fontFamily: "GearUp",
     color: "#fff",
@@ -1692,15 +1556,15 @@ const styles = StyleSheet.create({
       },
     ],
     top: "50%",
-    left: "50%",
+    left: "52%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
   },
   recoveryEmailSentView: {
     position: "absolute",
-    top: 248,
-    left: 112,
+    top: "31%",
+    left: "31%",
     borderStyle: "solid",
     borderColor: "#80ced7",
     borderWidth: 3,
@@ -1716,7 +1580,7 @@ const styles = StyleSheet.create({
     ],
     top: "50%",
     right: 12,
-    width: 18,
+    width: 180,
     height: 18,
     overflow: "hidden",
     display: "none",
@@ -1733,8 +1597,9 @@ const styles = StyleSheet.create({
     position: "relative",
     fontSize: 12,
     lineHeight: 18,
+    bottom: "3%",
     fontFamily: "GearUp",
-    color: "#828282",
+    color: "#000000",
     textAlign: "left",
   },
   iconText: {
@@ -1752,9 +1617,10 @@ const styles = StyleSheet.create({
   },
   labelText: {
     position: "absolute",
+    paddingLeft: 25,
     top: -20,
     right: 0,
-    left: 0,
+    left: -24,
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp",
@@ -1779,8 +1645,8 @@ const styles = StyleSheet.create({
   },
   emailInputRecovery: {
     position: "absolute",
-    top: 177,
-    left: 36,
+    top: 197,
+    left: 54,
     width: 302,
     height: 40,
   },

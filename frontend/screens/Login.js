@@ -1,20 +1,25 @@
 import * as React from "react";
 import {
   Text,
+  TextInput,
   StyleSheet,
   Pressable,
   Image,
-  View,
+  Dimensions,
+  SafeAreaView,
   ImageBackground,
 } from "react-native";
+
+import { Button } from "@rneui/themed";
+
 import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.loginView2}>
-      <View style={styles.loginView}>
+    <SafeAreaView style={styles.loginView2}>
+      <SafeAreaView style={styles.loginView}>
         <ImageBackground
           style={styles.property1DefaultIcon}
           resizeMode="cover"
@@ -34,206 +39,64 @@ const Login = () => {
           </Pressable>
           <Text style={styles.pickUpText}>PickUp</Text>
           <Text style={styles.loginToYourAccount}>Login to your account</Text>
-          <View style={styles.emailInputLogin1}>
-            <View style={styles.emailInputLogin}>
+          <SafeAreaView style={styles.emailInputLogin1}>
+            <SafeAreaView style={styles.emailInputLogin}>
               <Image
                 style={styles.trailingIcon}
                 resizeMode="cover"
                 source={require("../assets/trailing-icon.png")}
               />
-              <View style={styles.iconText}>
+              <SafeAreaView style={styles.iconText}>
                 <Image
                   style={styles.leadingIcon}
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <Text style={[styles.text, styles.ml8]}>Email or username</Text>
-              </View>
-              <Text
-                style={styles.labelText}
-              >{`Enter your username or email `}</Text>
-            </View>
-          </View>
-          <View style={styles.passwordLoginInput1}>
-            <View style={styles.passwordLoginInput}>
+                <TextInput style={[styles.text, styles.ml8]}>Email or username</TextInput>
+              </SafeAreaView>
+            </SafeAreaView>
+          </SafeAreaView>
+          <SafeAreaView style={styles.passwordLoginInput1}>
+            <SafeAreaView style={styles.passwordLoginInput}>
               <Image
                 style={styles.trailingIcon1}
                 resizeMode="cover"
                 source={require("../assets/trailing-icon.png")}
               />
-              <View style={styles.iconText1}>
+              <SafeAreaView style={styles.iconText1}>
                 <Image
                   style={styles.leadingIcon1}
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <Text style={[styles.text1, styles.ml8]}>Password</Text>
-              </View>
-              <Text style={styles.labelText1}>Enter your password</Text>
-            </View>
-          </View>
+                <TextInput style={[styles.text1, styles.ml8]}>Password</TextInput>
+              </SafeAreaView>
+            </SafeAreaView>
+          </SafeAreaView>
         </ImageBackground>
-      </View>
-      <View style={styles.loginCreateAccountElement}>
-        <View style={styles.bgView} />
-        <View style={styles.iPhoneXPortraitConte}>
-          <View style={styles.qView}>
-            <View style={styles.bgView1} />
-            <Text style={styles.letterText}>Q</Text>
-          </View>
-          <View style={styles.zView}>
-            <View style={styles.bgView2} />
-            <Text style={styles.letterText1}>Z</Text>
-          </View>
-          <View style={styles.xView}>
-            <View style={styles.bgView3} />
-            <Text style={styles.letterText2}>X</Text>
-          </View>
-          <View style={styles.cView}>
-            <View style={styles.bgView4} />
-            <Text style={styles.letterText3}>C</Text>
-          </View>
-          <View style={styles.vView}>
-            <View style={styles.bgView5} />
-            <Text style={styles.letterText4}>V</Text>
-          </View>
-          <View style={styles.bView}>
-            <View style={styles.bgView6} />
-            <Text style={styles.letterText5}>B</Text>
-          </View>
-          <View style={styles.nView}>
-            <View style={styles.bgView7} />
-            <Text style={styles.letterText6}>N</Text>
-          </View>
-          <View style={styles.mView}>
-            <View style={styles.bgView8} />
-            <Text style={styles.letterText7}>M</Text>
-          </View>
-          <View style={styles.aView}>
-            <View style={styles.bgView9} />
-            <Text style={styles.letterText8}>A</Text>
-          </View>
-          <View style={styles.sView}>
-            <View style={styles.bgView10} />
-            <Text style={styles.letterText9}>S</Text>
-          </View>
-          <View style={styles.dView}>
-            <View style={styles.bgView11} />
-            <Text style={styles.letterText10}>D</Text>
-          </View>
-          <View style={styles.fView}>
-            <View style={styles.bgView12} />
-            <Text style={styles.letterText11}>F</Text>
-          </View>
-          <View style={styles.gView}>
-            <View style={styles.bgView13} />
-            <Text style={styles.letterText12}>G</Text>
-          </View>
-          <View style={styles.hView}>
-            <View style={styles.bgView14} />
-            <Text style={styles.letterText13}>H</Text>
-          </View>
-          <View style={styles.jView}>
-            <View style={styles.bgView15} />
-            <Text style={styles.letterText14}>J</Text>
-          </View>
-          <View style={styles.kView}>
-            <View style={styles.bgView16} />
-            <Text style={styles.letterText15}>K</Text>
-          </View>
-          <View style={styles.lView}>
-            <View style={styles.bgView17} />
-            <Text style={styles.letterText16}>L</Text>
-          </View>
-          <View style={styles.wView}>
-            <View style={styles.bgView18} />
-            <Text style={styles.letterText17}>W</Text>
-          </View>
-          <View style={styles.eView}>
-            <View style={styles.bgView19} />
-            <Text style={styles.letterText18}>E</Text>
-          </View>
-          <View style={styles.rView}>
-            <View style={styles.bgView20} />
-            <Text style={styles.letterText19}>R</Text>
-          </View>
-          <View style={styles.tView}>
-            <View style={styles.bgView21} />
-            <Text style={styles.letterText20}>T</Text>
-          </View>
-          <View style={styles.yView}>
-            <View style={styles.bgView22} />
-            <Text style={styles.letterText21}>Y</Text>
-          </View>
-          <View style={styles.uView}>
-            <View style={styles.bgView23} />
-            <Text style={styles.letterText22}>U</Text>
-          </View>
-          <View style={styles.iView}>
-            <View style={styles.bgView24} />
-            <Text style={styles.letterText23}>I</Text>
-          </View>
-          <View style={styles.oView}>
-            <View style={styles.bgView25} />
-            <Text style={styles.letterText24}>O</Text>
-          </View>
-          <View style={styles.pView}>
-            <View style={styles.bgView26} />
-            <Text style={styles.letterText25}>P</Text>
-          </View>
-        </View>
-        <View style={styles.iPhoneXPortraitInput}>
-          <View style={styles.homeIndicatorView} />
-          <Image
-            style={styles.micIcon}
-            resizeMode="cover"
-            source={require("../assets/mic.png")}
-          />
-          <Image
-            style={styles.emojisIcon}
-            resizeMode="cover"
-            source={require("../assets/emojis.png")}
-          />
-          <Image
-            style={styles.buttonIconSmall}
-            resizeMode="cover"
-            source={require("../assets/button--icon-small1.png")}
-          />
-          <Image
-            style={styles.shiftIcon}
-            resizeMode="cover"
-            source={require("../assets/shift.png")}
-          />
-          <View style={styles.spaceView}>
-            <View style={styles.bgView27} />
-            <Text style={styles.letterText26}>space</Text>
-          </View>
-          <View style={styles.returnView}>
-            <View style={styles.backgroundSecondaryBG} />
-            <Text style={styles.letterText27}>return</Text>
-          </View>
-          <View style={styles.view}>
-            <View style={styles.backgroundSecondaryBG1} />
-            <Text style={styles.letterText28}>123</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.loginView1}>
+      </SafeAreaView>
+
+      <SafeAreaView style={styles.loginView1}>
         <Pressable
           style={styles.leftButtonPressable}
           onPress={() => navigation.navigate("MainPage")}
         >
-          <View style={styles.iconAndText}>
+          <SafeAreaView style={styles.iconAndText}>
             <Image
               style={styles.leadingIcon2}
               resizeMode="cover"
               source={require("../assets/leading-icon7.png")}
             />
-            <Text style={[styles.text2, styles.ml4]}>Login</Text>
-          </View>
+            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%"}} titleStyle={{fontFamily: 'GearUp'}}></Button>
+          </SafeAreaView>
         </Pressable>
-      </View>
-    </View>
+      </SafeAreaView>
+      <Image
+        style={{top: 600}}
+        resizeMode="cover"
+        source={require("../assets/pickup-logo.png")}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -270,8 +133,9 @@ const styles = StyleSheet.create({
   },
   pickUpText: {
     position: "absolute",
-    top: 40,
-    left: 90,
+    paddingTop: "18%",
+    top: "5%",
+    left: "27%",
     fontSize: 40,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -280,8 +144,8 @@ const styles = StyleSheet.create({
   },
   loginToYourAccount: {
     position: "absolute",
-    top: 81,
-    left: 101,
+    top: "15%",
+    left: "30%",
     fontSize: 10,
     lineHeight: 18,
     fontFamily: "GearUp",
@@ -313,7 +177,7 @@ const styles = StyleSheet.create({
   text: {
     position: "relative",
     fontSize: 10,
-    lineHeight: 18,
+    lineHeight: 14,
     fontFamily: "GearUp",
     color: "#111",
     textAlign: "left",
@@ -348,10 +212,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "100%",
     width: "100%",
-    top: "0%",
+    top: "65%",
     right: "0%",
     bottom: "0%",
-    left: "0%",
+    left: "5%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -390,7 +254,7 @@ const styles = StyleSheet.create({
   text1: {
     position: "relative",
     fontSize: 10,
-    lineHeight: 18,
+    lineHeight: 14,
     fontFamily: "GearUp",
     color: "#111",
     textAlign: "left",
@@ -425,10 +289,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "100%",
     width: "100%",
-    top: "0%",
+    top: "65%",
     right: "0%",
     bottom: "0%",
-    left: "0%",
+    left: "5%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -444,10 +308,10 @@ const styles = StyleSheet.create({
   },
   property1DefaultIcon: {
     position: "absolute",
-    top: 20,
-    left: 11,
-    width: 384,
-    height: 812,
+    top: 0,
+    left: 0,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     overflow: "hidden",
   },
   loginView: {
@@ -458,8 +322,8 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderColor: "#9747ff",
     borderWidth: 1,
-    width: 405,
-    height: 833,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     overflow: "hidden",
   },
   bgView: {
@@ -1853,10 +1717,10 @@ const styles = StyleSheet.create({
   },
   leftButtonPressable: {
     position: "absolute",
-    height: "86.96%",
-    width: "96%",
+    height: "100%",
+    width: "100%",
     top: "0%",
-    right: "4%",
+    right: "5%",
     bottom: "13.04%",
     left: "0%",
     borderTopLeftRadius: 4,
@@ -1877,8 +1741,8 @@ const styles = StyleSheet.create({
   loginView2: {
     position: "relative",
     flex: 1,
-    width: "100%",
-    height: 829,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 });
 
