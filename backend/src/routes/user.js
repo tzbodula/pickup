@@ -21,20 +21,28 @@ router.post('/login', (req, res) => {
     db.query(query, [username, password], (err, result) => {
         
         if (result === undefined || result.length == 0) {
-            return res.status(401).send('Invalid credentials')
+            return res.status(401).send({
+                message: "Invalid credentials",
+            })
         }
     
         req.session.user_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send("Logged in successfully");
+        return res.status(200).send(
+            {
+                message:"Logged in successfully",
+            }
+        );
     })
     
 })
 
 router.post('/logout', (req, res) => {
     req.session.destroy();
-    return res.status(200).send('Logged our successfully');
+    return res.status(200).send({
+        message:'Logged out successfully',
+    });
 })
 
 /**
