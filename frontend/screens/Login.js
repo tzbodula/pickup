@@ -1,4 +1,5 @@
-import * as React from "react";
+import { useState, React } from "react"; 
+
 import {
   Text,
   TextInput,
@@ -13,10 +14,47 @@ import {
 import { Button } from "@rneui/themed";
 
 import { useNavigation } from "@react-navigation/native";
-
+import {LOCAL_IP} from '@env';
 const Login = () => {
-  const navigation = useNavigation();
 
+  
+  const navigation = useNavigation();
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+
+  const updateUsername = (event) => {
+    setUsername(event)
+  }
+
+  const updatePassword = (event) => {
+    setPassword(event)
+  }
+
+  const handleSubmit = () => {
+    try {
+    fetch(`http://${LOCAL_IP}:3000/user/login`, {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json'},
+      body: JSON.stringify({
+        "username": username,
+        "password": password
+      })
+    }).then(
+      (res) => {
+        if (res.status == 200) {
+        navigation.navigate("MainPage")
+        return;
+        }
+        console.log(res)
+      }
+    )
+    
+  } catch(e) {
+    console.log(e)
+  }
+  }
   return (
     <SafeAreaView style={styles.loginView2}>
       <SafeAreaView style={styles.loginView}>
@@ -52,7 +90,7 @@ const Login = () => {
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <TextInput style={[styles.text, styles.ml8]}>Email or username</TextInput>
+                <TextInput style={[styles.text, styles.ml8]} onChangeText={updateUsername}>Email or username</TextInput>
               </SafeAreaView>
             </SafeAreaView>
           </SafeAreaView>
@@ -69,7 +107,7 @@ const Login = () => {
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <TextInput style={[styles.text1, styles.ml8]}>Password</TextInput>
+                <TextInput style={[styles.text1, styles.ml8]} onChangeText={updatePassword}>Password</TextInput>
               </SafeAreaView>
             </SafeAreaView>
           </SafeAreaView>
@@ -79,7 +117,6 @@ const Login = () => {
       <SafeAreaView style={styles.loginView1}>
         <Pressable
           style={styles.leftButtonPressable}
-          onPress={() => navigation.navigate("MainPage")}
         >
           <SafeAreaView style={styles.iconAndText}>
             <Image
@@ -87,7 +124,7 @@ const Login = () => {
               resizeMode="cover"
               source={require("../assets/leading-icon7.png")}
             />
-            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%"}} titleStyle={{fontFamily: 'GearUp'}}></Button>
+            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%"}} titleStyle={{fontFamily: 'GearUp'}} onPress={handleSubmit}></Button>
           </SafeAreaView>
         </Pressable>
       </SafeAreaView>
