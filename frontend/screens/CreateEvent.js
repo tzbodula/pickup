@@ -1,23 +1,49 @@
 import * as React from "react";
-import { Text, StyleSheet, View, Image, Pressable } from "react-native";
+import { useState } from "react";
+import { Text, StyleSheet, SafeAreaView, Image, Pressable, TextInput } from "react-native";
+import { Button } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 const CreateEvent = () => {
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    if (Platform.OS === 'android') {
+      setShow(false);
+      // for iOS, add a button that closes the picker
+    }
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
   const navigation = useNavigation();
 
   return (
-    <View style={styles.createEventView}>
+    <SafeAreaView style={styles.createEventView}>
       <Text style={styles.createNewEvent}>Create New Event</Text>
       <Text style={styles.eventNameText}>Event Name</Text>
-      <View style={styles.frameView1}>
-        <View style={styles.rectangleView} />
-        <Text style={styles.v3SoccerText}>3v3 soccer</Text>
-        <View style={styles.frameView} />
-      </View>
-      <Text style={styles.sportText}>Sport</Text>
+      <SafeAreaView style={styles.frameView1}>
+        <SafeAreaView style={styles.rectangleView} />
+        <TextInput style={styles.v3SoccerText}>3v3 soccer</TextInput>
+        <SafeAreaView style={styles.frameView} />
+      </SafeAreaView>
       <Text style={styles.totalPlayersText}>Total Players</Text>
-      <View style={styles.frameView2}>
-        <View style={styles.rectangleView1} />
+      <Text style={styles.sportText}>Sport</Text>
+      <SafeAreaView style={styles.frameView2}>
+        <SafeAreaView style={styles.rectangleView1} />
         <Text style={styles.sOCCERText}>SOCCER</Text>
         <Pressable
           style={styles.vectorPressable}
@@ -29,13 +55,13 @@ const CreateEvent = () => {
             source={require("../assets/vector51.png")}
           />
         </Pressable>
-      </View>
-      <View style={styles.frameView3}>
-        <View style={styles.rectangleView2} />
+      </SafeAreaView>
+      <SafeAreaView style={styles.frameView3}>
+        <SafeAreaView style={styles.rectangleView2} />
         <Text style={styles.text}>6</Text>
-      </View>
+      </SafeAreaView>
       <Text style={styles.locationText}>Location</Text>
-      <View style={styles.groupView}>
+      <SafeAreaView style={styles.groupView}>
         <Image
           style={styles.image1Icon}
           resizeMode="cover"
@@ -56,7 +82,7 @@ const CreateEvent = () => {
           resizeMode="cover"
           source={require("../assets/image-31.png")}
         />
-      </View>
+      </SafeAreaView>
       <Pressable
         style={styles.framePressable}
         onPress={() => navigation.navigate("MainPage")}
@@ -70,7 +96,7 @@ const CreateEvent = () => {
           style={styles.pressable}
           onPress={() => navigation.navigate("MainPage")}
         >
-          <Text style={styles.text1}>+</Text>
+          <Text style={styles.text1}>X</Text>
         </Pressable>
       </Pressable>
       <Pressable
@@ -84,25 +110,73 @@ const CreateEvent = () => {
         <Text style={styles.createEventText}>Create Event</Text>
       </Pressable>
       <Text style={styles.vs3Text}>3 vs 3</Text>
-      <Image
-        style={styles.datePickerIos14Calendar1Icon}
-        resizeMode="cover"
-        source={require("../assets/date-picker-ios14-calendar-1.png")}
-      />
-      <View style={styles.frameView4}>
-        <View style={styles.rectangleView3} />
+
+      <SafeAreaView style={styles.frameView4}>
+        <SafeAreaView style={styles.rectangleView3} />
         <Text style={styles.craverRdCharlotteNc28262}>
           craver rd, charlotte, nc 28262
         </Text>
-      </View>
-    </View>
+      </SafeAreaView>
+      <Button containerStyle={{top: "63.5%", left: "1.5%"}} titleStyle={{fontFamily: "GearUp", color:"#80ced7"}} buttonStyle={{width:"40%"}}color="#00060a" onPress={showDatepicker} title="10/27/2022" />
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          onChange={onChange}
+        />
+      )}
+      <Text style={{top: "55%", left: "1.5%", fontSize: 11, lineHeight: 14, fontFamily: "GearUp",color: "#000", textAlign: "left"}}>Date</Text>
+      <SafeAreaView style={styles.frameView2}>
+        <SafeAreaView style={styles.rectangleView1} />
+        <Text style={styles.sOCCERText}>SOCCER</Text>
+        <Pressable
+          style={styles.vectorPressable}
+          onPress={() => navigation.navigate("MainPage")}
+        >
+          <Image
+            style={styles.icon}
+            resizeMode="cover"
+            source={require("../assets/vector51.png")}
+          />
+        </Pressable>
+      </SafeAreaView>
+      <Button containerStyle={{top: "56%", left: "51.5%"}} titleStyle={{fontFamily: "GearUp", color:"#80ced7"}} buttonStyle={{width:"40%"}}color="#00060a" onPress={showDatepicker} title="02:30 PM" />
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          onChange={onChange}
+        />
+      )}
+      <Text style={{top: "47.5%", left: "51%", fontSize: 11, lineHeight: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}}>Time</Text>
+      <SafeAreaView style={styles.frameView2}>
+        <SafeAreaView style={styles.rectangleView1} />
+        <Text style={styles.sOCCERText}>SOCCER</Text>
+        <Pressable
+          style={styles.vectorPressable}
+          onPress={() => navigation.navigate("MainPage")}
+        >
+          <Image
+            style={styles.icon}
+            resizeMode="cover"
+            source={require("../assets/vector51.png")}
+          />
+        </Pressable>
+      </SafeAreaView>
+    </SafeAreaView>
+    
   );
 };
 
 const styles = StyleSheet.create({
   createNewEvent: {
     position: "absolute",
-    top: 39,
+    paddingTop: "3%",
+    top: "6%",
     left: 8,
     fontSize: 14,
     lineHeight: 14,
@@ -175,6 +249,13 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "left",
   },
+  datePicker: {
+    position: "absolute",
+    top: 7,
+    left: 77,
+    width: 221,
+    height: 231,
+  },
   rectangleView1: {
     position: "absolute",
     top: 0,
@@ -185,6 +266,7 @@ const styles = StyleSheet.create({
   },
   sOCCERText: {
     position: "absolute",
+    paddingTop: "2%",
     top: 19,
     left: 6,
     fontSize: 14,
@@ -224,6 +306,7 @@ const styles = StyleSheet.create({
   },
   text: {
     position: "absolute",
+    paddingTop: "52%",
     top: 16,
     left: 15,
     fontSize: 20,
@@ -288,27 +371,27 @@ const styles = StyleSheet.create({
   },
   ellipseIcon: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    width: 21,
-    height: 21,
+    top: 40,
+    left: 15,
+    width: 32,
+    height: 32,
   },
   text1: {
+    position: "relative",
+    paddingTop: 2,
+    left: 20,
+    top: 44,
+    bottom: "0%",
     fontSize: 20,
     lineHeight: 14,
     fontFamily: "Assistant",
     color: "#9ad1d4",
     textAlign: "left",
-    transform: [
-      {
-        rotate: "-45deg",
-      },
-    ],
   },
   pressable: {
     position: "absolute",
-    left: 2,
-    top: 9.07,
+    left: 4,
+    top: 6,
   },
   framePressable: {
     position: "absolute",
@@ -327,8 +410,9 @@ const styles = StyleSheet.create({
   },
   createEventText: {
     position: "absolute",
-    top: 12,
-    left: 89,
+    paddingTop: "2%",
+    top: "25%",
+    left: "27.5%",
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -344,6 +428,7 @@ const styles = StyleSheet.create({
   },
   vs3Text: {
     position: "absolute",
+    paddingTop: 12,
     top: 201,
     left: 267,
     fontSize: 20,
@@ -353,13 +438,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 94,
     height: 38,
-  },
-  datePickerIos14Calendar1Icon: {
-    position: "absolute",
-    top: 521,
-    left: 77,
-    width: 221,
-    height: 231,
   },
   rectangleView3: {
     position: "absolute",
@@ -371,6 +449,7 @@ const styles = StyleSheet.create({
   },
   craverRdCharlotteNc28262: {
     position: "absolute",
+    paddingTop: "1%",
     top: 19,
     left: 6,
     fontSize: 14,

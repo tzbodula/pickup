@@ -5,10 +5,13 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  Dimensions,
   SafeAreaView,
-  Button,
   ImageBackground,
 } from "react-native";
+
+import { Button } from "@rneui/themed";
+
 import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
@@ -84,10 +87,15 @@ const Login = () => {
               resizeMode="cover"
               source={require("../assets/leading-icon7.png")}
             />
-            <Text style={[styles.text2, styles.ml4]}><Button title="Login"></Button></Text>
+            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%"}} titleStyle={{fontFamily: 'GearUp'}}></Button>
           </SafeAreaView>
         </Pressable>
       </SafeAreaView>
+      <Image
+        style={{top: 600}}
+        resizeMode="cover"
+        source={require("../assets/pickup-logo.png")}
+      />
     </SafeAreaView>
   );
 };
@@ -125,8 +133,9 @@ const styles = StyleSheet.create({
   },
   pickUpText: {
     position: "absolute",
-    top: 40,
-    left: 90,
+    paddingTop: "18%",
+    top: "5%",
+    left: "27%",
     fontSize: 40,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -135,8 +144,8 @@ const styles = StyleSheet.create({
   },
   loginToYourAccount: {
     position: "absolute",
-    top: 81,
-    left: 101,
+    top: "15%",
+    left: "30%",
     fontSize: 10,
     lineHeight: 18,
     fontFamily: "GearUp",
@@ -168,7 +177,7 @@ const styles = StyleSheet.create({
   text: {
     position: "relative",
     fontSize: 10,
-    lineHeight: 18,
+    lineHeight: 14,
     fontFamily: "GearUp",
     color: "#111",
     textAlign: "left",
@@ -203,10 +212,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "100%",
     width: "100%",
-    top: "0%",
+    top: "65%",
     right: "0%",
     bottom: "0%",
-    left: "0%",
+    left: "5%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -245,7 +254,7 @@ const styles = StyleSheet.create({
   text1: {
     position: "relative",
     fontSize: 10,
-    lineHeight: 18,
+    lineHeight: 14,
     fontFamily: "GearUp",
     color: "#111",
     textAlign: "left",
@@ -280,10 +289,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "100%",
     width: "100%",
-    top: "0%",
+    top: "65%",
     right: "0%",
     bottom: "0%",
-    left: "0%",
+    left: "5%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -299,10 +308,10 @@ const styles = StyleSheet.create({
   },
   property1DefaultIcon: {
     position: "absolute",
-    top: 20,
-    left: 11,
-    width: 384,
-    height: 812,
+    top: 0,
+    left: 0,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     overflow: "hidden",
   },
   loginView: {
@@ -313,8 +322,8 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderColor: "#9747ff",
     borderWidth: 1,
-    width: 405,
-    height: 833,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     overflow: "hidden",
   },
   bgView: {
@@ -1708,10 +1717,10 @@ const styles = StyleSheet.create({
   },
   leftButtonPressable: {
     position: "absolute",
-    height: "86.96%",
-    width: "96%",
+    height: "100%",
+    width: "100%",
     top: "0%",
-    right: "4%",
+    right: "5%",
     bottom: "13.04%",
     left: "0%",
     borderTopLeftRadius: 4,
@@ -1732,8 +1741,8 @@ const styles = StyleSheet.create({
   loginView2: {
     position: "relative",
     flex: 1,
-    width: "100%",
-    height: 829,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 });
 

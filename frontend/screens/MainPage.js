@@ -27,18 +27,44 @@ const MainPage = () => {
         barStyle="dark-content"
         showHideTransition="fade"
         hidden={false} />
-      <SafeAreaView style={styles.footerView} >
-        <Pressable
+      <SafeAreaView style={styles.footerView}>
+      <Pressable
           style={styles.singleTabPressable}
           onPress={() => navigation.navigate("ProfileUser")}
         >
           <SafeAreaView style={styles.iconAndText}>
             <Image
-              style={styles.accountIcon}
+              style={styles.homeIcon}
               resizeMode="cover"
-              source={require("../assets/home.png")}
+              source={require("../assets/home7.png")}
             />
             <Text style={[styles.text, styles.mt2]}>Account</Text>
+          </SafeAreaView>
+        </Pressable>
+        <Pressable
+          style={styles.singleTabPressable1}
+          onPress={() => navigation.navigate("Friends")}
+        >
+          <SafeAreaView style={styles.iconAndText1}>
+            <Image
+              style={styles.userIcon}
+              resizeMode="cover"
+              source={require("../assets/user.png")}
+            />
+            <Text style={[styles.text1, styles.mt2]}>Friends</Text>
+          </SafeAreaView>
+        </Pressable>
+        <Pressable
+          style={styles.singleTabPressable2}
+          onPress={() => navigation.navigate("Map")}
+        >
+          <SafeAreaView style={styles.iconAndText2}>
+            <Image
+              style={styles.compassIcon}
+              resizeMode="cover"
+              source={require("../assets/compass.png")}
+            />
+            <Text style={[styles.text2, styles.mt2]}>Map</Text>
           </SafeAreaView>
         </Pressable>
         <Pressable
@@ -51,6 +77,19 @@ const MainPage = () => {
             source={require("../assets/ellipse-1.png")}
           />
           <Text style={styles.addEventPlus}>+</Text>
+        </Pressable>
+        <Pressable
+          style={styles.singleTabPressable3}
+          onPress={() => navigation.navigate("MainPage")}
+        >
+          <SafeAreaView style={styles.iconAndText3}>
+            <Image
+              style={styles.searchIcon}
+              resizeMode="cover"
+              source={require("../assets/search.png")}
+            />
+            <Text style={[styles.text4, styles.mt2]}>Events</Text>
+          </SafeAreaView>
         </Pressable>
       </SafeAreaView>
       <SafeAreaView style={styles.rectangleView} />
@@ -94,11 +133,15 @@ const MainPage = () => {
           source={require("../assets/vector.png")}
         />
       </Pressable>
-      <ImageBackground
-        style={styles.eventImage}
-        resizeMode="cover"
-        source={require("../assets/chestnut1.png")}
-      />
+      <Pressable
+        onPress={() => navigation.navigate("EventDetails")}
+      >
+        <ImageBackground
+          style={styles.eventImage}
+          resizeMode="cover"
+          source={require("../assets/chestnut1.png")}
+        />
+      </Pressable>
 
       <Pressable
         style={styles.rectanglePressable}
@@ -213,6 +256,80 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     overflow: "hidden",
   },
+  singleTabPressable1: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.32%",
+    top: "17.65%",
+    right: "57.35%",
+    bottom: "0%",
+    left: "21.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  userIcon: {
+    position: "relative",
+    width: 24,
+    height: 24,
+    flexShrink: 0,
+    overflow: "hidden",
+  },
+  text1: {
+    position: "relative",
+    fontSize: 7,
+    lineHeight: 14,
+    fontFamily: "GearUp",
+    color: "#111",
+    textAlign: "center",
+  },
+  iconAndText1: {
+    position: "absolute",
+    transform: [
+      {
+        translateY: -20,
+      },
+      {
+        translateX: -21.97,
+      },
+    ],
+    top: "50%",
+    left: "50%",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  compassIcon: {
+    position: "relative",
+    width: 24,
+    height: 24,
+    flexShrink: 0,
+    overflow: "hidden",
+  },
+  text2: {
+    position: "relative",
+    fontSize: 7,
+    lineHeight: 14,
+    fontFamily: "GearUp",
+    color: "#111",
+    textAlign: "center",
+  },
+  iconAndText2: {
+    position: "absolute",
+    transform: [
+      {
+        translateY: -20,
+      },
+      {
+        translateX: -12.97,
+      },
+    ],
+    top: "50%",
+    left: "50%",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+
   addEventCircle: {
     position: "absolute",
     height: "100%",
@@ -220,7 +337,7 @@ const styles = StyleSheet.create({
     top: "0%",
     right: "0%",
     bottom: "0%",
-    left: "0%",
+    left: "30%",
     maxWidth: "100%",
     overflow: "hidden",
     maxHeight: "100%",
@@ -230,13 +347,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "47.46%",
     width: "49.15%",
-    top: "27.12%",
+    top: "28.2%",
     right: "25.42%",
     bottom: "25.42%",
-    left: "25.42%",
+    left: "54.42%",
     fontSize: 48,
     lineHeight: 18,
-    fontFamily: "Arsenal",
+    fontFamily: "GearUp",
     color: "#80ced7",
     textAlign: "center",
   },
@@ -247,11 +364,64 @@ const styles = StyleSheet.create({
     width: 59,
     height: 59,
   },
+  searchIcon: {
+    position: "relative",
+    width: 24,
+    height: 24,
+    flexShrink: 0,
+    overflow: "hidden",
+  },
+  text4: {
+    position: "relative",
+    fontSize: 7,
+    lineHeight: 14,
+    fontFamily: "GearUp",
+    color: "#111",
+    textAlign: "center",
+  },
+  iconAndText3: {
+    position: "absolute",
+    transform: [
+      {
+        translateY: -20,
+      },
+      {
+        translateX: -20.5,
+      },
+    ],
+    top: "50%",
+    left: "50%",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  singleTabPressable2: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.32%",
+    top: "17.65%",
+    right: "21.35%",
+    bottom: "0%",
+    left: "57.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  singleTabPressable3: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.33%",
+    top: "17.65%",
+    right: "78.67%",
+    bottom: "0%",
+    left: "0%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
   footerView: {
     position: "absolute",
-    top: 729,
+    top: Dimensions.get('window').height * 0.85,
     left: 0,
-    width: 375,
+    width: Dimensions.get('window').width,
     height: 68,
   },
   rectangleView: {
@@ -568,16 +738,12 @@ const styles = StyleSheet.create({
     height: 16,
   },
   text4: {
-    position: "absolute",
-    top: 518,
-    left: 17,
-    fontSize: 14,
+    position: "relative",
+    fontSize: 7,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#fff",
-    textAlign: "left",
-    width: 193,
-    height: 16,
+    color: "#111",
+    textAlign: "center",
   },
   text5: {
     position: "absolute",
