@@ -67,7 +67,6 @@ router.post('/event',  (req, res) => {
             (event_name, account_id, sport_id, maximum_players, event_location, event_date, event_time, current_players)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
     
-    // Return this back to the frontend people so that they can add the user to the event
     db.query(insertStatement, eventToAdd, (err, result) => {
         const event_id = result.insertId;
         const insertStatement =  
