@@ -50,6 +50,7 @@ router.post('/:id/delete',  (req, res) => {
     const query = `DELETE FROM pickup_events WHERE event_id = ?`
 
     db.query(query, [req.params.id], (err, result) => {
+        console.log(result)
         if (result === undefined || result.length == 0) {
             return res.status(400).send({
                 message:"Error. Event cannot be found.",
@@ -140,7 +141,7 @@ router.get('/:id',  (req, res) => {
 
 router.get('/:id/players',  (req, res) => {
 
-    const query = `SELECT accounts.account_username, accounts.games_joined, accounts.games_attended FROM player_event 
+    const query = `SELECT accounts.account_id, accounts.account_username, accounts.games_joined, accounts.games_attended FROM player_event 
     JOIN accounts ON player_event.account_id = accounts.account_id 
     WHERE event_id = ? ;`
 

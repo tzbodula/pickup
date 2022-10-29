@@ -9,7 +9,7 @@ const router = Router();
 
 //TODO. using user sessions, obtain my information
 router.get('/',  (req, res) => {
-    return res.status(200).send('This is me. I am logged in');
+    return res.status(200).send({message: 'This is me. I am logged in', status: 200});
 });
 
 router.post('/login', (req, res) => {
@@ -30,7 +30,7 @@ router.post('/login', (req, res) => {
         req.session.user_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: account_id});
     })
     
 })
@@ -38,7 +38,8 @@ router.post('/login', (req, res) => {
 router.post('/logout', (req, res) => {
     req.session.destroy();
     return res.status(200).send({
-        message:'Logged out successfully'
+        message:'Logged out successfully',
+        status: 200
     });
 })
 
@@ -76,13 +77,10 @@ router.post('/event',  (req, res) => {
             if (err) {
                 console.log(err)
             }
-            return res.status(200).send('User has been added to the event!');
+            return res.status(200).send({message: 'User has been added to the event!', status: 200});
         });
     })
     
 })
-
-
-
 
 module.exports = router;
