@@ -75,22 +75,6 @@ router.post('/:id/delete',  (req, res) => {
             });
         });
     })
-    // const query = `DELETE FROM pickup_events WHERE event_id = ?`
-
-    // db.query(query, [req.params.id], (err, result) => {
-    //     console.log(result)
-    //     if (result === undefined || result.length == 0) {
-    //         return res.status(400).send({
-    //             message:"Error. Event cannot be found.",
-    //             status: 400
-    //         })
-    //     }
-
-    //     return res.status(200).send({
-    //         message: "Event deleted.",
-    //         status: 200
-    //     });
-    // });
     
 });
 
