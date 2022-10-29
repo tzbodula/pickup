@@ -7,10 +7,17 @@ const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
-//TODO. using user sessions, obtain my information
 router.get('/',  (req, res) => {
-    return res.status(200).send('This is me. I am logged in');
+    if (req.session.user_id == null) {
+        return res.status(200).send({status: 400, message: "Not authorized"})
+    }
+    user_id = req.session.user_id;
+    const query = `SELECT * FROM accounts WHERE account_id = ? ;`
+    db.query(query, [user_id], (err, result) => {
+        return res.status(200).send({data: result[0], status: 200})
+    })
 });
+
 
 router.post('/login', (req, res) => {
     const username = req.body.username;
@@ -30,7 +37,7 @@ router.post('/login', (req, res) => {
         req.session.user_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.user_id});
     })
     
 })
@@ -38,7 +45,8 @@ router.post('/login', (req, res) => {
 router.post('/logout', (req, res) => {
     req.session.destroy();
     return res.status(200).send({
-        message:'Logged out successfully'
+        message:'Logged out successfully',
+        status: 200
     });
 })
 
@@ -62,7 +70,6 @@ router.post('/event',  (req, res) => {
             (event_name, account_id, sport_id, maximum_players, event_location, event_date, event_time, current_players)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
     
-    // Return this back to the frontend people so that they can add the user to the event
     db.query(insertStatement, eventToAdd, (err, result) => {
         const event_id = result.insertId;
         const insertStatement =  
@@ -76,13 +83,10 @@ router.post('/event',  (req, res) => {
             if (err) {
                 console.log(err)
             }
-            return res.status(200).send('User has been added to the event!');
+            return res.status(200).send({message: 'User has been added to the event!', status: 200});
         });
     })
     
 })
-
-
-
 
 module.exports = router;

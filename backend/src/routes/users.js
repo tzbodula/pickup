@@ -19,11 +19,11 @@ router.post('/', (req, res) => {
         0
     ];
 
-    const query = `SELECT * FROM accounts WHERE account_username = ? OR account_password = ? ;`
-    db.query(query, [req.body.username, req.body.password], (err, result) => {
+    const query = `SELECT * FROM accounts WHERE account_username = ? OR email = ? ;`
+    db.query(query, [req.body.username, req.body.email], (err, result) => {
         //handle any errors
         if (result[0]) {
-            return res.status(400).send('Username or Password is already in use');
+            return res.status(400).send({message: 'Username or Password is already in use', status:400});
         }
         const insertStatement =
         `INSERT INTO accounts
@@ -34,13 +34,8 @@ router.post('/', (req, res) => {
         //Handle any errors
     });
 
-    return res.status(200).send('Successful Creation'); 
+    return res.status(200).send({message:'Successful Creation', status:200}); 
     });
-});
-
-// Get's the information of the currently logged in user (this is assuming a session has been implemented)
-router.get('/', (req, res) => {
-
 });
 
 // Gets the ID of some other user
@@ -51,10 +46,10 @@ router.get('/:id', (req, res) => {
 
     db.query(query, [req.params.id], (err, result) => {
         if (result === undefined || result.length == 0) {
-            return res.status(400).send("Not found");
+            return res.status(400).send({message: "Not found", status: 400});
         }
     
-        return res.status(200).send(result[0]);
+        return res.status(200).send({data: result[0], status: 200});
     });
 
     
@@ -69,10 +64,10 @@ router.get('/:id/sports',  (req, res) => {
 
     db.query(query, [req.params.id], (err, result) => {
         if (result === undefined || result.length == 0) {
-            return res.status(400).send("Not found");
+            return res.status(400).send({message: "Not found", status: 400});
         }
     
-        return res.status(200).send(result);
+        return res.status(200).send({data: result, status: 200});
     });
     
     
