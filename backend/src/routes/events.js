@@ -88,17 +88,20 @@ router.post('/:id/join',  (req, res) => {
                 status: 400
             })
         }
+
         if(result[0].currentplayers == result[0].maximum_players){
             return res.status(400).send({
                 message: "Error. Event is already full.",
                 status: 400
             })
         }
+
         const usertoJoin = [
             req.session.user_id,
             req.params.id,
             0
         ];
+        
         const query2 = 
         `INSERT INTO player_event
             (account_id, event_id, is_leader)
