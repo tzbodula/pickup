@@ -38,11 +38,6 @@ router.post('/', (req, res) => {
     });
 });
 
-// Get's the information of the currently logged in user (this is assuming a session has been implemented)
-router.get('/', (req, res) => {
-
-});
-
 // Gets the ID of some other user
 router.get('/:id', (req, res) => {
 

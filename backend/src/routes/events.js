@@ -47,22 +47,50 @@ router.get('/',  (req, res) => {
 
 // Event deletion
 router.post('/:id/delete',  (req, res) => {
-    const query = `DELETE FROM pickup_events WHERE event_id = ?`
 
+    // Validate
+    const query = `SELECT * FROM pickup_events WHERE event_id = ?`
+
+    if (!req.session.user_id) {
+        return res.status(401).json({message: "unauthorized to make a delete", status: 401})
+    }
     db.query(query, [req.params.id], (err, result) => {
-        console.log(result)
-        if (result === undefined || result.length == 0) {
-            return res.status(400).send({
-                message:"Error. Event cannot be found.",
-                status: 400
-            })
+        // Make sure that the user requesting this deletion is the actual logged in user
+        if (result[0].account_id != req.session.user_id || result === undefined || result.length == 0) {
+            return res.status(401).json({message: "unauthorized to make a delete", status: 401})
         }
 
-        return res.status(200).send({
-            message: "Event deleted.",
-            status: 200
+        const query = `DELETE FROM pickup_events WHERE event_id = ?`
+        db.query(query, [req.params.id], (err, result) => {
+            console.log(result)
+            if (result === undefined || result.length == 0) {
+                return res.status(400).send({
+                    message:"Error. Event cannot be found.",
+                    status: 400
+                })
+            }
+            return res.status(200).send({
+                message: "Event deleted.",
+                status: 200
+            });
         });
-    });
+    })
+    // const query = `DELETE FROM pickup_events WHERE event_id = ?`
+
+    // db.query(query, [req.params.id], (err, result) => {
+    //     console.log(result)
+    //     if (result === undefined || result.length == 0) {
+    //         return res.status(400).send({
+    //             message:"Error. Event cannot be found.",
+    //             status: 400
+    //         })
+    //     }
+
+    //     return res.status(200).send({
+    //         message: "Event deleted.",
+    //         status: 200
+    //     });
+    // });
     
 });
 

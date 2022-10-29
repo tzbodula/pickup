@@ -7,10 +7,14 @@ const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
-//TODO. using user sessions, obtain my information
 router.get('/',  (req, res) => {
-    return res.status(200).send({message: 'This is me. I am logged in', status: 200});
+    user_id = req.session.user_id;
+    const query = `SELECT * FROM accounts WHERE account_id = ? ;`
+    db.query(query, [user_id], (err, result) => {
+        return res.status(200).send({data: result[0], status: 200})
+    })
 });
+
 
 router.post('/login', (req, res) => {
     const username = req.body.username;
@@ -30,7 +34,7 @@ router.post('/login', (req, res) => {
         req.session.user_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200, account_id: account_id});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.user_id});
     })
     
 })
