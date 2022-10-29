@@ -8,6 +8,9 @@ const checkSession = require('../utils/sessionChecker')
 const router = Router();
 
 router.get('/',  (req, res) => {
+    if (req.session.user_id == null) {
+        return res.status(200).send({status: 400, message: "Not authorized"})
+    }
     user_id = req.session.user_id;
     const query = `SELECT * FROM accounts WHERE account_id = ? ;`
     db.query(query, [user_id], (err, result) => {
