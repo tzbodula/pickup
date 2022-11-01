@@ -7,16 +7,6 @@ const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
-
-router.get('/sports', (req, res) => {
-    const query = `SELECT * FROM player_sport_favorite
-    JOIN sports ON player_sport_favorite.sport_id = sports.sport_id
-    WHERE player_sport_favorite.account_id = ?
-    ;`
-
-    db.query(query, [req.session.account_id])
-})
-
 router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password; //TODO hash the password and compare it to the password field in the DB
@@ -97,5 +87,16 @@ router.get('/',  (req, res) => {
         return res.status(200).send({data: result[0], status: 200})
     })
 });
+
+router.get('/sports', (req, res) => {
+    const query = `SELECT * FROM player_sport_favorite
+    JOIN sports ON player_sport_favorite.sport_id = sports.sport_id
+    WHERE player_sport_favorite.account_id = ?
+    ;`
+
+    db.query(query, [req.session.account_id], (err, result) => {
+        return res.status(200).send({data: result})
+    })
+})
 
 module.exports = router;
