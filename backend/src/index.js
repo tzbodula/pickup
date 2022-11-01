@@ -7,7 +7,7 @@ const session = require('express-session');
 const usersRoute = require('./routes/users');
 const eventsRoute = require('./routes/events');
 const currentUserRoute = require('./routes/user');
-
+const sportsRoute = require('./routes/sports')
 const app = express();
 const PORT = 3000;
 
@@ -27,4 +27,5 @@ app.use(session({
 app.use('/users', usersRoute);
 app.use('/events', eventsRoute);
 app.use('/user', currentUserRoute);
+app.use('/sports', sportsRoute);
 app.listen(PORT, () => console.log("app started"));
