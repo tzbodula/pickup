@@ -51,12 +51,12 @@ router.post('/:id/delete',  (req, res) => {
     // Validate
     const query = `SELECT * FROM pickup_events WHERE event_id = ?`
 
-    if (!req.session.user_id) {
+    if (!req.session.account_id) {
         return res.status(401).json({message: "unauthorized to make a delete", status: 401})
     }
     db.query(query, [req.params.id], (err, result) => {
         // Make sure that the user requesting this deletion is the actual logged in user
-        if (result[0].account_id != req.session.user_id || result === undefined || result.length == 0) {
+        if (result[0].account_id != req.session.account_id || result === undefined || result.length == 0) {
             return res.status(401).json({message: "unauthorized to make a delete", status: 401})
         }
 
@@ -97,7 +97,7 @@ router.post('/:id/join',  (req, res) => {
         }
 
         const usertoJoin = [
-            req.session.user_id,
+            req.session.account_id,
             req.params.id,
             0
         ];
