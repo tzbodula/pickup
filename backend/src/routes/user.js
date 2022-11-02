@@ -7,18 +7,6 @@ const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
 
-router.get('/',  (req, res) => {
-    if (req.session.user_id == null) {
-        return res.status(200).send({status: 400, message: "Not authorized"})
-    }
-    user_id = req.session.user_id;
-    const query = `SELECT * FROM accounts WHERE account_id = ? ;`
-    db.query(query, [user_id], (err, result) => {
-        return res.status(200).send({data: result[0], status: 200})
-    })
-});
-
-
 router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password; //TODO hash the password and compare it to the password field in the DB
@@ -34,10 +22,10 @@ router.post('/login', (req, res) => {
             })
         }
     
-        req.session.user_id = result[0].account_id;
+        req.session.account_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.user_id});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.account_id});
     })
     
 })
@@ -56,7 +44,7 @@ router.post('/logout', (req, res) => {
 router.post('/event',  (req, res) => {
     const eventToAdd = [
         req.body.event_name,
-        req.session.user_id, //This will always be the current session user_id
+        req.session.account_id, //This will always be the current session account_id
         req.body.sport_id, //Note: frontend has to figure our how to get sport_id from list
         req.body.total_players,
         req.body.date,
@@ -79,7 +67,7 @@ router.post('/event',  (req, res) => {
             VALUES (?, ?, ?);
         `;
     
-        db.query(insertStatement, [req.session.user_id, event_id, true], (err, result) => {
+        db.query(insertStatement, [req.session.account_id, event_id, true], (err, result) => {
             if (err) {
                 console.log(err)
             }
@@ -87,6 +75,28 @@ router.post('/event',  (req, res) => {
         });
     })
     
+})
+
+router.get('/',  (req, res) => {
+    if (req.session.account_id == null) {
+        return res.status(200).send({status: 400, message: "Not authorized"})
+    }
+    const account_id = req.session.account_id;
+    const query = `SELECT * FROM accounts WHERE account_id = ? ;`
+    db.query(query, [account_id], (err, result) => {
+        return res.status(200).send({data: result[0], status: 200})
+    })
+});
+
+router.get('/sports', (req, res) => {
+    const query = `SELECT * FROM player_sport_favorite
+    JOIN sports ON player_sport_favorite.sport_id = sports.sport_id
+    WHERE player_sport_favorite.account_id = ?
+    ;`
+
+    db.query(query, [req.session.account_id], (err, result) => {
+        return res.status(200).send({data: result})
+    })
 })
 
 module.exports = router;
