@@ -689,7 +689,7 @@ const styles = StyleSheet.create({
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "center",
-    width: 60,
+    width: 70,
     height: 25,
   },
   gamesPlayedText: {
