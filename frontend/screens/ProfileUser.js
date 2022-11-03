@@ -8,37 +8,40 @@ import { AirbnbRating } from 'react-native-ratings';
 import {LOCAL_IP} from '@env';
 
 
-let username = "Test";
-let rating = -1;
-let gamesJoined = -1;
-let gamesAttended = 0;
-let bio = "Example bio";
-
-const retrieveInfo = () => {
-  try {
-    fetch(`http://${LOCAL_IP}:3000/user/`, {
-      method: 'GET',
-      headers: {
-      'Content-Type': 'application/json'}
-    }).then((res) => {return res.json()})
-    .then((retrieved) => {
-      if (retrieved.status == 200) {
-        username = retrieved.data.account_username
-        rating = retrieved.data.rating
-        gamesJoined = retrieved.data.games_joined
-        gamesAttended = retrieved.data.games_attended;
-        // bio = data.data.bio;
-      }
-    })  
-  } catch(e) {
-    console.log(e)
-  }
-}
-retrieveInfo();
-
 const ProfileUser = () => {
   const navigation = useNavigation();
   
+  let username = "Test";
+  let rating = -1;
+  let gamesJoined = -1;
+  let gamesAttended = 0;
+  let bio = "Example bio";
+
+  const retrieveInfo = () => {
+    try {
+      fetch(`http://${LOCAL_IP}:3000/user/`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json'}
+      }).then((res) => {return res.json()})
+      .then((retrieved) => {
+        if (retrieved.status == 200) {
+          username = retrieved.data.account_username
+          rating = retrieved.data.rating
+          gamesJoined = retrieved.data.games_joined
+          gamesAttended = retrieved.data.games_attended;
+          // bio = data.data.bio;
+        }
+      })  
+    } catch(e) {
+      console.log(e)
+    }
+  }
+  retrieveInfo();
+  // console.log(username);
+  // console.log(rating);
+  // console.log(gamesJoined);
+  // console.log(gamesAttended);
   
   return (
     <SafeAreaView style={styles.profileUserView}>
