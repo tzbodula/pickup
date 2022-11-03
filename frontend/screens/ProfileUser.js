@@ -8,6 +8,27 @@ import { AirbnbRating } from 'react-native-ratings';
 import {LOCAL_IP} from '@env';
 
 
+async function retrieveInfo(){
+  try {
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+      method: 'GET',
+      headers: {
+      'Content-Type': 'application/json'}
+    }).then((res) => {return res.json()})
+    .then((retrieved) => {
+      if (retrieved.status == 200) {
+        username = retrieved.data.account_username
+        rating = retrieved.data.rating
+        gamesJoined = retrieved.data.games_joined
+        gamesAttended = retrieved.data.games_attended;
+        // bio = data.data.bio;
+      }
+    })  
+  } catch(e) {
+    console.log(e)
+  }
+}
+
 const ProfileUser = () => {
   const navigation = useNavigation();
   
@@ -17,27 +38,8 @@ const ProfileUser = () => {
   let gamesAttended = 0;
   let bio = "Example bio";
 
-  const retrieveInfo = () => {
-    try {
-      fetch(`http://${LOCAL_IP}:3000/user/`, {
-        method: 'GET',
-        headers: {
-        'Content-Type': 'application/json'}
-      }).then((res) => {return res.json()})
-      .then((retrieved) => {
-        if (retrieved.status == 200) {
-          username = retrieved.data.account_username
-          rating = retrieved.data.rating
-          gamesJoined = retrieved.data.games_joined
-          gamesAttended = retrieved.data.games_attended;
-          // bio = data.data.bio;
-        }
-      })  
-    } catch(e) {
-      console.log(e)
-    }
-  }
-  retrieveInfo();
+  
+  let result = await retrieveInfo();
   // console.log(username);
   // console.log(rating);
   // console.log(gamesJoined);
