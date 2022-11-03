@@ -5,10 +5,41 @@ import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "@rneui/base";
 
 import { AirbnbRating } from 'react-native-ratings';
+import {LOCAL_IP} from '@env';
+
+
+let username = "Test";
+let rating = -1;
+let gamesJoined = -1;
+let gamesAttended = 0;
+let bio = "Example bio";
+
+const retrieveInfo = () => {
+  try {
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+      method: 'GET',
+      headers: {
+      'Content-Type': 'application/json'}
+    }).then((res) => {return res.json()})
+    .then((retrieved) => {
+      if (retrieved.status == 200) {
+        username = retrieved.data.account_username
+        rating = retrieved.data.rating
+        gamesJoined = retrieved.data.games_joined
+        gamesAttended = retrieved.data.games_attended;
+        // bio = data.data.bio;
+      }
+    })  
+  } catch(e) {
+    console.log(e)
+  }
+}
+retrieveInfo();
 
 const ProfileUser = () => {
   const navigation = useNavigation();
-
+  
+  
   return (
     <SafeAreaView style={styles.profileUserView}>
      <SafeAreaView style={styles.footerView}>
@@ -97,11 +128,11 @@ const ProfileUser = () => {
         icon='../assets/icon.png' 
       />
 
-      <Text style={styles.dOTUNIVERSITY4Text}>PICKUPDEVTEAM</Text>
-      <AirbnbRating size={20} defaultRating={4} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
-      <Text style={styles.allIKnowAreDots}>see you on the court</Text>
-      <Text style={styles.text5}>30</Text>
-      <Text style={styles.text6}>92%</Text>
+      <Text style={styles.dOTUNIVERSITY4Text}>{username}</Text>
+      <AirbnbRating size={20} defaultRating={rating} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
+      <Text style={styles.allIKnowAreDots}>{bio}</Text>
+      <Text style={styles.text5}>{gamesAttended}</Text>
+      <Text style={styles.text6}>{(((1.0 * gamesAttended) / gamesJoined) * 100)}%</Text>
       <Text style={styles.gamesPlayedText}>Games Played</Text>
       <Text style={styles.attendanceRateText}>Attendance Rate</Text>
       <Pressable
