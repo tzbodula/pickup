@@ -9,17 +9,45 @@ import {
   SafeAreaView,
   Pressable,
   ImageBackground,
-  
+
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { StatusBar } from 'expo-status-bar';
 
+import { useState, useEffect } from 'react'
+
+import { LOCAL_IP } from '@env';
+
+import { Card } from "@rneui/themed";
+
+let marginOffset = -30;
 const MainPage = () => {
   const navigation = useNavigation();
 
+  const [currentEvents, setCurrentEvents] = useState(null)
 
-  return (
+
+  useEffect(() => {
+    try {
+      fetch(`http://${LOCAL_IP}:3000/events/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((res) => { return res.json() })
+        .then((retrieved) => {
+          if (retrieved.status == 200) {
+            setCurrentEvents(retrieved.data)
+          }
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  }, [])
+
+
+  if (currentEvents == null) {
     <SafeAreaView style={styles.mainPageView} >
       <StatusBar
         animated={true}
@@ -28,7 +56,7 @@ const MainPage = () => {
         showHideTransition="fade"
         hidden={false} />
       <SafeAreaView style={styles.footerView}>
-      <Pressable
+        <Pressable
           style={styles.singleTabPressable}
           onPress={() => navigation.navigate("ProfileUser")}
         >
@@ -133,38 +161,9 @@ const MainPage = () => {
           source={require("../assets/vector.png")}
         />
       </Pressable>
-      <Pressable
-        onPress={() => navigation.navigate("EventDetails")}
-      >
-        <ImageBackground
-          style={styles.eventImage}
-          resizeMode="cover"
-          source={require("../assets/chestnut1.png")}
-        />
-      </Pressable>
 
-      <Pressable
-        style={styles.rectanglePressable}
-        onPress={() => navigation.navigate("EventDetails")}
-      />
-      <Pressable
-        style={styles.rectanglePressable1}
-        onPress={() => navigation.navigate("EventDetails")}
-      />
-      <Pressable
-        style={styles.rectanglePressable2}
-        onPress={() => navigation.navigate("EventDetails")}
-      />
-      <Pressable
-        style={styles.rectanglePressable3}
-        onPress={() => navigation.navigate("EventDetails")}
-      />
-      <Text style={styles.eventTitle}>4v4 FLAG</Text>
-      <Text style={styles.eventTime}>7:30 PM</Text>
-      <Text style={styles.eventLocation}>INDIAN TRAIL, NC</Text>
-      <Text style={styles.eventHostName}>WHOWANTSMOKE?</Text>
-      <Text style={styles.eventDate}>10/25/2022</Text>
-      <Text style={styles.eventPlayerCount}>6/8 PLAYERS</Text>
+      <Text>Loading</Text>
+
       <Image
         style={styles.sportIcon}
         resizeMode="cover"
@@ -185,11 +184,6 @@ const MainPage = () => {
         resizeMode="cover"
         source={require("../assets/tennis-racket-1.png")}
       />
-      <ImageBackground
-        style={styles.crownIcon}
-        resizeMode="cover"
-        source={require("../assets/crown1.png")}
-      />
 
       <SafeAreaView style={styles.changeMilesView}>
         <Text style={styles.mILESMAXText}>30 MILES MAX</Text>
@@ -207,7 +201,214 @@ const MainPage = () => {
         />
       </SafeAreaView>
     </SafeAreaView>
-  );
+  } else {
+    console.log("Data loaded", currentEvents)
+    return (
+      <SafeAreaView style={styles.mainPageView} >
+        <StatusBar
+          animated={true}
+          backgroundColor="#61dafb"
+          barStyle="dark-content"
+          showHideTransition="fade"
+          hidden={false} />
+        <SafeAreaView style={styles.footerView}>
+          <Pressable
+            style={styles.singleTabPressable}
+            onPress={() => navigation.navigate("ProfileUser")}
+          >
+            <SafeAreaView style={styles.iconAndText}>
+              <Image
+                style={styles.homeIcon}
+                resizeMode="cover"
+                source={require("../assets/home7.png")}
+              />
+              <Text style={[styles.text, styles.mt2]}>Account</Text>
+            </SafeAreaView>
+          </Pressable>
+          <Pressable
+            style={styles.singleTabPressable1}
+            onPress={() => navigation.navigate("Friends")}
+          >
+            <SafeAreaView style={styles.iconAndText1}>
+              <Image
+                style={styles.userIcon}
+                resizeMode="cover"
+                source={require("../assets/user.png")}
+              />
+              <Text style={[styles.text1, styles.mt2]}>Friends</Text>
+            </SafeAreaView>
+          </Pressable>
+          <Pressable
+            style={styles.singleTabPressable2}
+            onPress={() => navigation.navigate("Map")}
+          >
+            <SafeAreaView style={styles.iconAndText2}>
+              <Image
+                style={styles.compassIcon}
+                resizeMode="cover"
+                source={require("../assets/compass.png")}
+              />
+              <Text style={[styles.text2, styles.mt2]}>Map</Text>
+            </SafeAreaView>
+          </Pressable>
+          <Pressable
+            style={styles.framePressable}
+            onPress={() => navigation.navigate("CreateEvent")}
+          >
+            <Image
+              style={styles.addEventCircle}
+              resizeMode="cover"
+              source={require("../assets/ellipse-1.png")}
+            />
+            <Text style={styles.addEventPlus}>+</Text>
+          </Pressable>
+          <Pressable
+            style={styles.singleTabPressable3}
+            onPress={() => navigation.navigate("MainPage")}
+          >
+            <SafeAreaView style={styles.iconAndText3}>
+              <Image
+                style={styles.searchIcon}
+                resizeMode="cover"
+                source={require("../assets/search.png")}
+              />
+              <Text style={[styles.text4, styles.mt2]}>Events</Text>
+            </SafeAreaView>
+          </Pressable>
+        </SafeAreaView>
+        <SafeAreaView style={styles.rectangleView} />
+        <Image
+          style={styles.ellipseIcon1}
+          resizeMode="cover"
+          source={require("../assets/ellipse-18.png")}
+        />
+        <Image
+          style={styles.ellipseIcon2}
+          resizeMode="cover"
+          source={require("../assets/ellipse-19.png")}
+        />
+        <Pressable
+          style={styles.ellipsePressable}
+          onPress={() => navigation.navigate("MainPageSoccer1")}
+        >
+          <Image
+            style={styles.icon}
+            resizeMode="cover"
+            source={require("../assets/ellipse-20.png")}
+          />
+        </Pressable>
+        <Image
+          style={styles.ellipseIcon3}
+          resizeMode="cover"
+          source={require("../assets/ellipse-19.png")}
+        />
+        <Image
+          style={styles.ellipseIcon4}
+          resizeMode="cover"
+          source={require("../assets/ellipse-22.png")}
+        />
+        <Pressable
+          style={styles.vectorPressable}
+          onPress={() => navigation.navigate("MainPage")}
+        >
+          <Image
+            style={styles.icon1}
+            resizeMode="cover"
+            source={require("../assets/vector.png")}
+          />
+        </Pressable>
+        {/*  Start of displaying the event data */}
+        {
+
+          currentEvents.map((event, index) => {
+            marginOffset += 20
+            return (
+              <Card key={index} containerStyle={{marginTop: marginOffset, marginLeft: -15, backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0,}}>
+                <Pressable
+                  onPress={() => navigation.navigate("EventDetails")}
+                >
+                  <ImageBackground
+                    style={styles.eventImage}
+                    resizeMode="cover"
+                    source={require("../assets/chestnut1.png")}
+                  />
+                </Pressable>
+
+                <Pressable
+                  style={styles.rectanglePressable}
+                  onPress={() => navigation.navigate("EventDetails")}
+                />
+                <Pressable
+                  style={styles.rectanglePressable1}
+                  onPress={() => navigation.navigate("EventDetails")}
+                />
+                <Pressable
+                  style={styles.rectanglePressable2}
+                  onPress={() => navigation.navigate("EventDetails")}
+                />
+                <Pressable
+                  style={styles.rectanglePressable3}
+                  onPress={() => navigation.navigate("EventDetails")}
+                />
+                <Text style={styles.eventTitle}>{event.event_name}</Text>
+                <Text style={styles.eventTime}>{event.event_time}</Text>
+                <Text style={styles.eventLocation}>{event.event_location}</Text>
+                <Text style={styles.eventHostName}>WHOWANTSMOKE?</Text>
+                <Text style={styles.eventDate}>{event.event_date}</Text>
+                <Text style={styles.eventPlayerCount}>{event.current_players}/{event.maximum_players} PLAYERS</Text>
+                <ImageBackground
+                  style={styles.crownIcon}
+                  resizeMode="cover"
+                  source={require("../assets/crown1.png")}
+                />
+              </Card>
+            )
+            marginOffset = marginOffset + 15
+          })
+
+        }
+
+  
+        {/*  End of displaying the event data */}
+        <Image
+          style={styles.sportIcon}
+          resizeMode="cover"
+          source={require("../assets/football-1.png")}
+        />
+        <Image
+          style={styles.basketball1Icon}
+          resizeMode="cover"
+          source={require("../assets/basketball-1.png")}
+        />
+        <Image
+          style={styles.soccerBall1}
+          resizeMode="cover"
+          source={require("../assets/soccer-ball-1.png")}
+        />
+        <Image
+          style={styles.tennisRacket1}
+          resizeMode="cover"
+          source={require("../assets/tennis-racket-1.png")}
+        />
+
+        <SafeAreaView style={styles.changeMilesView}>
+          <Text style={styles.mILESMAXText}>30 MILES MAX</Text>
+          <SafeAreaView style={styles.rectangleView1} />
+          <Image
+            style={styles.vectorIcon}
+            resizeMode="cover"
+            source={require("../assets/vector1.png")}
+          />
+          <SafeAreaView style={styles.rectangleView2} />
+          <Image
+            style={styles.vectorIcon1}
+            resizeMode="cover"
+            source={require("../assets/vector2.png")}
+          />
+        </SafeAreaView>
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
