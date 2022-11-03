@@ -38,6 +38,26 @@ router.post('/logout', (req, res) => {
     });
 })
 
+// Update Username and Bio of User's Profile
+router.put('/updateProfile', (req, res) => {
+    const query = `SELECT * FROM accounts WHERE account_username = ?;`
+    db.query(query, [req.body.newUsername], (err, result) => {
+        //handle any errors
+        if (result[0]) {
+            return res.status(400).send({message: 'Username is already in use', status:400});
+        }
+        // Need to add ', bio = ?' and req.body.bio in query parameters if/when bio is added as db column
+        const updateStatement =
+        `UPDATE accounts SET account_username = ? WHERE account_id = ?;`
+
+    db.query(updateStatement, [req.body.newUsername, req.session.account_id], (err, res) => {
+        //Handle any errors
+    });
+
+    return res.status(200).send({message:'Update Successful', status:200}); 
+    });
+});
+
 router.get('/',  (req, res) => {
     if (req.session.account_id == null) {
         return res.status(200).send({status: 400, message: "Not authorized"})
