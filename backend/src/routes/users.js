@@ -16,7 +16,8 @@ router.post('/', (req, res) => {
         req.body.email,
         0,
         0,
-        0
+        0,
+        ""
     ];
 
     const query = `SELECT * FROM accounts WHERE account_username = ? OR email = ? ;`
@@ -27,8 +28,8 @@ router.post('/', (req, res) => {
         }
         const insertStatement =
         `INSERT INTO accounts
-            (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
+            (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating, bio)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ;`;
 
     db.query(insertStatement, userToAdd, (err, res) => {
         //Handle any errors

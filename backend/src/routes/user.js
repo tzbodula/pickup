@@ -38,51 +38,12 @@ router.post('/logout', (req, res) => {
     });
 })
 
-/**
- * This post route creates an event based on the currently logged in user
- */
-router.post('/event',  (req, res) => {
-    const eventToAdd = [
-        req.body.event_name,
-        req.session.account_id, //This will always be the current session account_id
-        req.body.sport_id, //Note: frontend has to figure our how to get sport_id from list
-        req.body.total_players,
-        req.body.date,
-        req.body.time,
-        req.body.location,
-        1, //always at least 1
-    ];
-    
-    const insertStatement =
-        `INSERT INTO pickup_events
-            (event_name, account_id, sport_id, maximum_players, event_location, event_date, event_time, current_players)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
-    
-    db.query(insertStatement, eventToAdd, (err, result) => {
-        const event_id = result.insertId;
-        const insertStatement =  
-        `
-        INSERT INTO player_event
-            (account_id, event_id, is_leader)
-            VALUES (?, ?, ?);
-        `;
-    
-        db.query(insertStatement, [req.session.account_id, event_id, true], (err, result) => {
-            if (err) {
-                console.log(err)
-            }
-            return res.status(200).send({message: 'User has been added to the event!', status: 200});
-        });
-    })
-    
-})
-
 router.get('/',  (req, res) => {
     if (req.session.account_id == null) {
         return res.status(200).send({status: 400, message: "Not authorized"})
     }
     const account_id = req.session.account_id;
-    const query = `SELECT * FROM accounts WHERE account_id = ? ;`
+    const query = `SELECT account_username, games_joined, games_attended, bio FROM accounts WHERE account_id = ? ;`
     db.query(query, [account_id], (err, result) => {
         return res.status(200).send({data: result[0], status: 200})
     })
