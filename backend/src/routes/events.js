@@ -15,16 +15,10 @@ router.get('/sport',  (req, res) => {
         }
         
         if (result === undefined || result.length == 0) {
-            return res.status(400).send({
-                message:"Not found",
-                status: 400
-            });
+            return res.status(400).send({message: "Not found", status: 400});
         }
         console.log(result)
-        return res.status(200).send({
-            data: result,
-            status: 200
-        });
+        return res.status(200).send({data: result, status: 200});
     });
 
 });
@@ -37,10 +31,7 @@ router.get('/',  (req, res) => {
         if (err) {
             //handle errors
         }
-        return res.status(200).send({
-            data: result,
-            status: 200
-        });
+        return res.status(200).send({data: result, status: 200});
     });
 
 });
@@ -65,15 +56,9 @@ router.delete('/:id',  (req, res) => {
         db.query(query, [req.params.id], (err, result) => {
             console.log(result)
             if (result === undefined || result.length == 0) {
-                return res.status(400).send({
-                    message:"Error. Event cannot be found.",
-                    status: 400
-                })
+                return res.status(400).send({message:"Error. Event cannot be found.", status: 400})
             }
-            return res.status(200).send({
-                message: "Event deleted.",
-                status: 200
-            });
+            return res.status(200).send({message: "Event deleted.",status: 200});
         });
     })
     
@@ -88,10 +73,7 @@ router.post('/:id/join',  (req, res) => {
         }
 
         if(result[0].currentplayers == result[0].maximum_players){
-            return res.status(400).send({
-                message: "Error. Event is already full.",
-                status: 400
-            })
+            return res.status(400).send({message: "Error. Event is already full.", status: 400})
         }
 
         const usertoJoin = [
@@ -106,23 +88,14 @@ router.post('/:id/join',  (req, res) => {
             VALUES (?, ?, ?) ;`;
         db.query(query2, usertoJoin, (err, result) => {
             if (result === undefined || result.length == 0) {
-                return res.status(400).send({
-                    message: "Error. Couldn't join event.",
-                    status: 400
-                })
+                return res.status(400).send({message: "Error. Couldn't join event.", status: 400})
             }
             const query3 = `UPDATE pickup_events SET current_players = current_players + 1 WHERE event_id = ?;`
             db.query(query3, [req.params.id], (err, result) => {
                 if (result === undefined || result.length == 0) {
-                    return res.status(400).send({
-                        message: "Error. Couldn't increment current players in event.",
-                        status: 400
-                    })
+                    return res.status(400).send({message: "Error. Couldn't increment current players in event.", status: 400})
                 }
-                return res.status(200).send({
-                    message:"Player joined event.",
-                    status: 200
-                });
+                return res.status(200).send({message: "Player joined event.", status: 200});
             });
         });
     });
@@ -166,16 +139,10 @@ router.get('/:id',  (req, res) => {
         //handle any errors
 
         if (result === undefined || result.length == 0) {
-            return res.status(400).send({
-                message: "Not found",
-                status: 400,
-            });
+            return res.status(400).send({message: "Not found", status: 400,});
         }
     
-        return res.status(200).send({
-            data: result,
-            status: 200
-        });
+        return res.status(200).send({data: result, status: 200});
     });
 
     
@@ -189,16 +156,10 @@ router.get('/:id/players',  (req, res) => {
 
     db.query(query, [req.params.id], (err, result) => {
         if (result === undefined || result.length == 0) {
-            return res.status(400).send({
-                message:"Not found",
-                status: 400
-            });
+            return res.status(400).send({message:"Not found", status: 400});
         }
     
-        return res.status(200).send({
-            data: result,
-            status: 200
-        });
+        return res.status(200).send({data: result, status: 200});
     });
     
 });
