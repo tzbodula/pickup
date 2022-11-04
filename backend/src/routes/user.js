@@ -62,7 +62,7 @@ router.get('/',  (req, res) => {
         return res.status(200).send({status: 400, message: "Not authorized"})
     }
     const account_id = req.session.account_id;
-    const query = `SELECT account_username, games_joined, games_attended, bio FROM accounts WHERE account_id = ? ;`
+    const query = `SELECT account_username, games_joined, games_attended, rating, bio FROM accounts WHERE account_id = ? ;`
     db.query(query, [account_id], (err, result) => {
         return res.status(200).send({data: result[0], status: 200})
     })

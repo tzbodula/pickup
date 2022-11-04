@@ -39,8 +39,8 @@ const EditProfile = () => {
   }, [])
 
 
-  const [updatedUsername, setUsername] = useState("")
-  const [updatedBio, setBio] = useState("")
+  const [updatedUsername, setUsername] = useState(username)
+  const [updatedBio, setBio] = useState(bio)
 
   const updateUsername = (event) => {
     setUsername(event)
@@ -264,7 +264,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={100} placeholder="Enter new bio"></TextInput>
+          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68} placeholder="Enter new bio"></TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
