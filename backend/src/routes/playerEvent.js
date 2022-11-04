@@ -43,7 +43,7 @@ router.post('/:id/join',  (req, res) => {
             
 });
 
-router.post('/:id/leave', (req,res) => {
+router.delete('/:id/leave', (req,res) => {
 
     const event_id = req.params.id;
     const validate_query = `SELECT * FROM player_event WHERE event_id = ? AND account_id = ?`
