@@ -1,38 +1,31 @@
-import * as React from "react";
 import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { Avatar } from "@rneui/base";
 
 import { AirbnbRating } from 'react-native-ratings';
 import {LOCAL_IP} from '@env';
 
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 const ProfileUser = () => {
-  const [profileData, setProfileData] = useState(null)
+  const [profileData, setProfileData] = useState({})
 
   const navigation = useNavigation();
   
-  let username = "Test";
-  let rating = -1;
-  let gamesJoined = -1;
-  let gamesAttended = 0;
-  let bio = "Example bio";
-
-  useEffect(() => {
-      fetch(`http://${LOCAL_IP}:3000/user/`, {
+  const requestOnPageLoad = () => {
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json'}
       }).then((res) => {return res.json()})
       .then((retrieved) => {
         if (retrieved.status == 200) {
-          username = retrieved.data.account_username
-          rating = retrieved.data.rating
-          gamesJoined = retrieved.data.games_joined
-          gamesAttended = retrieved.data.games_attended;
-          bio = retrieved.data.bio;
+          const username = retrieved.data.account_username
+          const rating = retrieved.data.rating
+          const gamesJoined = retrieved.data.games_joined
+          const gamesAttended = retrieved.data.games_attended;
+          const bio = retrieved.data.bio;
 
           const retrievedData = {
             username: username,
@@ -45,7 +38,9 @@ const ProfileUser = () => {
           setProfileData(retrievedData)
         }
       }).catch((e) => {console.log(e)})
-  }, [])
+  }
+
+  useFocusEffect(React.useCallback(requestOnPageLoad, []))
   
   if(profileData == null) {
     return(

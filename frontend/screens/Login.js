@@ -13,7 +13,7 @@ import {
 
 import { Button } from "@rneui/themed";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {LOCAL_IP} from '@env';
 const Login = () => {
 
