@@ -139,7 +139,7 @@ router.get('/:id',  (req, res) => {
         //handle any errors
 
         if (result === undefined || result.length == 0) {
-            return res.status(400).send({message: "Not found", status: 400,});
+            return res.status(400).send({message: "Not found", status: 400});
         }
     
         return res.status(200).send({data: result, status: 200});
