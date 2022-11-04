@@ -46,7 +46,7 @@ router.put('/updateProfile', (req, res) => {
         if (result[0]) {
             return res.status(400).send({message: 'Username is already in use', status:400});
         }
-        // Need to add ', bio = ?' and req.body.bio in query parameters if/when bio is added as db column
+        // Need to add ', bio = ?' and req.body.newBio in query parameters if/when bio is added as db column
         const updateStatement =
         `UPDATE accounts SET account_username = ? WHERE account_id = ?;`
 
@@ -63,7 +63,8 @@ router.get('/',  (req, res) => {
         return res.status(200).send({status: 400, message: "Not authorized"})
     }
     const account_id = req.session.account_id;
-    const query = `SELECT account_username, games_joined, games_attended, bio FROM accounts WHERE account_id = ? ;`
+    // Include , bio if/when bio is added to db
+    const query = `SELECT account_username, games_joined, games_attended FROM accounts WHERE account_id = ? ;`
     db.query(query, [account_id], (err, result) => {
         return res.status(200).send({data: result[0], status: 200})
     })
