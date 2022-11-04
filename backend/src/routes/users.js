@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
     const password = req.body.password
     
     const hash_password = bcryptjs.hashSync(password, numSaltRounds);
-    console.log(typeof(hash_password))
+    
     const userToAdd = [
         req.body.first_name,
         req.body.last_name,
@@ -40,11 +40,15 @@ router.post('/', (req, res) => {
             (first_name, last_name, account_username, account_password, email, games_joined, games_attended, rating, bio)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ;`;
 
-    db.query(insertStatement, userToAdd, (err, res) => {
-        //Handle any errors
+    db.query(insertStatement, userToAdd, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+
+        return res.status(200).send({message:'Successful Creation', status:200}); 
     });
 
-    return res.status(200).send({message:'Successful Creation', status:200}); 
+    
     });
 });
 
