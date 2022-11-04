@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 
 const ProfileUser = () => {
   const [profileData, setProfileData] = useState({})
+  const [favoriteSports, setSportInfo] = useState([])
 
   const navigation = useNavigation();
   
@@ -37,7 +38,16 @@ const ProfileUser = () => {
 
           setProfileData(retrievedData)
         }
-      }).catch((e) => {console.log(e)})
+      }).then(() => {
+        fetch(`http://${LOCAL_IP}:3000/user/sports`)
+        .then((res) => {return res.json()})
+        .then((res) => {
+          setSportInfo(res.data)
+          console.log(res.data)
+        })
+        .catch((e) => {console.log(e)})
+      })
+      .catch((e) => {console.log(e)})
   }
 
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
@@ -279,7 +289,9 @@ const ProfileUser = () => {
           resizeMode="cover"
           source={require("../assets/football-1.png")}
         />
-        <Text style={styles.footballText}>Football</Text>
+
+        
+       {/*  <Text style={styles.footballText}>Football</Text>
         <Text style={styles.timESText}>timES</Text>
         <Text style={styles.timESText1}>timES</Text>
         <Text style={styles.timESText2}>timES</Text>
@@ -290,8 +302,21 @@ const ProfileUser = () => {
         <Text style={styles.text7}>25</Text>
         <Text style={styles.text8}>3</Text>
         <Text style={styles.text9}>1</Text>
-        <Text style={styles.text10}>1</Text>
-        <Text style={styles.aLLTIMESPORTSPLAYED}>ALL TIME SPORTS PLAYED</Text>
+        <Text style={styles.text10}>1</Text> */}
+        
+        <Text style={styles.aLLTIMESPORTSPLAYED}>Favorite Sports</Text>
+        
+        {
+          //Please do your CSS magic Thomas to get these to align property thx
+          favoriteSports.length
+          ?
+          favoriteSports.map((sport) => {
+            return <Text key={sport.sport_id}> {sport.sport_name} </Text> 
+        })
+          :
+          <Text> empty </Text>
+        }
+        
         <SafeAreaView style={styles.lineView} />
       </SafeAreaView>
     );
