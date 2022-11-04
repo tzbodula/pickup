@@ -10,7 +10,7 @@ const router = Router();
 
 router.post('/login', (req, res) => {
     const username = req.body.username;
-    const password = req.body.password; //TODO hash the password and compare it to the password field in the DB
+    const password = req.body.password;
     
     const query = `SELECT account_id, account_username, email, account_password FROM accounts WHERE account_username = ?;`
 
@@ -22,11 +22,18 @@ router.post('/login', (req, res) => {
                 status: 401
             })
         }
-    
-        req.session.account_id = result[0].account_id;
+
+        if (!bcryptjs.compareSync(password, result[0].account_password)) {
+            return res.status(401).send({
+                message: "Invalid credentials",
+                status: 401
+            })
+        }
+
+        req.session.user_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.account_id});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.user_id});
     })
     
 })
