@@ -17,33 +17,24 @@ router.post('/login', (req, res) => {
     db.query(query, [username], (err, result) => {
         
         if (result === undefined || result.length == 0) {
-            return res.status(401).send({
-                message: "Invalid credentials",
-                status: 401
-            })
+            return res.status(401).send({message: "Invalid credentials", status: 401})
         }
 
         if (!bcryptjs.compareSync(password, result[0].account_password)) {
-            return res.status(401).send({
-                message: "Invalid credentials",
-                status: 401
-            })
+            return res.status(401).send({message: "Invalid credentials",status: 401})
         }
 
-        req.session.user_id = result[0].account_id;
+        req.session.account_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.user_id});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.account_id});
     })
     
 })
 
 router.post('/logout', (req, res) => {
     req.session.destroy();
-    return res.status(200).send({
-        message:'Logged out successfully',
-        status: 200
-    });
+    return res.status(200).send({message:'Logged out successfully',status: 200});
 })
 
 // Update Username and Bio of User's Profile
