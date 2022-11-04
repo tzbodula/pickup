@@ -1,13 +1,156 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
+import { Image, StyleSheet, Text, TextInput, Pressable, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
-
+import { useState, useEffect } from 'react'
+import { Avatar } from "@rneui/base";
+import {LOCAL_IP} from '@env';
+import { Button } from "@rneui/themed";
 
 const EditProfile = () => {
   const navigation = useNavigation();
+  const [profileData, setProfileData] = useState(null)
 
+  let username = "Test";
+  let bio = "Example bio";
+  
+  useEffect(() => {
+    try {
+      fetch(`http://${LOCAL_IP}:3000/user/`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json'}
+      }).then((res) => {return res.json()})
+      .then((retrieved) => {
+        if (retrieved.status == 200) {
+          username = retrieved.data.account_username
+          //bio = retrieved.data.bio
+          retrievedData = {
+            username: username//,
+            //bio: bio
+          }
+
+          setProfileData(retrievedData)
+        }
+      })  
+    } catch(e) {
+      console.log(e)
+    }
+  }, [])
+
+
+  const [updatedUsername, setUsername] = useState("")
+  const [updatedBio, setBio] = useState("")
+
+  const updateUsername = (event) => {
+    setUsername(event)
+  }
+
+  const updateBio = (event) => {
+    setBio(event)
+  }
+
+  const handleUpdate = () => {
+    try {
+    fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
+      method: 'PUT',
+      headers: {
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json'},
+      body: JSON.stringify({
+        "newUsername": updatedUsername//,
+        //"newBio": updatedBio
+      })
+    }).then((res) => {return res.json()})
+    .then((data) => {
+      if (data.status == 200) {
+        navigation.navigate("ProfileUser")
+      }
+      console.log(data)
+    })
+    
+  } catch(e) {
+    console.log(e)
+  }
+  }
+
+
+
+
+
+
+  if(profileData == null) {
   return (
+    <SafeAreaView style={styles.footerView}>
+    <Text>Not rendered!</Text>
+    <Pressable
+        style={styles.singleTabPressable}
+        onPress={() => navigation.navigate("ProfileUser")}
+      >
+        <SafeAreaView style={styles.iconAndText}>
+          <Image
+            style={styles.homeIcon}
+            resizeMode="cover"
+            source={require("../assets/home3.png")}
+          />
+          <Text style={[styles.text, styles.mt2]}>Account</Text>
+        </SafeAreaView>
+      </Pressable>
+      <Pressable
+        style={styles.singleTabPressable1}
+        onPress={() => navigation.navigate("Friends")}
+      >
+        <SafeAreaView style={styles.iconAndText1}>
+          <Image
+            style={styles.userIcon}
+            resizeMode="cover"
+            source={require("../assets/user.png")}
+          />
+          <Text style={[styles.text1, styles.mt2]}>Friends</Text>
+        </SafeAreaView>
+      </Pressable>
+      <Pressable
+        style={styles.singleTabPressable2}
+        onPress={() => navigation.navigate("Map")}
+      >
+        <SafeAreaView style={styles.iconAndText2}>
+          <Image
+            style={styles.compassIcon}
+            resizeMode="cover"
+            source={require("../assets/compass.png")}
+          />
+          <Text style={[styles.text2, styles.mt2]}>Map</Text>
+        </SafeAreaView>
+      </Pressable>
+      <Pressable
+        style={styles.framePressable}
+        onPress={() => navigation.navigate("CreateEvent")}
+      >
+        <Image
+          style={styles.addEventCircle}
+          resizeMode="cover"
+          source={require("../assets/ellipse-1.png")}
+        />
+        <Text style={styles.addEventPlus}>+</Text>
+      </Pressable>
+      <Pressable
+        style={styles.singleTabPressable3}
+        onPress={() => navigation.navigate("MainPage")}
+      >
+        <SafeAreaView style={styles.iconAndText3}>
+          <Image
+            style={styles.searchIcon}
+            resizeMode="cover"
+            source={require("../assets/search4.png")}
+          />
+          <Text style={[styles.text4, styles.mt2]}>Events</Text>
+        </SafeAreaView>
+      </Pressable>
+    </SafeAreaView>
+  );
+}
+  else{
+    return(
     <SafeAreaView style={styles.editProfileView}>
       <SafeAreaView style={styles.footerView}>
         <Pressable
@@ -84,7 +227,24 @@ const EditProfile = () => {
         resizeMode="cover"
         source={require("../assets/stockuserimage.png")}
       />
-      <Text style={styles.dOTUNIVERSITY4Text}>DOTUNIVERSITY4</Text>
+      
+      <SafeAreaView style={styles.textFieldView2}>
+        <Image
+          style={styles.trailingIcon}
+          resizeMode="cover"
+          source={require("../assets/trailing-icon.png")}
+        />
+        <SafeAreaView style={styles.iconText}>
+        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40} placeholder="Enter new username"></TextInput>
+          <Image
+            style={[styles.leadingIcon, styles.ml8]}
+            resizeMode="cover"
+            source={require("../assets/leading-icon13.png")}
+          />
+        </SafeAreaView>
+        <Text style={styles.labelText}>Username</Text>
+      </SafeAreaView>
+      
       <Text style={styles.mySportsText}>My Sports</Text>
       <SafeAreaView style={styles.lineView} />
       <Pressable
@@ -104,7 +264,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-          <Text style={styles.text5}>ALL I KNOW ARE DOTS</Text>
+          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={100} placeholder="Enter new bio"></TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
@@ -113,6 +273,32 @@ const EditProfile = () => {
         </SafeAreaView>
         <Text style={styles.labelText}>Bio</Text>
       </SafeAreaView>
+      
+
+
+
+
+
+      <SafeAreaView style={styles.loginView1}>
+        <Pressable
+          style={styles.leftButtonPressable}
+        >
+          <SafeAreaView style={styles.iconAndText4}>
+            <Image
+              style={styles.leadingIcon2}
+              resizeMode="cover"
+              source={require("../assets/leading-icon7.png")}
+            />
+            <Button color="#007EA7" containerStyle={{right: "27%", bottom: "12%"}} titleStyle={{fontFamily: 'GearUp', fontSize: 12}} onPress={handleUpdate}>Update</Button>
+          </SafeAreaView>
+        </Pressable>
+      </SafeAreaView>
+
+
+
+
+
+
       <Image
         style={styles.football2Icon}
         resizeMode="cover"
@@ -221,7 +407,8 @@ const EditProfile = () => {
         <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
       </SafeAreaView>
     </SafeAreaView>
-  );
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -433,6 +620,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  iconAndText4: {
+    position: "absolute",
+    transform: [
+      {
+        translateY: -9,
+      },
+      {
+        translateX: -32,
+      },
+    ],
+    top: "50%",
+    left: "50%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
   footerView: {
     position: "absolute",
     top: Dimensions.get('window').height * 0.85,
@@ -458,17 +661,38 @@ const styles = StyleSheet.create({
     width: 95,
     height: 95,
   },
-  dOTUNIVERSITY4Text: {
-    position: "absolute",
-    top: 60,
-    left: 143,
-    fontSize: 13,
-    lineHeight: 25,
+  usernameText: {
+    position: "relative",
+    fontSize: 10,
+    lineHeight: 15,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
-    width: 200,
-    height: 30,
+    paddingRight: 2,
+    paddingTop: 15,
+  },
+  loginView1: {
+    position: "absolute",
+    top: 179,
+    left: 143,
+    borderStyle: "solid",
+    borderColor: "#80ced7",
+    borderWidth: 3,
+    width: 90,
+    height: 32,
+  },
+  leftButtonPressable: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    top: "0%",
+    right: "5%",
+    bottom: "13.04%",
+    left: "0%",
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
+    backgroundColor: "#007EA7",
+    overflow: "hidden",
   },
   mySportsText: {
     position: "absolute",
@@ -517,15 +741,24 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     display: "none",
   },
-  text5: {
+  bioText: {
     position: "relative",
     fontSize: 7,
-    lineHeight: 18,
+    lineHeight: 12,
     fontFamily: "GearUp",
     color: "#9f9f9f",
-    textAlign: "center",
+    textAlign: "left",
+    paddingRight: 2,
   },
   leadingIcon: {
+    position: "relative",
+    width: 18,
+    height: 18,
+    flexShrink: 0,
+    overflow: "hidden",
+    display: "none",
+  },
+  leadingIcon2: {
     position: "relative",
     width: 18,
     height: 18,
@@ -571,6 +804,18 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     width: 221,
     height: 63,
+  },
+  textFieldView2: {
+    position: "absolute",
+    top: 43,
+    left: 143,
+    borderRadius: 4,
+    backgroundColor: "#fff",
+    borderStyle: "solid",
+    borderColor: "#80ced7",
+    borderWidth: 2,
+    width: 221,
+    height: 32,
   },
   football2Icon: {
     position: "absolute",
