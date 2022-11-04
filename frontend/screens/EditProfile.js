@@ -24,10 +24,10 @@ const EditProfile = () => {
       .then((retrieved) => {
         if (retrieved.status == 200) {
           username = retrieved.data.account_username
-          //bio = retrieved.data.bio
+          bio = retrieved.data.bio
           retrievedData = {
-            username: username//,
-            //bio: bio
+            username: username,
+            bio: bio,
           }
 
           setProfileData(retrievedData)
@@ -58,8 +58,8 @@ const EditProfile = () => {
       'Content-Type': 'application/json', 
       'Accept': 'application/json'},
       body: JSON.stringify({
-        "newUsername": updatedUsername//,
-        //"newBio": updatedBio
+        "newUsername": updatedUsername,
+        "newBio": updatedBio
       })
     }).then((res) => {return res.json()})
     .then((data) => {
