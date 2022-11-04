@@ -29,7 +29,6 @@ const MainPage = () => {
 
 
   useEffect(() => {
-    try {
       fetch(`http://${LOCAL_IP}:3000/events/`, {
         method: 'GET',
         headers: {
@@ -40,10 +39,7 @@ const MainPage = () => {
           if (retrieved.status == 200) {
             setCurrentEvents(retrieved.data)
           }
-        })
-    } catch (e) {
-      console.log(e)
-    }
+        }).catch((e) => console.log(e))
   }, [])
 
 

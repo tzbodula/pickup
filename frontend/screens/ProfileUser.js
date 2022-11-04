@@ -21,7 +21,6 @@ const ProfileUser = () => {
   let bio = "Example bio";
 
   useEffect(() => {
-    try {
       fetch(`http://${LOCAL_IP}:3000/user/`, {
         method: 'GET',
         headers: {
@@ -35,7 +34,7 @@ const ProfileUser = () => {
           gamesAttended = retrieved.data.games_attended;
           bio = retrieved.data.bio;
 
-          retrievedData = {
+          const retrievedData = {
             username: username,
             rating: rating,
             gamesJoined: gamesJoined,
@@ -45,10 +44,7 @@ const ProfileUser = () => {
 
           setProfileData(retrievedData)
         }
-      })  
-    } catch(e) {
-      console.log(e)
-    }
+      }).catch((e) => {console.log(e)})
   }, [])
   
   if(profileData == null) {

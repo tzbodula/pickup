@@ -31,7 +31,6 @@ const Login = () => {
   }
 
   const handleSubmit = () => {
-    try {
     fetch(`http://${LOCAL_IP}:3000/user/login`, {
       method: 'POST',
       headers: {
@@ -47,11 +46,8 @@ const Login = () => {
         navigation.navigate("MainPage")
       }
       console.log(data)
-    })
-    
-  } catch(e) {
-    console.log(e)
-  }
+    }).catch((e) => console.log(e))
+ 
   }
   return (
     <SafeAreaView style={styles.loginView2}>
