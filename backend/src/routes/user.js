@@ -30,10 +30,10 @@ router.post('/login', (req, res) => {
             })
         }
 
-        req.session.user_id = result[0].account_id;
+        req.session.account_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.user_id});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.account_id});
     })
     
 })

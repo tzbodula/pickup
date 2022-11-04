@@ -46,7 +46,7 @@ router.get('/',  (req, res) => {
 });
 
 // Event deletion
-router.post('/:id/delete',  (req, res) => {
+router.delete('/:id',  (req, res) => {
 
     // Validate
     const query = `SELECT * FROM pickup_events WHERE event_id = ?`
@@ -54,9 +54,10 @@ router.post('/:id/delete',  (req, res) => {
     if (!req.session.account_id) {
         return res.status(401).json({message: "unauthorized to make a delete", status: 401})
     }
+
     db.query(query, [req.params.id], (err, result) => {
         // Make sure that the user requesting this deletion is the actual logged in user
-        if (result[0].account_id != req.session.account_id || result === undefined || result.length == 0) {
+        if (result === undefined || result.length == 0 || result[0].account_id != req.session.account_id) {
             return res.status(401).json({message: "unauthorized to make a delete", status: 401})
         }
 
@@ -206,7 +207,7 @@ router.get('/:id/players',  (req, res) => {
 /**
  * This post route creates an event based on the currently logged in user
  */
- router.post('/',  (req, res) => {
+router.post('/',  (req, res) => {
     const eventToAdd = [
         req.body.event_name,
         req.session.account_id, //This will always be the current session account_id
