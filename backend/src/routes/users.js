@@ -4,15 +4,24 @@
 const { Router } = require('express');
 const db = require('../config/databaseConfig')
 const checkSession = require('../utils/sessionChecker')
+const bcryptjs = require('bcryptjs');
 
 const router = Router();
 
 router.post('/', (req, res) => {
+
+    
+    const numSaltRounds = 8;
+
+    const password = req.body.password
+    
+    const hash_password = bcryptjs.hashSync(password, numSaltRounds);
+    console.log(typeof(hash_password))
     const userToAdd = [
         req.body.first_name,
         req.body.last_name,
         req.body.username,    
-        req.body.password,
+        hash_password,
         req.body.email,
         0,
         0,
