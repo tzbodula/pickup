@@ -48,11 +48,9 @@ const ProfileUser = () => {
       console.log(e)
     }
   }, [])
-  // console.log(username);
-  // console.log(rating);
-  // console.log(gamesJoined);
-  // console.log(gamesAttended);
+  
   if(profileData == null) {
+    return(
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
     <Pressable
@@ -119,6 +117,7 @@ const ProfileUser = () => {
         </SafeAreaView>
       </Pressable>
     </SafeAreaView>
+    );
   } else {
     console.log(typeof profileData)
     return (
