@@ -33,12 +33,14 @@ const ProfileUser = () => {
           rating = retrieved.data.rating
           gamesJoined = retrieved.data.games_joined
           gamesAttended = retrieved.data.games_attended;
+          bio = retrieved.data.bio;
 
           retrievedData = {
             username: username,
             rating: rating,
             gamesJoined: gamesJoined,
             gamesAttended: gamesAttended,
+            bio: bio,
           }
 
           setProfileData(retrievedData)
@@ -48,11 +50,9 @@ const ProfileUser = () => {
       console.log(e)
     }
   }, [])
-  // console.log(username);
-  // console.log(rating);
-  // console.log(gamesJoined);
-  // console.log(gamesAttended);
+  
   if(profileData == null) {
+    return(
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
     <Pressable
@@ -119,6 +119,7 @@ const ProfileUser = () => {
         </SafeAreaView>
       </Pressable>
     </SafeAreaView>
+    );
   } else {
     console.log(typeof profileData)
     return (
@@ -211,7 +212,7 @@ const ProfileUser = () => {
   
         <Text style={styles.dOTUNIVERSITY4Text}>{profileData.username}</Text>
         <AirbnbRating size={20} defaultRating={profileData.rating} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
-        <Text style={styles.allIKnowAreDots}>{bio}</Text>
+        <Text style={styles.bioStyle}>{profileData.bio}</Text>
         <Text style={styles.text5}>{profileData.gamesAttended}</Text>
         <Text style={styles.text6}>{(((1.0 * profileData.gamesAttended) / profileData.gamesJoined) * 100)}%</Text>
         <Text style={styles.gamesPlayedText}>Games Played</Text>
@@ -649,11 +650,11 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     maxHeight: "100%",
   },
-  allIKnowAreDots: {
+  bioStyle: {
     position: "absolute",
     top: "12.3%",
     left: "34%",
-    fontSize: 10,
+    fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp Soft",
     color: "#000",
@@ -664,7 +665,7 @@ const styles = StyleSheet.create({
     color: "#34495e",
     position: "absolute",
     left: "32%",
-    top: "16%",
+    top: "21%",
   },
   text5: {
     position: "absolute",
@@ -689,7 +690,7 @@ const styles = StyleSheet.create({
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "center",
-    width: 60,
+    width: 70,
     height: 25,
   },
   gamesPlayedText: {
@@ -743,7 +744,7 @@ const styles = StyleSheet.create({
   },
   buttonPressable: {
     position: "absolute",
-    top: "16%",
+    top: "21%",
     left: 272,
     borderRadius: 4,
     backgroundColor: "#fff",
@@ -762,7 +763,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: "16.5%",
+    top: "21.75%",
     left: 276,
     width: 21,
     height: 19,

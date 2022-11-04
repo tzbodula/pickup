@@ -88,7 +88,7 @@ const Login = () => {
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <TextInput style={[styles.text, styles.ml8]} onChangeText={updateUsername}>Email or username</TextInput>
+                <TextInput style={[styles.text, styles.ml8]} onChangeText={updateUsername} maxLength={40}>Email or username</TextInput>
               </SafeAreaView>
             </SafeAreaView>
           </SafeAreaView>
@@ -105,7 +105,7 @@ const Login = () => {
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <TextInput style={[styles.text1, styles.ml8]} onChangeText={updatePassword}>Password</TextInput>
+                <TextInput style={[styles.text1, styles.ml8]} onChangeText={updatePassword} maxLength={30}>Password</TextInput>
               </SafeAreaView>
             </SafeAreaView>
           </SafeAreaView>
