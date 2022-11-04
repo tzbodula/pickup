@@ -1,4 +1,3 @@
-import * as React from "react";
 
 import { Dimensions } from 'react-native';
 
@@ -11,11 +10,11 @@ import {
   ImageBackground,
 
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { StatusBar } from 'expo-status-bar';
 
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { LOCAL_IP } from '@env';
 
@@ -27,10 +26,8 @@ const MainPage = () => {
 
   const [currentEvents, setCurrentEvents] = useState(null)
 
-
-  useEffect(() => {
-    try {
-      fetch(`http://${LOCAL_IP}:3000/events/`, {
+  const requestOnPageLoad = () => {
+    fetch(`http://${LOCAL_IP}:3000/events/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -40,11 +37,12 @@ const MainPage = () => {
           if (retrieved.status == 200) {
             setCurrentEvents(retrieved.data)
           }
-        })
-    } catch (e) {
-      console.log(e)
-    }
-  }, [])
+        }).catch((e) => console.log(e))
+  }
+
+  useFocusEffect(
+    React.useCallback(requestOnPageLoad, [])
+  )
 
 
   if (currentEvents == null) {

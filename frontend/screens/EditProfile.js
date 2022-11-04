@@ -1,8 +1,7 @@
-import * as React from "react";
 import { Image, StyleSheet, Text, TextInput, Pressable, SafeAreaView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Avatar } from "@rneui/base";
 import {LOCAL_IP} from '@env';
 import { Button } from "@rneui/themed";
@@ -14,29 +13,27 @@ const EditProfile = () => {
   let username = "Test";
   let bio = "Example bio";
   
-  useEffect(() => {
-    try {
-      fetch(`http://${LOCAL_IP}:3000/user/`, {
-        method: 'GET',
-        headers: {
-        'Content-Type': 'application/json'}
-      }).then((res) => {return res.json()})
-      .then((retrieved) => {
-        if (retrieved.status == 200) {
-          username = retrieved.data.account_username
-          bio = retrieved.data.bio
-          retrievedData = {
-            username: username,
-            bio: bio,
-          }
-
-          setProfileData(retrievedData)
+  const requestOnPageLoad = () => {
+    
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+      method: 'GET',
+      headers: {
+      'Content-Type': 'application/json'}
+    }).then((res) => {return res.json()})
+    .then((retrieved) => {
+      if (retrieved.status == 200) {
+        username = retrieved.data.account_username
+        bio = retrieved.data.bio
+        const retrievedData = {
+          username: username,
+          bio: bio,
         }
-      })  
-    } catch(e) {
-      console.log(e)
-    }
-  }, [])
+
+        setProfileData(retrievedData)
+      }
+    }).catch((e) => {console.log(e)})
+  }
+  useFocusEffect(React.useCallback(requestOnPageLoad, []))
 
 
   const [updatedUsername, setUsername] = useState(username)
