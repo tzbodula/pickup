@@ -8,11 +8,19 @@ const checkSession = require('../utils/sessionChecker')
 const router = Router();
 
 router.post('/', (req, res) => {
+
+    const bcryptjs = require('bcryptjs');
+    const numSaltRounds = 8;
+
+    const password = req.body.password
+    
+    const hash_password = bcryptjs.hash(password, numSaltRounds);
+
     const userToAdd = [
         req.body.first_name,
         req.body.last_name,
         req.body.username,    
-        req.body.password,
+        hash_password,
         req.body.email,
         0,
         0,

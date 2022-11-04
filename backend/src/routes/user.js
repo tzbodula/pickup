@@ -22,10 +22,15 @@ router.get('/',  (req, res) => {
 router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password; //TODO hash the password and compare it to the password field in the DB
+    
+    const bcryptjs = require('bcryptjs');
+    const numSaltRounds = 8;
+
+    const hash_password = bcryptjs.hash(password, numSaltRounds);
 
     const query = `SELECT account_id, account_username, email FROM accounts WHERE account_username = ? AND account_password = ?;`
 
-    db.query(query, [username, password], (err, result) => {
+    db.query(query, [username, hash_password], (err, result) => {
         
         if (result === undefined || result.length == 0) {
             return res.status(401).send({
