@@ -3,6 +3,7 @@
  */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')
+const bcryptjs = require('bcryptjs');
 const checkSession = require('../utils/sessionChecker')
 
 const router = Router();
@@ -23,14 +24,9 @@ router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password; //TODO hash the password and compare it to the password field in the DB
     
-    const bcryptjs = require('bcryptjs');
-    const numSaltRounds = 8;
+    const query = `SELECT account_id, account_username, email, account_password FROM accounts WHERE account_username = ?;`
 
-    const hash_password = bcryptjs.hash(password, numSaltRounds);
-
-    const query = `SELECT account_id, account_username, email FROM accounts WHERE account_username = ? AND account_password = ?;`
-
-    db.query(query, [username, hash_password], (err, result) => {
+    db.query(query, [username], (err, result) => {
         
         if (result === undefined || result.length == 0) {
             return res.status(401).send({
@@ -38,7 +34,8 @@ router.post('/login', (req, res) => {
                 status: 401
             })
         }
-    
+        console.log("Comparision:", bcryptjs.compareSync(password, result[0].account_password))
+
         req.session.user_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
