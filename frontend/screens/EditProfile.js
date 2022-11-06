@@ -10,78 +10,70 @@ import { Storage } from 'expo-storage'
 
 const EditProfile = () => {
   const navigation = useNavigation();
-  const [profileData, setProfileData] = useState(null)
-
-  let username = "Test";
-  let bio = "Example bio";
+  const [updatedUsername, setUsername] = useState("")
+  const [updatedBio, setBio] = useState("")
+  const [hasChanged, setHasChanged] = useState(false)
   
-  const requestOnPageLoad = () => {
-    
-    fetch(`http://${LOCAL_IP}:3000/user/`, {
-      method: 'GET',
-      headers: {
-      'Content-Type': 'application/json'}
-    }).then((res) => {return res.json()})
-    .then((retrieved) => {
-      if (retrieved.status == 200) {
-        username = retrieved.data.account_username
-        bio = retrieved.data.bio
-        const retrievedData = {
-          username: username,
-          bio: bio,
-        }
-
-        setProfileData(retrievedData)
-      }
-    }).catch((e) => {console.log(e)})
-  }
-  useFocusEffect(React.useCallback(requestOnPageLoad, []))
-
-
-  const [updatedUsername, setUsername] = useState(username)
-  const [updatedBio, setBio] = useState(bio)
-
   const updateUsername = (event) => {
+    setHasChanged(true)
     setUsername(event)
   }
 
   const updateBio = (event) => {
+    setHasChanged(true)
     setBio(event)
   }
+  
+  const requestOnPageLoad = () => {
+    Storage.getItem({key: 'username'})
+    .then((username) =>{
+      setUsername(username)
+      Storage.getItem({key: 'bio'})
+      .then((bio) =>{
+        setBio(bio)
+      })
+    })
+  }
+  useFocusEffect(React.useCallback(requestOnPageLoad, []))
+
 
   const handleUpdate = () => {
-    try {
-    fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
-      method: 'PUT',
-      headers: {
-      'Content-Type': 'application/json', 
-      'Accept': 'application/json'},
-      body: JSON.stringify({
-        "newUsername": updatedUsername,
-        "newBio": updatedBio
-      })
-    }).then((res) => {return res.json()})
-    .then((data) => {
-      if (data.status == 200) {
-        Storage.setItem({key: 'username', value: JSON.stringify(updatedUsername)})
-        .then(Storage.setItem({key: 'bio', value: JSON.stringify(updatedBio)})
-          .then(navigation.navigate("ProfileUser"))
-        )
-      }      
-      console.log(data)
-    })
-    
-  } catch(e) {
-    console.log(e)
+    if(hasChanged){
+      try {
+        fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
+          method: 'PUT',
+          headers: {
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json'},
+          body: JSON.stringify({
+            "newUsername": updatedUsername,
+            "newBio": updatedBio
+          })
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          if (data.status == 200) {
+            Storage.setItem({key: 'username', value: JSON.stringify(updatedUsername)})
+            .then(Storage.setItem({key: 'bio', value: JSON.stringify(updatedBio)})
+              .then(navigation.navigate("ProfileUser"))
+            )
+          }      
+          console.log(data)
+        })
+        
+      } catch(e) {
+        console.log(e)
+      }
+    }
+    else{
+      navigation.navigate("ProfileUser")
+    }
   }
-  }
 
 
 
 
 
-
-  if(profileData == null) {
+  if(updatedUsername == null || updatedBio == null) {
   return (
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
