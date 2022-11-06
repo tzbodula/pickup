@@ -14,17 +14,18 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { StatusBar } from 'expo-status-bar';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { LOCAL_IP } from '@env';
 
 import { Card } from "@rneui/themed";
 
-let marginOffset = -30;
+let cardPosition = -16;
 const MainPage = () => {
   const navigation = useNavigation();
 
   const [currentEvents, setCurrentEvents] = useState(null)
+
 
   const requestOnPageLoad = () => {
     fetch(`http://${LOCAL_IP}:3000/events/`, {
@@ -40,8 +41,15 @@ const MainPage = () => {
         }).catch((e) => console.log(e))
   }
 
+  const resetCardPositioning = () => {
+    console.log("Resetting Positioning!")
+    cardPosition = -16
+  }
   useFocusEffect(
-    React.useCallback(requestOnPageLoad, [])
+    React.useCallback(() => {
+      requestOnPageLoad()
+      resetCardPositioning()
+    }, []),
   )
 
 
@@ -319,9 +327,11 @@ const MainPage = () => {
         {
 
           currentEvents.map((event, index) => {
-            marginOffset += 20
+            cardPosition = cardPosition + 14
+            let cardPercentage = cardPosition + "%"
+            console.log("Card Percentage is", cardPercentage)
             return (
-              <Card key={index} containerStyle={{marginTop: marginOffset, marginLeft: -15, backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0,}}>
+              <Card key={index} containerStyle={{top: cardPercentage , marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0,}}>
                 <Pressable
                   onPress={() => navigation.navigate("EventDetails")}
                 >
@@ -720,14 +730,15 @@ const styles = StyleSheet.create({
   eventTitle: {
     position: "absolute",
     top: 140,
-    left: 126,
-    paddingTop: 18,
+    left: "28%",
+    textAlign: 'center',
+    paddingTop: 17,
     fontSize: 24,
     lineHeight: 14,
     fontFamily: "GearUp",
     color: "#fff",
-    textAlign: "left",
-    width: 180,
+    writingDirection: 'auto',
+    width: 200,
     height: 25,
   },
   v3CASUALText: {
