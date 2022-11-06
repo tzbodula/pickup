@@ -5,6 +5,8 @@ import React, { useState } from 'react'
 import { Avatar } from "@rneui/base";
 import {LOCAL_IP} from '@env';
 import { Button } from "@rneui/themed";
+import { Storage } from 'expo-storage'
+
 
 const EditProfile = () => {
   const navigation = useNavigation();
@@ -61,8 +63,11 @@ const EditProfile = () => {
     }).then((res) => {return res.json()})
     .then((data) => {
       if (data.status == 200) {
-        navigation.navigate("ProfileUser")
-      }
+        Storage.setItem({key: 'username', value: JSON.stringify(updatedUsername)})
+        .then(Storage.setItem({key: 'bio', value: JSON.stringify(updatedBio)})
+          .then(navigation.navigate("ProfileUser"))
+        )
+      }      
       console.log(data)
     })
     

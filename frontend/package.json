@@ -15,6 +15,7 @@
     "@rneui/themed": "^4.0.0-rc.6",
     "expo": "~46.0.16",
     "expo-app-loading": "^2.1.0",
+    "expo-storage": "46.0.0",
     "expo-font": "^10.2.1",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",

@@ -12,7 +12,7 @@ router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     
-    const query = `SELECT account_id, account_username, email, account_password FROM accounts WHERE account_username = ?;`
+    const query = `SELECT account_id, account_username, email, account_password, games_joined, games_attended, rating, bio FROM accounts WHERE account_username = ?;`
 
     db.query(query, [username], (err, result) => {
         
@@ -27,7 +27,9 @@ router.post('/login', (req, res) => {
         req.session.account_id = result[0].account_id;
         req.session.account_username = result[0].account_username;
         
-        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.account_id});
+        return res.status(200).send({message:"Logged in successfully", status:200, account_id: req.session.account_id, 
+        account_username: result[0].account_username, email: result[0].email, games_joined: result[0].games_joined, 
+        games_attended: result[0].games_attended, rating: result[0].rating, bio: result[0].bio});
     })
     
 })

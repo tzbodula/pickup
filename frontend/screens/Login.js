@@ -12,6 +12,8 @@ import {
 } from "react-native";
 
 import { Button } from "@rneui/themed";
+import { Storage } from 'expo-storage'
+
 
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {LOCAL_IP} from '@env';
@@ -43,9 +45,17 @@ const Login = () => {
     }).then((res) => {return res.json()})
     .then((data) => {
       if (data.status == 200) {
-        navigation.navigate("MainPage")
+        console.log(data)
+        Storage.setItem({key: 'username', value: JSON.stringify(data.account_username)}
+        ).then(Storage.setItem({key: 'rating', value: JSON.stringify(data.rating)})
+        ).then(Storage.setItem({key: 'gamesJoined', value: JSON.stringify(data.games_joined)})
+        ).then(Storage.setItem({key: 'gamesAttended', value: JSON.stringify(data.games_attended)})
+        ).then(Storage.setItem({key: 'email', value: JSON.stringify(data.email)})
+        ).then(Storage.setItem({key: 'bio', value: JSON.stringify(data.bio)})
+        ).then(
+          navigation.navigate("MainPage")
+        )
       }
-      console.log(data)
     }).catch((e) => console.log(e))
  
   }
