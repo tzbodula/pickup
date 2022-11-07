@@ -57,7 +57,7 @@ const Login = () => {
         )
       }
     }).catch((e) => console.log(e))
- 
+
   }
   return (
     <SafeAreaView style={styles.loginView2}>

@@ -7,7 +7,9 @@ import { Storage } from 'expo-storage'
 import { AirbnbRating } from 'react-native-ratings';
 import {LOCAL_IP} from '@env';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+let favoriteSportAdjustment = 10.75
 
 const ProfileUser = () => {
   const [favoriteSports, setSportInfo] = useState([])
@@ -42,6 +44,13 @@ const ProfileUser = () => {
     })
   }  
   
+
+    useEffect(() => {
+      return () => {
+          favoriteSportAdjustment = 10.75
+      }
+  }, [])
+
   const requestOnPageLoad = () => {
     fetch(`http://${LOCAL_IP}:3000/user/sports`)
       .then((res) => {return res.json()})
@@ -253,43 +262,25 @@ const ProfileUser = () => {
         <Image
           style={styles.ellipseIcon2}
           resizeMode="cover"
-          source={require("../assets/ellipse-181.png")}
+          source={require("../assets/ellipse-193.png")}
         />
         <Image
           style={styles.ellipseIcon3}
           resizeMode="cover"
           source={require("../assets/ellipse-193.png")}
         />
-        <Image
-          style={styles.ellipseIcon4}
-          resizeMode="cover"
-          source={require("../assets/ellipse-201.png")}
-        />
-        <Image
-          style={styles.ellipseIcon5}
-          resizeMode="cover"
-          source={require("../assets/ellipse-193.png")}
-        />
+
         <Image
           style={styles.basketball1Icon}
           resizeMode="cover"
           source={require("../assets/basketball-1.png")}
         />
         <Image
-          style={styles.soccerBall1}
+          style={styles.football1Icon}
           resizeMode="cover"
           source={require("../assets/soccer-ball-1.png")}
         />
-        <Image
-          style={styles.tennisRacket1}
-          resizeMode="cover"
-          source={require("../assets/tennis-racket-1.png")}
-        />
-        <Image
-          style={styles.football1Icon}
-          resizeMode="cover"
-          source={require("../assets/football-1.png")}
-        />
+
 
         
        {/*  <Text style={styles.footballText}>Football</Text>
@@ -312,7 +303,10 @@ const ProfileUser = () => {
           favoriteSports.length
           ?
           favoriteSports.map((sport) => {
-            return <Text key={sport.sport_id}> {sport.sport_name} </Text> 
+            favoriteSportAdjustment = favoriteSportAdjustment + 6
+            let topPercentage = favoriteSportAdjustment + "%"
+
+            return <Text style={{position: "absolute", top: topPercentage, left: 70, fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
         })
           :
           <Text> empty </Text>
