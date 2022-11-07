@@ -8,38 +8,32 @@ import { Button } from "@rneui/themed";
 import { Storage } from 'expo-storage'
 
 
-const EditProfile = () => {
+const EditProfile = ({route}) => {
   const navigation = useNavigation();
-  const [updatedUsername, setUsername] = useState("")
-  const [updatedBio, setBio] = useState("")
+  const [updatedUsername, setUsername] = useState(route.params.username)
+  const [updatedBio, setBio] = useState(route.params.bio)
   const [hasChanged, setHasChanged] = useState(false)
   
   const updateUsername = (event) => {
     setHasChanged(true)
-    setUsername(event)
+    setUsername(event.trim())
   }
 
   const updateBio = (event) => {
     setHasChanged(true)
-    setBio(event)
+    setBio(event.trim())
   }
   
   const requestOnPageLoad = () => {
-    Storage.getItem({key: 'username'})
-    .then((username) =>{
-      setUsername(username)
-      Storage.getItem({key: 'bio'})
-      .then((bio) =>{
-        setBio(bio)
-      })
-    })
+   setBio(route.params.bio)
+   setUsername(route.params.username)
   }
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
 
 
   const handleUpdate = () => {
-    if(hasChanged){
-      try {
+    if(hasChanged) {
+
         fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
           method: 'PUT',
           headers: {
@@ -52,17 +46,10 @@ const EditProfile = () => {
         }).then((res) => {return res.json()})
         .then((data) => {
           if (data.status == 200) {
-            Storage.setItem({key: 'username', value: JSON.stringify(updatedUsername)})
-            .then(Storage.setItem({key: 'bio', value: JSON.stringify(updatedBio)})
-              .then(navigation.navigate("ProfileUser"))
-            )
+              navigation.navigate("ProfileUser");
           }      
           console.log(data)
-        })
-        
-      } catch(e) {
-        console.log(e)
-      }
+        }).catch((e) => {console.log(e)}) 
     }
     else{
       navigation.navigate("ProfileUser")
@@ -229,7 +216,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40} placeholder="Enter new username"></TextInput>
+        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40}>{route.params.username}</TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
@@ -258,7 +245,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68} placeholder="Enter new bio"></TextInput>
+          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68}>{route.params.bio}</TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"

@@ -50,7 +50,7 @@ const Login = () => {
         ).then(Storage.setItem({key: 'account_id', value: JSON.stringify(data.account_id)})
         ).then(
           navigation.navigate("MainPage")
-        )
+        ).catch((e) => console.log(e))
       }
     }).catch((e) => console.log(e))
 

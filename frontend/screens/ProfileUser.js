@@ -18,15 +18,16 @@ const ProfileUser = () => {
   const [gamesJoined, setGamesJoined] = useState("")
   const [gamesAttended, setGamesAttended] = useState("")
   const [bio, setBio] = useState("")
+  const [email, setEmail] = useState("")
   const navigation = useNavigation();
 
-    useEffect(() => {
-      return () => {
-          favoriteSportAdjustment = 10.75
-      }
-  }, [])
-
+  useEffect(() => {
+    return () => {
+        favoriteSportAdjustment = 10.75
+    }
+}, [])
   const requestOnPageLoad = () => {
+    
     fetch(`http://${LOCAL_IP}:3000/user/`, {
         method: 'GET',
         headers: {
@@ -39,6 +40,7 @@ const ProfileUser = () => {
           setGamesJoined(retrieved.data.games_joined)
           setGamesAttended(retrieved.data.games_attended);
           setBio(retrieved.data.bio);
+          setEmail(retrieved.data.email)
         }
       }).then(() => {
         fetch(`http://${LOCAL_IP}:3000/user/sports`)
@@ -47,7 +49,7 @@ const ProfileUser = () => {
           setSportInfo(res.data)
         })
         .catch((e) => {console.log(e)})
-      })
+      }).catch((e) => {console.log(e)})
     
   }
 
@@ -219,7 +221,11 @@ const ProfileUser = () => {
         <Text style={styles.attendanceRateText}>Attendance Rate</Text>
         <Pressable
           style={styles.buttonPressable}
-          onPress={() => navigation.navigate("EditSettings")}
+          onPress={() => navigation.navigate("EditSettings", {
+            username: username,
+            bio: bio,
+            email: email
+          })}
         >
           <Image
             style={styles.leadingIcon}

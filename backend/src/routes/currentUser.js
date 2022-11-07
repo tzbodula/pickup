@@ -43,10 +43,15 @@ router.post('/logout', (req, res) => {
 router.put('/updateProfile', (req, res) => {
     const query = `SELECT * FROM accounts WHERE account_username = ?;`
     db.query(query, [req.body.newUsername], (err, result) => {
-        //handle any errors
+        // If there exists a user that comes up with that username
         if (result[0]) {
-            return res.status(400).send({message: 'Username is already in use', status:400});
+            // Then if that person is not the same person logged in this username already is taken
+            if (result[0].account_id != req.session.account_id) {
+                return res.status(400).send({message: 'Username is already in use', status:400});
+            }
         }
+
+        
         const updateStatement =
         `UPDATE accounts SET account_username = ?, bio = ? WHERE account_id = ?;`
 
