@@ -1595,9 +1595,8 @@ const styles = StyleSheet.create({
   },
   text2: {
     position: "relative",
-    fontSize: 12,
-    lineHeight: 18,
-    bottom: "3%",
+    fontSize: 10,
+    lineHeight: 14,
     fontFamily: "GearUp",
     color: "#000000",
     textAlign: "left",
