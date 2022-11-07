@@ -1,15 +1,28 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Text, StyleSheet, SafeAreaView, Image, Pressable, TextInput } from "react-native";
 import { Button } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Input } from '@rneui/themed';
+
+
 import DateTimePicker from '@react-native-community/datetimepicker';
+
+const GOOGLE_PLACES_API_KEY = "AIzaSyCg5nigy1z0ZTdv0s1ccPdz0ZX7gvHTO7I";
 
 const CreateEvent = () => {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+
+
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current?.setAddressText('Some Text');
+  }, []);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -28,7 +41,10 @@ const CreateEvent = () => {
   const showDatepicker = () => {
     showMode('date');
   };
-
+  
+  const showTimepicker = () => {
+    showMode('time');
+  };
   const navigation = useNavigation();
 
   return (
@@ -60,29 +76,72 @@ const CreateEvent = () => {
         <SafeAreaView style={styles.rectangleView2} />
         <Text style={styles.text}>6</Text>
       </SafeAreaView>
-      <Text style={styles.locationText}>Location</Text>
-      <SafeAreaView style={styles.groupView}>
-        <Image
-          style={styles.image1Icon}
-          resizeMode="cover"
-          source={require("../assets/image-12.png")}
-        />
-        <Image
-          style={styles.image3Icon}
-          resizeMode="cover"
-          source={require("../assets/image-31.png")}
-        />
-        <Image
-          style={styles.image5Icon}
-          resizeMode="cover"
-          source={require("../assets/image-31.png")}
-        />
-        <Image
-          style={styles.image4Icon}
-          resizeMode="cover"
-          source={require("../assets/image-31.png")}
-        />
-      </SafeAreaView>
+  
+    <GooglePlacesAutocomplete
+      ref={ref}
+      query={{
+        key: GOOGLE_PLACES_API_KEY,
+        language: 'en', // language of the results
+      }}
+      disableScroll
+      styles=
+      {
+        {
+          container: {
+            flex: 1,
+          },
+          textInputContainer: {
+            flexDirection: 'row',
+          },
+          textInput: {
+            backgroundColor: '#00060a',
+            color: '#80ced7',
+            fontFamily: 'GearUp',
+            height: 44,
+            borderRadius: 5,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+            fontSize: 15,
+            flex: 1,
+          },
+          poweredContainer: {
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            borderBottomRightRadius: 5,
+            borderBottomLeftRadius: 5,
+            borderColor: '#c8c7cc',
+            borderTopWidth: 0.5,
+          },
+          powered: {},
+          listView: {top: "42%"},
+          row: {
+            backgroundColor: '#00060a',
+            padding: 13,
+            height: 42,
+            flexDirection: 'row',
+          },
+          separator: {
+            height: 0.5,
+            backgroundColor: '#c8c7cc',
+          },
+          description: { fontFamily: 'GearUp', fontSize: 10, color: '#80ced7',},
+          loader: {
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            height: 20,
+          },
+        }
+    }
+      onPress={(data, details) => console.log("Pressed!", data, details)}
+      onFail={(error) => console.error(error)}
+      textInputProps={{
+        InputComp: Input,
+        errorStyle: { color: 'red' },
+        containerStyle: styles.locationPicker,
+        labelStyle: {fontFamily: 'GearUp', fontSize: 12, color: "#000000"},
+        label: "Select your location",
+      }}
+    />
       <Pressable
         style={styles.framePressable}
         onPress={() => navigation.navigate("MainPage")}
@@ -111,22 +170,7 @@ const CreateEvent = () => {
       </Pressable>
       <Text style={styles.vs3Text}>3 vs 3</Text>
 
-      <SafeAreaView style={styles.frameView4}>
-        <SafeAreaView style={styles.rectangleView3} />
-        <Text style={styles.craverRdCharlotteNc28262}>
-          craver rd, charlotte, nc 28262
-        </Text>
-      </SafeAreaView>
-      <Button containerStyle={{top: "63.5%", left: "1.5%"}} titleStyle={{fontFamily: "GearUp", color:"#80ced7"}} buttonStyle={{width:"40%"}}color="#00060a" onPress={showDatepicker} title="10/27/2022" />
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
-        />
-      )}
+
       <Text style={{top: "55%", left: "1.5%", fontSize: 11, lineHeight: 14, fontFamily: "GearUp",color: "#000", textAlign: "left"}}>Date</Text>
       <SafeAreaView style={styles.frameView2}>
         <SafeAreaView style={styles.rectangleView1} />
@@ -142,7 +186,9 @@ const CreateEvent = () => {
           />
         </Pressable>
       </SafeAreaView>
-      <Button containerStyle={{top: "56%", left: "51.5%"}} titleStyle={{fontFamily: "GearUp", color:"#80ced7"}} buttonStyle={{width:"40%"}}color="#00060a" onPress={showDatepicker} title="02:30 PM" />
+      <Button onPress={showDatepicker} title="Show date picker!" />
+      <Button onPress={showTimepicker} title="Show time picker!" />
+      <Text>selected: {date.toLocaleString()}</Text>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -185,6 +231,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: 275,
     height: 20,
+  },
+  locationPicker: {
+    
+    position: "absolute",
+    paddingTop: "49%",
+    top: "25%"
   },
   eventNameText: {
     position: "absolute",
@@ -384,7 +436,7 @@ const styles = StyleSheet.create({
     bottom: "0%",
     fontSize: 20,
     lineHeight: 14,
-    fontFamily: "Assistant",
+    fontFamily: "GearUp",
     color: "#9ad1d4",
     textAlign: "left",
   },
@@ -447,7 +499,7 @@ const styles = StyleSheet.create({
     width: 358,
     height: 52,
   },
-  craverRdCharlotteNc28262: {
+  eventLocation: {
     position: "absolute",
     paddingTop: "1%",
     top: 19,
