@@ -47,11 +47,7 @@ const Login = () => {
       if (data.status == 200) {
         console.log(data)
         Storage.setItem({key: 'username', value: JSON.stringify(data.account_username)}
-        ).then(Storage.setItem({key: 'rating', value: JSON.stringify(data.rating)})
-        ).then(Storage.setItem({key: 'gamesJoined', value: JSON.stringify(data.games_joined)})
-        ).then(Storage.setItem({key: 'gamesAttended', value: JSON.stringify(data.games_attended)})
-        ).then(Storage.setItem({key: 'email', value: JSON.stringify(data.email)})
-        ).then(Storage.setItem({key: 'bio', value: JSON.stringify(data.bio)})
+        ).then(Storage.setItem({key: 'account_id', value: JSON.stringify(data.account_id)})
         ).then(
           navigation.navigate("MainPage")
         )

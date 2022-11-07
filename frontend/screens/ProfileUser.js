@@ -19,31 +19,6 @@ const ProfileUser = () => {
   const [gamesAttended, setGamesAttended] = useState("")
   const [bio, setBio] = useState("")
   const navigation = useNavigation();
-  
-
-  const getUserData = () => {
-    Storage.getItem({key: 'username'})
-    .then((username) =>{
-      setUsername(username)
-      Storage.getItem({key: 'rating'})
-      .then((rating) =>{
-        setRating(rating)
-        Storage.getItem({key: 'gamesJoined'})
-        .then((gamesJoined) =>{
-          setGamesJoined(gamesJoined)
-          Storage.getItem({key: 'gamesAttended'})
-          .then((gamesAttended) =>{
-            setGamesAttended(gamesAttended)
-            Storage.getItem({key: 'bio'})
-            .then((bio) =>{
-              setBio(bio)
-            })
-          })  
-        })
-      })
-    })
-  }  
-  
 
     useEffect(() => {
       return () => {
@@ -52,14 +27,28 @@ const ProfileUser = () => {
   }, [])
 
   const requestOnPageLoad = () => {
-    fetch(`http://${LOCAL_IP}:3000/user/sports`)
-      .then((res) => {return res.json()})
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json'}
+      }).then((res) => {return res.json()})
+      .then((retrieved) => {
+        if (retrieved.status == 200) {
+          setUsername(retrieved.data.account_username)
+          setRating(retrieved.data.rating)
+          setGamesJoined(retrieved.data.games_joined)
+          setGamesAttended(retrieved.data.games_attended);
+          setBio(retrieved.data.bio);
+        }
+      }).then(() => {
+        fetch(`http://${LOCAL_IP}:3000/user/sports`)
+        .then((res) => {return res.json()})
         .then((res) => {
           setSportInfo(res.data)
-          getUserData()
-          console.log(res.data)
         })
         .catch((e) => {console.log(e)})
+      })
+    
   }
 
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
