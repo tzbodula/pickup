@@ -5,78 +5,62 @@ import React, { useState } from 'react'
 import { Avatar } from "@rneui/base";
 import {LOCAL_IP} from '@env';
 import { Button } from "@rneui/themed";
+import { Storage } from 'expo-storage'
 
-const EditProfile = () => {
+
+const EditProfile = ({route}) => {
   const navigation = useNavigation();
-  const [profileData, setProfileData] = useState(null)
+  const [updatedUsername, setUsername] = useState(route.params.username)
+  const [updatedBio, setBio] = useState(route.params.bio)
+  const [hasChanged, setHasChanged] = useState(false)
+  
+  const updateUsername = (event) => {
+    setHasChanged(true)
+    setUsername(event.trim())
+  }
 
-  let username = "Test";
-  let bio = "Example bio";
+  const updateBio = (event) => {
+    setHasChanged(true)
+    setBio(event.trim())
+  }
   
   const requestOnPageLoad = () => {
-    
-    fetch(`http://${LOCAL_IP}:3000/user/`, {
-      method: 'GET',
-      headers: {
-      'Content-Type': 'application/json'}
-    }).then((res) => {return res.json()})
-    .then((retrieved) => {
-      if (retrieved.status == 200) {
-        username = retrieved.data.account_username
-        bio = retrieved.data.bio
-        const retrievedData = {
-          username: username,
-          bio: bio,
-        }
-
-        setProfileData(retrievedData)
-      }
-    }).catch((e) => {console.log(e)})
+   setBio(route.params.bio)
+   setUsername(route.params.username)
   }
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
 
 
-  const [updatedUsername, setUsername] = useState(username)
-  const [updatedBio, setBio] = useState(bio)
-
-  const updateUsername = (event) => {
-    setUsername(event)
-  }
-
-  const updateBio = (event) => {
-    setBio(event)
-  }
-
   const handleUpdate = () => {
-    try {
-    fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
-      method: 'PUT',
-      headers: {
-      'Content-Type': 'application/json', 
-      'Accept': 'application/json'},
-      body: JSON.stringify({
-        "newUsername": updatedUsername,
-        "newBio": updatedBio
-      })
-    }).then((res) => {return res.json()})
-    .then((data) => {
-      if (data.status == 200) {
-        navigation.navigate("ProfileUser")
-      }
-      console.log(data)
-    })
-    
-  } catch(e) {
-    console.log(e)
+    if(hasChanged) {
+
+        fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
+          method: 'PUT',
+          headers: {
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json'},
+          body: JSON.stringify({
+            "newUsername": updatedUsername,
+            "newBio": updatedBio
+          })
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          if (data.status == 200) {
+              navigation.navigate("ProfileUser");
+          }      
+          console.log(data)
+        }).catch((e) => {console.log(e)}) 
+    }
+    else{
+      navigation.navigate("ProfileUser")
+    }
   }
-  }
 
 
 
 
 
-
-  if(profileData == null) {
+  if(updatedUsername == null || updatedBio == null) {
   return (
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
@@ -232,7 +216,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40} placeholder="Enter new username"></TextInput>
+        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40}>{route.params.username}</TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
@@ -261,7 +245,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68} placeholder="Enter new bio"></TextInput>
+          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68}>{route.params.bio}</TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"

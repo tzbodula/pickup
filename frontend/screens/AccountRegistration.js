@@ -48,6 +48,7 @@ const AccountRegistration = () => {
       body: JSON.stringify(data)
     }).then((res) => {return res.json()})
     .then((data) => {console.log(data.message)})
+    .then((e) => {console.log(e)})
   }
 
   return (

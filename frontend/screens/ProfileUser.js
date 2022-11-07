@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "re
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { Avatar } from "@rneui/base";
+import { Storage } from 'expo-storage'
 
 import { AirbnbRating } from 'react-native-ratings';
 import {LOCAL_IP} from '@env';
@@ -11,18 +12,22 @@ import React, { useState, useEffect } from 'react'
 let favoriteSportAdjustment = 10.75
 
 const ProfileUser = () => {
-  const [profileData, setProfileData] = useState({})
   const [favoriteSports, setSportInfo] = useState([])
-
+  const [username, setUsername] = useState("")
+  const [rating, setRating] = useState("")
+  const [gamesJoined, setGamesJoined] = useState("")
+  const [gamesAttended, setGamesAttended] = useState("")
+  const [bio, setBio] = useState("")
+  const [email, setEmail] = useState("")
   const navigation = useNavigation();
 
-    useEffect(() => {
-      return () => {
-          favoriteSportAdjustment = 10.75
-      }
-  }, [])
-
+  useEffect(() => {
+    return () => {
+        favoriteSportAdjustment = 10.75
+    }
+}, [])
   const requestOnPageLoad = () => {
+    
     fetch(`http://${LOCAL_IP}:3000/user/`, {
         method: 'GET',
         headers: {
@@ -30,37 +35,26 @@ const ProfileUser = () => {
       }).then((res) => {return res.json()})
       .then((retrieved) => {
         if (retrieved.status == 200) {
-          const username = retrieved.data.account_username
-          const rating = retrieved.data.rating
-          const gamesJoined = retrieved.data.games_joined
-          const gamesAttended = retrieved.data.games_attended;
-          const bio = retrieved.data.bio;
-
-          const retrievedData = {
-            username: username,
-            rating: rating,
-            gamesJoined: gamesJoined,
-            gamesAttended: gamesAttended,
-            bio: bio,
-          }
-
-          setProfileData(retrievedData)
+          setUsername(retrieved.data.account_username)
+          setRating(retrieved.data.rating)
+          setGamesJoined(retrieved.data.games_joined)
+          setGamesAttended(retrieved.data.games_attended);
+          setBio(retrieved.data.bio);
+          setEmail(retrieved.data.email)
         }
       }).then(() => {
         fetch(`http://${LOCAL_IP}:3000/user/sports`)
         .then((res) => {return res.json()})
         .then((res) => {
           setSportInfo(res.data)
-          console.log(res.data)
         })
         .catch((e) => {console.log(e)})
-      })
-      .catch((e) => {console.log(e)})
+      }).catch((e) => {console.log(e)})
+    
   }
 
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
-  
-  if(profileData == null) {
+  if(username == null || rating == null || gamesAttended == null || gamesJoined == null || bio == null) {
     return(
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
@@ -130,7 +124,6 @@ const ProfileUser = () => {
     </SafeAreaView>
     );
   } else {
-    console.log(typeof profileData)
     return (
       <SafeAreaView style={styles.profileUserView}>
        <SafeAreaView style={styles.footerView}>
@@ -219,16 +212,20 @@ const ProfileUser = () => {
           icon='../assets/icon.png' 
         />
   
-        <Text style={styles.dOTUNIVERSITY4Text}>{profileData.username}</Text>
-        <AirbnbRating size={20} defaultRating={profileData.rating} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
-        <Text style={styles.bioStyle}>{profileData.bio}</Text>
-        <Text style={styles.text5}>{profileData.gamesAttended}</Text>
-        <Text style={styles.text6}>{(((1.0 * profileData.gamesAttended) / profileData.gamesJoined) * 100)}%</Text>
+        <Text style={styles.dOTUNIVERSITY4Text}>{username}</Text>
+        <AirbnbRating size={20} defaultRating={rating} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
+        <Text style={styles.bioStyle}>{bio}</Text>
+        <Text style={styles.text5}>{gamesAttended}</Text>
+        <Text style={styles.text6}>{(((1.0 * gamesAttended) / gamesJoined) * 100)}%</Text>
         <Text style={styles.gamesPlayedText}>Games Played</Text>
         <Text style={styles.attendanceRateText}>Attendance Rate</Text>
         <Pressable
           style={styles.buttonPressable}
-          onPress={() => navigation.navigate("EditSettings")}
+          onPress={() => navigation.navigate("EditSettings", {
+            username: username,
+            bio: bio,
+            email: email
+          })}
         >
           <Image
             style={styles.leadingIcon}

@@ -28,6 +28,7 @@ const MainPage = () => {
 
 
   const requestOnPageLoad = () => {
+    cardPosition = -16
     fetch(`http://${LOCAL_IP}:3000/events/`, {
         method: 'GET',
         headers: {
@@ -40,16 +41,9 @@ const MainPage = () => {
           }
         }).catch((e) => console.log(e))
   }
-
-  const resetCardPositioning = () => {
-    console.log("Resetting Positioning!")
-    cardPosition = -16
-  }
+  
   useFocusEffect(
-    React.useCallback(() => {
-      requestOnPageLoad()
-      resetCardPositioning()
-    }, []),
+    React.useCallback(requestOnPageLoad, [])
   )
 
 

@@ -4,9 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
 
 
-const EditSettings = () => {
+const EditSettings = ({route}) => {
   const navigation = useNavigation();
-
   return (
     <SafeAreaView style={styles.editSettingsView}>
       <SafeAreaView style={styles.footerView}>
@@ -123,7 +122,8 @@ const EditSettings = () => {
       <Text style={styles.accountSettingsText}>Account Settings</Text>
       <Pressable
         style={styles.buttonPressable1}
-        onPress={() => navigation.navigate("EditProfile")}
+        onPress={() => navigation.navigate("EditProfile", {username: route.params.username,
+          bio: route.params.bio})}
       >
         <Image
           style={styles.leadingIcon2}
