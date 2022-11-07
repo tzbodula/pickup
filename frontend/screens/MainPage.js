@@ -29,6 +29,7 @@ const MainPage = () => {
 
   const requestOnPageLoad = () => {
     cardPosition = -16
+    console.log("")
     fetch(`http://${LOCAL_IP}:3000/events/`, {
         method: 'GET',
         headers: {

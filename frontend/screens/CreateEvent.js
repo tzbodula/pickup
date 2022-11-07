@@ -7,15 +7,12 @@ import { useNavigation } from "@react-navigation/native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Input } from '@rneui/themed';
 
+import {GOOGLE_PLACES_API_KEY} from '@env';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
-
-const GOOGLE_PLACES_API_KEY = "AIzaSyCg5nigy1z0ZTdv0s1ccPdz0ZX7gvHTO7I";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 const CreateEvent = () => {
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [datePickerVisibility, setDatePickerVisibility] = useState(false)
 
 
   const ref = useRef();
@@ -30,20 +27,17 @@ const CreateEvent = () => {
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
-    if (Platform.OS === 'android') {
-      setShow(false);
-      // for iOS, add a button that closes the picker
-    }
-    setMode(currentMode);
+  showDateTimePicker = () => {
+    setDatePickerVisibility(true);
   };
-
-  const showDatepicker = () => {
-    showMode('date');
+ 
+  hideDateTimePicker = () => {
+    setDatePickerVisibility(false);
   };
-  
-  const showTimepicker = () => {
-    showMode('time');
+ 
+  handleDatePicked = (date) => {
+    console.log("A date has been picked: ", date);
+    hideDateTimePicker()
   };
   const navigation = useNavigation();
 
@@ -186,18 +180,14 @@ const CreateEvent = () => {
           />
         </Pressable>
       </SafeAreaView>
-      <Button onPress={showDatepicker} title="Show date picker!" />
-      <Button onPress={showTimepicker} title="Show time picker!" />
-      <Text>selected: {date.toLocaleString()}</Text>
-      {show && (
+
+      <Button title="Show DatePicker" onPress={showDateTimePicker} />
         <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
+          isVisible={datePickerVisibility}
+          onConfirm={handleDatePicked}
+          onCancel={hideDateTimePicker}
+          mode='datetime'
         />
-      )}
       <Text style={{top: "47.5%", left: "51%", fontSize: 11, lineHeight: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}}>Time</Text>
       <SafeAreaView style={styles.frameView2}>
         <SafeAreaView style={styles.rectangleView1} />

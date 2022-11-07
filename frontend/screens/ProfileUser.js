@@ -27,7 +27,7 @@ const ProfileUser = () => {
     }
 }, [])
   const requestOnPageLoad = () => {
-    
+    console.log("")
     fetch(`http://${LOCAL_IP}:3000/user/`, {
         method: 'GET',
         headers: {
