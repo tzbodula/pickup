@@ -33,7 +33,7 @@ const EditProfile = ({route}) => {
 
   const handleUpdate = () => {
     if(hasChanged) {
-
+      console.log("")
         fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
           method: 'PUT',
           headers: {

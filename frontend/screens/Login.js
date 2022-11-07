@@ -33,6 +33,7 @@ const Login = () => {
   }
 
   const handleSubmit = () => {
+    console.log("")
     fetch(`http://${LOCAL_IP}:3000/user/login`, {
       method: 'POST',
       headers: {
@@ -46,8 +47,7 @@ const Login = () => {
     .then((data) => {
       if (data.status == 200) {
         console.log(data)
-        Storage.setItem({key: 'username', value: JSON.stringify(data.account_username)}
-        ).then(Storage.setItem({key: 'account_id', value: JSON.stringify(data.account_id)})
+        Storage.setItem({key: 'account_id', value: JSON.stringify(data.account_id)}
         ).then(
           navigation.navigate("MainPage")
         ).catch((e) => console.log(e))
