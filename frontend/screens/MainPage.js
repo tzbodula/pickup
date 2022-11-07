@@ -338,24 +338,13 @@ const MainPage = () => {
 
                 <Pressable
                   style={styles.rectanglePressable}
-                  onPress={() => navigation.navigate("EventDetails")}
+                  onPress={() => navigation.navigate("EventDetails", {event_id:event.event_id, sport_name:event.sport_name})}
                 />
-                <Pressable
-                  style={styles.rectanglePressable1}
-                  onPress={() => navigation.navigate("EventDetails")}
-                />
-                <Pressable
-                  style={styles.rectanglePressable2}
-                  onPress={() => navigation.navigate("EventDetails")}
-                />
-                <Pressable
-                  style={styles.rectanglePressable3}
-                  onPress={() => navigation.navigate("EventDetails")}
-                />
+                {console.log(event.event_id)}
                 <Text style={styles.eventTitle}>{event.event_name}</Text>
                 <Text style={styles.eventTime}>{event.event_time}</Text>
                 <Text style={styles.eventLocation}>{event.event_location}</Text>
-                <Text style={styles.eventHostName}>WHOWANTSMOKE?</Text>
+                <Text style={styles.eventHostName}>{event.account_username}</Text>
                 <Text style={styles.eventDate}>{event.event_date}</Text>
                 <Text style={styles.eventPlayerCount}>{event.current_players}/{event.maximum_players} PLAYERS</Text>
                 <ImageBackground
