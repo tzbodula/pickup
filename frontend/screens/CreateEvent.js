@@ -11,14 +11,22 @@ import {GOOGLE_PLACES_API_KEY} from '@env';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 
+import { Appearance } from 'react-native';
+
 const CreateEvent = () => {
+  const colorScheme = 'dark'
+
+  console.log("Color scheme is", colorScheme)
+
   const [datePickerVisibility, setDatePickerVisibility] = useState(false)
 
+  const [selectedDateLabel, setSelectedDateLabel] = useState("SELECT DATE AND TIME")
 
+  const [selectedDate, setSelectedDate] = useState(null)
   const ref = useRef();
 
   useEffect(() => {
-    ref.current?.setAddressText('Some Text');
+    ref.current?.setAddressText('UREC');
   }, []);
 
   const onChange = (event, selectedDate) => {
@@ -37,6 +45,24 @@ const CreateEvent = () => {
  
   handleDatePicked = (date) => {
     console.log("A date has been picked: ", date);
+    console.log("Type of date", typeof(date))
+    setSelectedDate(date)
+    let month = date.getMonth() + 1
+    let currentDate = date.getDate()
+    let year = date.getFullYear()
+
+    let dateString = month + "/" + currentDate + "/" + year
+
+    var options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    };
+    var timeString = date.toLocaleString('en-US', options);
+
+    console.log("Date string is", dateString)
+    console.log("Time string is", timeString)
+    setSelectedDateLabel(dateString + " " + timeString)
     hideDateTimePicker()
   };
   const navigation = useNavigation();
@@ -181,12 +207,14 @@ const CreateEvent = () => {
         </Pressable>
       </SafeAreaView>
 
-      <Button title="Show DatePicker" onPress={showDateTimePicker} />
+      <Button containerStyle={{position: "relative", bottom: "55%", width: "94%", marginLeft: "2.5%"}} titleStyle={{fontFamily: "GearUp", color: "#80ced7", fontSize: "14"}} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
+      <Text style={styles.dateTimeText}>PICK YOUR DATE AND TIME</Text>
         <DateTimePicker
           isVisible={datePickerVisibility}
           onConfirm={handleDatePicked}
           onCancel={hideDateTimePicker}
           mode='datetime'
+          isDarkModeEnabled={colorScheme === 'dark'}
         />
       <Text style={{top: "47.5%", left: "51%", fontSize: 11, lineHeight: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}}>Time</Text>
       <SafeAreaView style={styles.frameView2}>
@@ -227,6 +255,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     paddingTop: "49%",
     top: "25%"
+  },
+
+  datePicker: {
+    position: "absolute",
+    top: "29%"
   },
   eventNameText: {
     position: "absolute",
@@ -281,6 +314,17 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "left",
   },
+
+  dateTimeText: {
+    position: "absolute",
+    top: 340,
+    left: 12,
+    fontSize: 11,
+    lineHeight: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
   totalPlayersText: {
     position: "absolute",
     top: 162,
@@ -291,13 +335,7 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "left",
   },
-  datePicker: {
-    position: "absolute",
-    top: 7,
-    left: 77,
-    width: 221,
-    height: 231,
-  },
+
   rectangleView1: {
     position: "absolute",
     top: 0,
@@ -420,12 +458,12 @@ const styles = StyleSheet.create({
   },
   text1: {
     position: "relative",
-    paddingTop: 2,
-    left: 20,
-    top: 44,
-    bottom: "0%",
-    fontSize: 20,
-    lineHeight: 14,
+    paddingLeft: "15%",
+    left: "100%",
+    top: "100%",
+    paddingTop: "42%",
+    fontSize: 14,
+    lineHeight: 22,
     fontFamily: "GearUp",
     color: "#9ad1d4",
     textAlign: "left",
