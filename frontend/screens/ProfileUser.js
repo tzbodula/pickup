@@ -43,7 +43,7 @@ const ProfileUser = () => {
           setEmail(retrieved.data.email)
         }
       }).then(() => {
-        fetch(`http://${LOCAL_IP}:3000/user/sports`)
+        fetch(`http://${LOCAL_IP}:3000/sports/favorite`)
         .then((res) => {return res.json()})
         .then((res) => {
           setSportInfo(res.data)
