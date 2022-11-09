@@ -33,7 +33,7 @@ const Login = () => {
   }
 
   const handleSubmit = () => {
-    console.log("")
+    console.log("Attempting to Login")
     fetch(`http://${LOCAL_IP}:3000/user/login`, {
       method: 'POST',
       headers: {
