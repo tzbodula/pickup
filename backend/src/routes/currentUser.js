@@ -1,5 +1,8 @@
 /**
- * Use this file when we want to perform data related to the CURRENT user that is logged in.
+ * This file is associated with the currently logged in user and maintaing a session.
+ * 
+ * This is different from users.js because users.js does not take into account the currrently logged in user for the most part.
+ * 
  */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')

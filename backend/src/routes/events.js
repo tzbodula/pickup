@@ -1,3 +1,7 @@
+/**
+ * This file is associated with details related to creating events and deleting events and getting SURFACE LEVEL event information.
+ * 
+ */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')
 const checkSession = require('../utils/sessionChecker')
