@@ -69,56 +69,5 @@ router.get('/:id', (req, res) => {
     
 });
 
-// Sends the list of this player's favorite sport
-router.get('/:id/sports',  (req, res) => {
-
-    const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
-    JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
-    WHERE account_id = ? ;`
-
-    db.query(query, [req.params.id], (err, result) => {
-        if (result === undefined || result.length == 0) {
-            return res.status(400).send({message: "Not found", status: 400});
-        }
-    
-        return res.status(200).send({data: result, status: 200});
-    });
-    
-    
-});
-
-// Delete sport from user's favorite sports list
-router.delete('/:id/sports',  (req, res) => {
-
-    const query = `DELETE FROM player_sport_favorite WHERE account_id = ? AND sport_id = ?;`
-
-    db.query(query, [req.params.id, req.body.sport_id], (err, result) => {
-        console.log(result)
-        if (result === undefined || result.length == 0) {
-            return res.status(400).send({message:"Error. User doesn't have this sport favorited.", status: 400})
-        }
-        return res.status(200).send({message: "Sport removed from favorites.",status: 200});
-    });
-    
-    
-});
-
-// Adds sport to user's favorite sports list
-router.post('/:id/sports',  (req, res) => {
-
-    const insertStatement =
-        `INSERT INTO player_sport_favorite
-            (account_id, sport_id)
-            VALUES (?, ?) ;`;
-
-    db.query(insertStatement, [req.params.id, req.body.sport_id], (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        return res.status(200).send({message: 'Favorite sport has been added!', status: 200});
-    });
-    
-    
-});
 
 module.exports = router;
