@@ -71,6 +71,25 @@ router.delete('/:id/leave', (req,res) => {
     }) 
 })
 
+router.get('/:id/getEvents',  (req, res) => {
+    
+    //console.log("We are getting the command still");
+
+    const query = `SELECT event_id, event_name, account_id, sport_id, maximum_players, current_players, event_location, event_date, event_time 
+    FROM pickup_events 
+    WHERE account_id = ? ;`
+
+    db.query(query, [req.params.id], (err, result) => {
+        //handle any errors
+
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send({message: "Not found", status: 400});
+        }
+    
+        return res.status(200).send({data: result, status: 200});
+    });
+    
+});
 
 router.get('/:id/players',  (req, res) => {
 
