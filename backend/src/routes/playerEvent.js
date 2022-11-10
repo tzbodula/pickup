@@ -75,9 +75,10 @@ router.get('/:id/getEvents',  (req, res) => {
     
     //console.log("We are getting the command still");
 
-    const query = `SELECT event_id, event_name, account_id, sport_id, maximum_players, current_players, event_location, event_date, event_time 
-    FROM pickup_events 
-    WHERE account_id = ? ;`
+    const query = `SELECT * FROM player_event
+    JOIN pickup_events ON pickup_events.event_id = player_event.event_id
+    WHERE player_event.account_id = 1
+    ;`
 
     db.query(query, [req.params.id], (err, result) => {
         //handle any errors
