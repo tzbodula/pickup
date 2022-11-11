@@ -1,5 +1,6 @@
 /**
- * This file is used for operations on OTHER users, NOT the current user.
+ * This file is used for operations on OTHER users and not just the current user.
+ * Basic stuff such as deletion, creation, updating and viewing of the table.
  */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')

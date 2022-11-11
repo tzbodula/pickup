@@ -4,7 +4,8 @@ const checkSession = require('../utils/sessionChecker')
 const router = Router();
 
 /**
- * This class file uses the event/ route and is related to operations with the junction tables.
+ * This class file is related to performing more operations with junction tables. Specifically, this class has a lot more JOIN operations
+ * and you can think of this as being the class that performs operations when you have a specific event in mind.
  */
 router.post('/:id/join',  (req, res) => {
     const query1 = `SELECT * FROM pickup_events WHERE event_id = ?`
