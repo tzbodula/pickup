@@ -34,6 +34,27 @@ router.post('/login', (req, res) => {
     
 })
 
+router.get('/getEvents',  checkSession,(req, res) => {
+    
+    //console.log("We are getting the command still");
+
+    const query = `SELECT * FROM player_event
+    JOIN pickup_events ON pickup_events.event_id = player_event.event_id
+    WHERE player_event.account_id = ?
+    ;`
+
+    db.query(query, [req.session.account_id], (err, result) => {
+        //handle any errors
+
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send({message: "Not found", status: 400});
+        }
+    
+        return res.status(200).send({data: result, status: 200});
+    });
+    
+});
+
 router.post('/logout', (req, res) => {
     req.session.destroy();
     return res.status(200).send({message:'Logged out successfully',status: 200});
