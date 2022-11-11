@@ -120,4 +120,43 @@ router.post('/',  (req, res) => {
     
 })
 
+router.put('/:id/update', (req, res) => {
+
+    const query = `SELECT * FROM pickup_events WHERE event_id = ?`
+    db.query(query, req.params.id, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send({message:"Event can't be found", status:400})
+        }
+
+        // Make sure the person making this request is the host
+        if (result[0].account_id != req.session.account_id) {
+            return res.status(401).send({message:"Unauthorized", status:401})
+        }
+        
+        const eventToUpdate = [
+            req.body.event_name,
+            req.body.sport_id,
+            req.body.maximum_players,
+            req.body.event_location,
+            req.body.event_date,
+            req.body.event_time,
+            req.params.id
+        ]
+        const updateQuery = `UPDATE pickup_events 
+        SET event_name = ?, sport_id = ?, maximum_players = ?, event_location = ?, event_date = ?, event_time = ?
+        WHERE event_id = ?`
+
+        db.query(updateQuery, eventToUpdate, (err, result) => {
+
+            if (err) {
+                console.log(err)
+            }
+
+            return res.status(200).send({message:"Updated successfully", status:200})
+        })
+    })
+})
 module.exports = router;
