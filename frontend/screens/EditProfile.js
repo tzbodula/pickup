@@ -6,14 +6,21 @@ import { Avatar } from "@rneui/base";
 import {LOCAL_IP} from '@env';
 import { Button } from "@rneui/themed";
 import { Storage } from 'expo-storage'
+import { Card } from "@rneui/themed";
+import {Picker} from '@react-native-picker/picker';
 
 
 const EditProfile = ({route}) => {
   const navigation = useNavigation();
   const [updatedUsername, setUsername] = useState(route.params.username)
   const [updatedBio, setBio] = useState(route.params.bio)
+  const [favoriteSports, setSportInfo] = useState(route.params.favoriteSports)
   const [hasChanged, setHasChanged] = useState(false)
-  
+  const [options, setOptions] = useState([])
+  const [Enable , setEnable]  = useState(1);
+
+  let favoriteSportAdjustment = 26;
+
   const updateUsername = (event) => {
     setHasChanged(true)
     setUsername(event.trim())
@@ -23,13 +30,54 @@ const EditProfile = ({route}) => {
     setHasChanged(true)
     setBio(event.trim())
   }
-  
+
+  const removeFavSport = (delID) => {
+    setSportInfo((newFavoriteSports) =>
+      newFavoriteSports.filter((sport) => sport.sport_id !== delID)
+    );
+  };
+
+  const addFavSport = (addID) => {
+    let newSport = ""
+    let alreadyFavorited = false
+    options.forEach((option) => {
+      if(option.sport_id == addID){
+        newSport = option
+      }
+    })
+    favoriteSports.forEach((fav) => {
+      if(fav.sport_id == addID){
+        alreadyFavorited = true
+      }
+    })
+    if(!alreadyFavorited){
+      setSportInfo(newFavoriteSports => [...newFavoriteSports, newSport])
+    }
+  };
+
   const requestOnPageLoad = () => {
    setBio(route.params.bio)
    setUsername(route.params.username)
+   setSportInfo(route.params.favoriteSports)
+   if(options.length == 0){
+    pullSports()
+   }
   }
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
 
+
+  const pullSports = () => {
+    fetch(`http://${LOCAL_IP}:3000/sports`, {
+          method: 'GET',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          if (data.status == 200) {
+            setOptions(data.data)
+          }
+      }).catch((e) => {console.log(e)})
+  }
 
   const handleUpdate = () => {
     if(hasChanged) {
@@ -48,7 +96,6 @@ const EditProfile = ({route}) => {
           if (data.status == 200) {
               navigation.navigate("ProfileUser");
           }      
-          console.log(data)
         }).catch((e) => {console.log(e)}) 
     }
     else{
@@ -57,10 +104,51 @@ const EditProfile = ({route}) => {
   }
 
 
+  const deleteSport = (sportID) => {
+    console.log("")
+      fetch(`http://${LOCAL_IP}:3000/sports/favorite`, {
+        method: 'DELETE',
+        headers: {
+        'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          "sport_id": sportID,
+        })
+      }).then((res) => {return res.json()})
+      .then((data) => {
+        if (data.status == 200) {
+          navigation.navigate("EditProfile", {
+            username: updatedUsername,
+            bio: updatedBio,
+            favoriteSports: favoriteSports,
+          })
+        }      
+      }).catch((e) => {console.log(e)}) 
+  }
+
+  const addSport = (sportID) => {
+    console.log("")
+      fetch(`http://${LOCAL_IP}:3000/sports/favorite`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          "sport_id": sportID,
+        })
+      }).then((res) => {return res.json()})
+      .then((data) => {
+        if (data.status == 200) {
+          navigation.navigate("EditProfile", {
+            username: updatedUsername,
+            bio: updatedBio,
+            favoriteSports: favoriteSports,
+          })
+        }      
+      }).catch((e) => {console.log(e)}) 
+  }
 
 
-
-  if(updatedUsername == null || updatedBio == null) {
+  //console.log(favoriteSports)
+  if(updatedUsername == null || updatedBio == null || favoriteSports == null || options == null) {
   return (
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
@@ -280,11 +368,109 @@ const EditProfile = ({route}) => {
 
 
 
-      <Image
-        style={styles.football2Icon}
-        resizeMode="cover"
-        source={require("../assets/football2.png")}
-      />
+      {
+          
+          favoriteSports.map((sport) => {
+            favoriteSportAdjustment = favoriteSportAdjustment + 10
+            let topPercentage = favoriteSportAdjustment + "%"
+            
+            // Tried to change sport image dynamically but couldn't get it to work
+            //let sportName = "../assets/" + sport.sport_name + "-1.png"
+            //console.log(sportName)
+            return (
+              <Card key={sport.sport_id} containerStyle={{top: topPercentage, position: "absolute", left: "1%", width: "90%", height: "8%"}}>
+                <Text style={{top: "7%", left: "15%", height: "300%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
+                <Image
+                  style={{position: "absolute", height: "47%", width: "15%", top: "-5%", right: "87.21%", bottom: "81.89%", left: "-2.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
+                  resizeMode="cover"
+                  source={require("../assets/ellipse-18.png")}
+                />
+                <Image
+                  style={{position: "absolute", height: "35%", width: "10%", top: "0%", right: "90.21%", bottom: "81.89%", left: "-0.29%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
+                  resizeMode="cover"
+                  source={require("../assets/football-1.png")}
+                />
+                <Pressable style={{position: "absolute", height: "100%", width: "15%", top: "-15%", right: "0%", bottom: "65.02%", left: "86%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}} 
+                 onPress={() => {
+                    removeFavSport(sport.sport_id)
+                    deleteSport(sport.sport_id)
+                  }}>
+                  <Image
+                    resizeMode="cover" 
+                    source={require("../assets/vector13.png")}
+                  />
+                </Pressable>
+              </Card>
+          )})
+        }
+    
+
+    <SafeAreaView style={styles.addOrRemoveSportsView}>
+    <Text style={{left: "35%", top: "135%", fontSize: 13, fontFamily: "GearUp", color: "#000"}}>Add Sport</Text>
+      <Card key={10} containerStyle={{top: "140%", position: "absolute", left: "15%", width: "60%", height: "25%"}}>
+        <Pressable style={styles.addOrRemoveSportsView}
+          onPress={() => {
+            addFavSport(Enable)
+            addSport(Enable)
+          }}>
+          <Image
+          style={{position: "absolute",
+          height: "11.52%",
+          width: "8.25%",
+          top: "-133%",
+          left: "-5%",
+          maxWidth: "100%",
+          overflow: "hidden",
+          maxHeight: "100%",}}
+          resizeMode="cover"
+          source={require("../assets/vector10.png")}
+          />
+        </Pressable>
+        <Image
+          style={{
+          height: "80%",
+          width: "1.75%",
+          top: "37%",
+          left: "5.5%",
+          maxWidth: "100%",
+          overflow: "hidden",
+          maxHeight: "100%",}}
+          resizeMode="cover"
+          source={require("../assets/vector11.png")}
+        />
+        <Image
+          style={{position: "absolute",
+          height: "15%",
+          width: "10%",
+          top: "70%",
+          left: "1.5%",
+          maxWidth: "100%",
+          overflow: "hidden",
+          maxHeight: "100%",}}
+          resizeMode="cover"
+          source={require("../assets/vector12.png")}
+        />
+      </Card>
+      {
+      <Picker style ={{width: "45%", left: "32%", top: "105%"}} selectedValue={Enable} mode={"dialog"} onValueChange={(itemValue) => setEnable(itemValue)}>
+      {
+        options.length
+        ?
+        options.map((option) => {
+          return (
+            <Picker.Item key={option.sport_id} label={option.sport_name} value={option.sport_id} />
+        )})
+        :
+        <Picker.Item label="" value="" />
+      }
+      </Picker>
+    }
+    </SafeAreaView>
+    
+
+      
+
+      {/**
       <SafeAreaView style={styles.addOrRemoveSportsView}>
         <Text style={styles.addSportText}>Add Sport</Text>
         <Image
@@ -363,6 +549,11 @@ const EditProfile = ({route}) => {
           source={require("../assets/ellipse-22.png")}
         />
         <Image
+          style={styles.football2Icon}
+          resizeMode="cover"
+          source={require("../assets/football2.png")}
+        />
+        <Image
           style={styles.basketball1Icon}
           resizeMode="cover"
           source={require("../assets/basketball-1.png")}
@@ -387,6 +578,18 @@ const EditProfile = ({route}) => {
         <Text style={styles.sOCCERText}>SOCCER</Text>
         <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
       </SafeAreaView>
+    **/}
+
+
+
+
+
+
+
+
+
+
+
     </SafeAreaView>
     );
   }
@@ -825,7 +1028,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "11.52%",
     width: "8.14%",
-    top: "88.89%",
+    top: "149.89%",
     right: "89.83%",
     bottom: "-0.41%",
     left: "2.03%",
@@ -837,7 +1040,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "6.58%",
     width: "0.58%",
-    top: "91.36%",
+    top: "152.36%",
     right: "93.6%",
     bottom: "2.06%",
     left: "5.81%",
@@ -849,7 +1052,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "0.82%",
     width: "4.65%",
-    top: "94.24%",
+    top: "155.24%",
     right: "91.57%",
     bottom: "4.94%",
     left: "3.78%",
@@ -1076,6 +1279,19 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   sOCCERText: {
+    position: "absolute",
+    height: "16.05%",
+    width: "23.55%",
+    top: "44.03%",
+    right: "59.88%",
+    bottom: "39.92%",
+    left: "16.57%",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
+  sportText: {
     position: "absolute",
     height: "16.05%",
     width: "23.55%",
