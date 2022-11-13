@@ -98,7 +98,7 @@ router.post('/',  (req, res) => {
     
     const insertStatement =
         `INSERT INTO pickup_events
-            (event_name, account_id, sport_id, maximum_players, event_location, event_date, event_time, current_players)
+            (event_name, account_id, sport_id, maximum_players, event_date, event_time, event_location, current_players)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
     
     db.query(insertStatement, eventToAdd, (err, result) => {
