@@ -46,7 +46,9 @@ const ProfileUser = () => {
         fetch(`http://${LOCAL_IP}:3000/sports/favorite`)
         .then((res) => {return res.json()})
         .then((res) => {
-          setSportInfo(res.data)
+          if(res.data != undefined){
+            setSportInfo(res.data)
+          }
         })
         .catch((e) => {console.log(e)})
       }).catch((e) => {console.log(e)})
@@ -224,7 +226,8 @@ const ProfileUser = () => {
           onPress={() => navigation.navigate("EditSettings", {
             username: username,
             bio: bio,
-            email: email
+            email: email,
+            favoriteSports: favoriteSports,
           })}
         >
           <Image
@@ -295,16 +298,13 @@ const ProfileUser = () => {
         
         {
           //Please do your CSS magic Thomas to get these to align property thx
-          favoriteSports.length
-          ?
+          
           favoriteSports.map((sport) => {
             favoriteSportAdjustment = favoriteSportAdjustment + 6
             let topPercentage = favoriteSportAdjustment + "%"
 
             return <Text style={{position: "absolute", top: topPercentage, left: 70, fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
         })
-          :
-          <Text> empty </Text>
         }
         
         <SafeAreaView style={styles.lineView} />

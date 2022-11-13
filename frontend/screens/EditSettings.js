@@ -123,7 +123,7 @@ const EditSettings = ({route}) => {
       <Pressable
         style={styles.buttonPressable1}
         onPress={() => navigation.navigate("EditProfile", {username: route.params.username,
-          bio: route.params.bio})}
+          bio: route.params.bio, favoriteSports: route.params.favoriteSports})}
       >
         <Image
           style={styles.leadingIcon2}
