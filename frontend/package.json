@@ -27,6 +27,7 @@
     "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-ratings": "^8.1.0",
+    "react-native-select-dropdown": "^3.0.3",
     "react-native-web": "~0.18.7",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4"

@@ -124,7 +124,7 @@ const Login = () => {
               resizeMode="cover"
               source={require("../assets/leading-icon7.png")}
             />
-            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%"}} titleStyle={{fontFamily: 'GearUp'}} onPress={handleSubmit}></Button>
+            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%", }} titleStyle={{fontFamily: 'GearUp'}} onPress={handleSubmit}></Button>
           </SafeAreaView>
         </Pressable>
       </SafeAreaView>

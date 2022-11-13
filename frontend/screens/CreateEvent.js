@@ -3,27 +3,37 @@ import { useState, useRef, useEffect } from "react";
 import { Text, StyleSheet, SafeAreaView, Image, Pressable, TextInput } from "react-native";
 import { Button } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
-
+import SelectDropdown from 'react-native-select-dropdown'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Input } from '@rneui/themed';
 
-import {GOOGLE_PLACES_API_KEY} from '@env';
+import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 
-import { Appearance } from 'react-native';
-
 const CreateEvent = () => {
   const colorScheme = 'dark'
-
-  console.log("Color scheme is", colorScheme)
 
   const [datePickerVisibility, setDatePickerVisibility] = useState(false)
 
   const [selectedDateLabel, setSelectedDateLabel] = useState("SELECT DATE AND TIME")
 
+  const sports = ["Soccer", "Football", "Basketball"]
+
+  const [eventName, setEventName] = useState("Your Event Name")
+
+  const [eventSport, setEventSport] = useState("No Sport Selected")
+
+  const [eventTotalPlayers, setEventTotalPlayers] = useState("1")
+
+  const [placeID, setPlaceID] = useState("No Location Selected")
+
+  const [buttonMessage, setButtonMessage] = useState("Create Event")
+
   const [selectedDate, setSelectedDate] = useState(null)
   const ref = useRef();
+
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   useEffect(() => {
     ref.current?.setAddressText('UREC');
@@ -38,14 +48,18 @@ const CreateEvent = () => {
   showDateTimePicker = () => {
     setDatePickerVisibility(true);
   };
- 
+
   hideDateTimePicker = () => {
     setDatePickerVisibility(false);
   };
- 
+
+  handleLocationPicked = (data, details) => {
+    setPlaceID(data.place_id)
+  }
+
   handleDatePicked = (date) => {
     console.log("A date has been picked: ", date);
-    console.log("Type of date", typeof(date))
+    console.log("Type of date", typeof (date))
     setSelectedDate(date)
     let month = date.getMonth() + 1
     let currentDate = date.getDate()
@@ -65,103 +79,220 @@ const CreateEvent = () => {
     setSelectedDateLabel(dateString + " " + timeString)
     hideDateTimePicker()
   };
+
+
+  handleCreateEvent = async () => {
+    //Do any of the fields still have their default values?
+    if (eventName == "Your Event Name" || eventSport == "No Sport Selected" || eventTotalPlayers == "1" || placeID == "No Location Selected" || selectedDate == null) {
+      setButtonMessage("FILL OUT ALL FIELDS!")
+      await delay(3000)
+      setButtonMessage("CREATE EVENT")
+    } else {
+      console.log("Event Name ", eventName)
+      console.log("Event Sport ", eventSport)
+      console.log("Event Total Players", eventTotalPlayers)
+      console.log("Event Place ID", placeID)
+      console.log("Event Selected Date", selectedDate)
+      console.log("Attempting to create an event")
+
+      let sportID = 1
+      if (eventSport == "Soccer") {
+        sportID = 1
+      } else if (eventSport == "Football") {
+        sportID = 2
+      } else if (eventSport == "Basketball") {
+        sportID = 3
+      }
+
+      let month = selectedDate.getMonth() + 1
+      let currentDate = selectedDate.getDate()
+      let year = selectedDate.getFullYear()
+  
+      let dateString = month + "/" + currentDate + "/" + year
+  
+      var options = {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      };
+      var timeString = selectedDate.toLocaleString('en-US', options);
+  
+      console.log("Date string is", dateString)
+      console.log("Time string is", timeString)
+      fetch(`http://${LOCAL_IP}:3000/events`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json'},
+        body: JSON.stringify({
+          "event_name": eventName,
+          "sport_id": sportID,
+          "total_players": eventTotalPlayers,
+          "location": placeID,
+          "date": dateString,
+          "time": timeString,
+
+        })
+      }).then((res) => {return res.json()})
+
+    }
+
+  }
+
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.createEventView}>
       <Text style={styles.createNewEvent}>Create New Event</Text>
       <Text style={styles.eventNameText}>Event Name</Text>
-      <SafeAreaView style={styles.frameView1}>
-        <SafeAreaView style={styles.rectangleView} />
-        <TextInput style={styles.v3SoccerText}>3v3 soccer</TextInput>
-        <SafeAreaView style={styles.frameView} />
-      </SafeAreaView>
+
+      <Input containerStyle={{
+        backgroundColor: "#00060a", 
+        position: "relative",
+        marginTop: "12%",
+        marginLeft: "2%",
+        width: "75%",
+        height: "5%",
+        overflow: "hidden",
+        borderColor: '#80ced7',
+        borderWidth: 1,
+        borderRadius: 5,
+      }} 
+      inputStyle={{ 
+        textTransform: "uppercase", 
+        color: "#80ced7", 
+        fontFamily: "GearUp", 
+        fontSize: "16" 
+      }}
+      value={eventName}
+      onChangeText = {(eventName) => setEventName(eventName)}
+      >
+      </Input>
+
       <Text style={styles.totalPlayersText}>Total Players</Text>
       <Text style={styles.sportText}>Sport</Text>
-      <SafeAreaView style={styles.frameView2}>
-        <SafeAreaView style={styles.rectangleView1} />
-        <Text style={styles.sOCCERText}>SOCCER</Text>
-        <Pressable
-          style={styles.vectorPressable}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <Image
-            style={styles.icon}
-            resizeMode="cover"
-            source={require("../assets/vector51.png")}
-          />
-        </Pressable>
-      </SafeAreaView>
-      <SafeAreaView style={styles.frameView3}>
-        <SafeAreaView style={styles.rectangleView2} />
-        <Text style={styles.text}>6</Text>
-      </SafeAreaView>
-  
-    <GooglePlacesAutocomplete
-      ref={ref}
-      query={{
-        key: GOOGLE_PLACES_API_KEY,
-        language: 'en', // language of the results
-      }}
-      disableScroll
-      styles=
-      {
-        {
-          container: {
-            flex: 1,
-          },
-          textInputContainer: {
-            flexDirection: 'row',
-          },
-          textInput: {
-            backgroundColor: '#00060a',
-            color: '#80ced7',
-            fontFamily: 'GearUp',
-            height: 44,
+      <SelectDropdown
+          data={sports}
+          onSelect = {(selectedItem) => setEventSport(selectedItem)}
+          defaultButtonText="Select a sport"
+          buttonStyle={{
+            position: "relative",
+            left: "1%",
+            backgroundColor: "#00060a", 
+            marginTop: "12%",
+            marginLeft: "5%",
+            width: "65%", 
+            height: "5%",
+            borderColor: '#80ced7',
+            borderWidth: 1,
             borderRadius: 5,
-            paddingVertical: 5,
-            paddingHorizontal: 10,
-            fontSize: 15,
-            flex: 1,
-          },
-          poweredContainer: {
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            borderBottomRightRadius: 5,
-            borderBottomLeftRadius: 5,
-            borderColor: '#c8c7cc',
-            borderTopWidth: 0.5,
-          },
-          powered: {},
-          listView: {top: "42%"},
-          row: {
-            backgroundColor: '#00060a',
-            padding: 13,
-            height: 42,
-            flexDirection: 'row',
-          },
-          separator: {
-            height: 0.5,
-            backgroundColor: '#c8c7cc',
-          },
-          description: { fontFamily: 'GearUp', fontSize: 10, color: '#80ced7',},
-          loader: {
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            height: 20,
-          },
+          }}
+          buttonTextStyle={{
+            textTransform: "uppercase", 
+            color: "#80ced7", 
+            fontFamily: "GearUp", 
+            fontSize: "16" 
+          }}
+          rowTextStyle={{
+            textTransform: "uppercase", 
+            color: "#80ced7", 
+            fontFamily: "GearUp", 
+            fontSize: "16" 
+          }}
+          rowStyle={{
+            backgroundColor: "#00060a", 
+          }}
+      />
+
+
+
+      <Input containerStyle={{ 
+        backgroundColor: "#00060a", 
+        marginTop: "12%",
+        marginLeft: "2%",
+        width: "35%", 
+        height: "5%",
+        borderColor: '#80ced7',
+        borderWidth: 1,
+        borderRadius: 5,
+      }} 
+      inputStyle={{ 
+        textTransform: "uppercase", 
+        color: "#80ced7", 
+        fontFamily: "GearUp", 
+        fontSize: "16" 
+      }} 
+        value={eventTotalPlayers}
+        keyboardType="numeric"
+        onChangeText = {(eventTotalPlayers) => setEventTotalPlayers(eventTotalPlayers)}   
+      >
+      </Input>
+
+      <GooglePlacesAutocomplete
+        ref={ref}
+        query={{
+          key: GOOGLE_PLACES_API_KEY,
+          language: 'en', // language of the results
+        }}
+        disableScroll
+        styles=
+        {
+          {
+            container: {
+              flex: 1,
+            },
+            textInputContainer: {
+              flexDirection: 'row',
+            },
+            textInput: {
+              backgroundColor: '#00060a',
+              color: '#80ced7',
+              fontFamily: 'GearUp',
+              height: 44,
+              borderRadius: 5,
+              paddingVertical: 5,
+              paddingHorizontal: 10,
+              fontSize: 15,
+              flex: 1,
+            },
+            poweredContainer: {
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              borderBottomRightRadius: 5,
+              borderBottomLeftRadius: 5,
+              borderColor: '#c8c7cc',
+              borderTopWidth: 0.5,
+            },
+            powered: {},
+            listView: { top: "18%" },
+            row: {
+              backgroundColor: '#00060a',
+              padding: 13,
+              height: 42,
+              flexDirection: 'row',
+            },
+            separator: {
+              height: 0.5,
+              backgroundColor: '#c8c7cc',
+            },
+            description: { fontFamily: 'GearUp', fontSize: 10, color: '#80ced7', },
+            loader: {
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              height: 20,
+            },
+          }
         }
-    }
-      onPress={(data, details) => console.log("Pressed!", data, details)}
-      onFail={(error) => console.error(error)}
-      textInputProps={{
-        InputComp: Input,
-        errorStyle: { color: 'red' },
-        containerStyle: styles.locationPicker,
-        labelStyle: {fontFamily: 'GearUp', fontSize: 12, color: "#000000"},
-        label: "Select your location",
-      }}
-    />
+        onPress= {(data, details) => handleLocationPicked(data, details)}
+        onFail={(error) => console.error(error)}
+        textInputProps={{
+          InputComp: Input,
+          errorStyle: { color: 'red' },
+          containerStyle: styles.locationPicker,
+          labelStyle: { fontFamily: 'GearUp', fontSize: 12, color: "#000000" },
+          label: "Select your location",
+        }}
+      />
       <Pressable
         style={styles.framePressable}
         onPress={() => navigation.navigate("MainPage")}
@@ -184,55 +315,24 @@ const CreateEvent = () => {
       >
         <Pressable
           style={styles.rectanglePressable}
-          onPress={() => navigation.navigate("SoccerPickup")}
+          onPress={() => handleCreateEvent()}
         />
-        <Text style={styles.createEventText}>Create Event</Text>
+        <Text style={styles.createEventText}>{buttonMessage}</Text>
       </Pressable>
-      <Text style={styles.vs3Text}>3 vs 3</Text>
 
 
-      <Text style={{top: "55%", left: "1.5%", fontSize: 11, lineHeight: 14, fontFamily: "GearUp",color: "#000", textAlign: "left"}}>Date</Text>
-      <SafeAreaView style={styles.frameView2}>
-        <SafeAreaView style={styles.rectangleView1} />
-        <Text style={styles.sOCCERText}>SOCCER</Text>
-        <Pressable
-          style={styles.vectorPressable}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <Image
-            style={styles.icon}
-            resizeMode="cover"
-            source={require("../assets/vector51.png")}
-          />
-        </Pressable>
-      </SafeAreaView>
 
-      <Button containerStyle={{position: "relative", bottom: "55%", width: "94%", marginLeft: "2.5%"}} titleStyle={{fontFamily: "GearUp", color: "#80ced7", fontSize: "14"}} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
+      <Button containerStyle={{ position: "relative", bottom: "25%", width: "94%", marginLeft: "2.5%" }} titleStyle={{ fontFamily: "GearUp", color: "#80ced7", fontSize: "14" }} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
       <Text style={styles.dateTimeText}>PICK YOUR DATE AND TIME</Text>
-        <DateTimePicker
-          isVisible={datePickerVisibility}
-          onConfirm={handleDatePicked}
-          onCancel={hideDateTimePicker}
-          mode='datetime'
-          isDarkModeEnabled={colorScheme === 'dark'}
-        />
-      <Text style={{top: "47.5%", left: "51%", fontSize: 11, lineHeight: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}}>Time</Text>
-      <SafeAreaView style={styles.frameView2}>
-        <SafeAreaView style={styles.rectangleView1} />
-        <Text style={styles.sOCCERText}>SOCCER</Text>
-        <Pressable
-          style={styles.vectorPressable}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <Image
-            style={styles.icon}
-            resizeMode="cover"
-            source={require("../assets/vector51.png")}
-          />
-        </Pressable>
-      </SafeAreaView>
+      <DateTimePicker
+        isVisible={datePickerVisibility}
+        onConfirm={handleDatePicked}
+        onCancel={hideDateTimePicker}
+        mode='datetime'
+        isDarkModeEnabled={colorScheme === 'dark'}
+      />
     </SafeAreaView>
-    
+
   );
 };
 
@@ -251,9 +351,9 @@ const styles = StyleSheet.create({
     height: 20,
   },
   locationPicker: {
-    
+
     position: "absolute",
-    paddingTop: "49%",
+    paddingTop: "4%",
     top: "25%"
   },
 
@@ -263,8 +363,8 @@ const styles = StyleSheet.create({
   },
   eventNameText: {
     position: "absolute",
-    top: 80,
-    left: 8,
+    top: "10%",
+    left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp Soft",
@@ -279,16 +379,7 @@ const styles = StyleSheet.create({
     width: 358,
     height: 52,
   },
-  v3SoccerText: {
-    position: "absolute",
-    top: 19,
-    left: 6,
-    fontSize: 13,
-    lineHeight: 14,
-    fontFamily: "GearUp",
-    color: "#9ad1d4",
-    textAlign: "left",
-  },
+
   frameView: {
     position: "absolute",
     top: -20,
@@ -306,8 +397,8 @@ const styles = StyleSheet.create({
   },
   sportText: {
     position: "absolute",
-    top: 162,
-    left: 8,
+    top: "21%",
+    left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -317,7 +408,7 @@ const styles = StyleSheet.create({
 
   dateTimeText: {
     position: "absolute",
-    top: 340,
+    top: "73.5%",
     left: 12,
     fontSize: 11,
     lineHeight: 14,
@@ -327,8 +418,8 @@ const styles = StyleSheet.create({
   },
   totalPlayersText: {
     position: "absolute",
-    top: 162,
-    left: 211,
+    top: "32%",
+    left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -346,7 +437,6 @@ const styles = StyleSheet.create({
   },
   sOCCERText: {
     position: "absolute",
-    paddingTop: "2%",
     top: 19,
     left: 6,
     fontSize: 14,
@@ -381,20 +471,19 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "#00060a",
-    width: 52,
+    width: "300%",
     height: 52,
   },
-  text: {
+  playerCount: {
     position: "absolute",
-    paddingTop: "52%",
-    top: 16,
-    left: 15,
-    fontSize: 20,
-    lineHeight: 14,
+    top: "20%",
+    left: 0,
+    fontSize: 16,
+    lineHeight: 30,
     fontFamily: "GearUp",
     color: "#80ced7",
     textAlign: "center",
-    width: 23,
+    width: "304%",
     height: 23,
   },
   frameView3: {
