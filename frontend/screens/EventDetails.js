@@ -1,10 +1,30 @@
-import * as React from "react";
+import React, {useState} from 'react';
 import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-const EventDetails = () => {
+import {LOCAL_IP} from "@env";
+
+const EventDetails = ({route}) => {
   const navigation = useNavigation();
+  const [eventDetails, setEventDetails] = useState({})
+  const [players, setPlayers] = useState([])
+  
+  const requestOnPageLoad = () => {
+    fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
+    .then((res) => {return res.json()})
+    .then((data) => {
+      console.log(data.data.account_id)
+      setEventDetails(data.data)}
+      )
+    .then(
+      fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
+      .then((res) => {return res.json()})
+      .then((data) => {setPlayers(data.data) 
+        console.log(data.data)})
+    )
+  }
 
+  useFocusEffect((React.useCallback(requestOnPageLoad, [])))
   return (
     <SafeAreaView style={styles.eventDetailsView}>
       <SafeAreaView style={styles.footerView}>
@@ -98,12 +118,16 @@ const EventDetails = () => {
       />
       <SafeAreaView style={styles.rectangleView1} />
       <Text style={styles.oPENCHATText}>OPEN CHAT</Text>
-      <Text style={styles.uREC400PMFOOTBALL}>UREC | 4:00 PM | FOOTBALL</Text>
-      <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
+      <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_location} || {eventDetails.event_time} || {route.params.sport_name} </Text>
+      {/* <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
       <Text style={styles.mOSSMACHINEText}>MOSSMACHINE</Text>
       <Text style={styles.wATCHYASELFText}>WATCHYASELF</Text>
       <Text style={styles.sACKATTACKText}>SACKATTACK</Text>
-      <Text style={styles.hIGHLIGHTREEL2Text}>HIGHLIGHTREEL2</Text>
+      <Text style={styles.hIGHLIGHTREEL2Text}>HIGHLIGHTREEL2</Text> */}
+      {players?.map((player) => {
+        {console.log(player.account_username)}
+        <Text style={styles.bRUHMOMENTText}>{player.account_username}</Text>
+      })}
       <Image
         style={styles.image2Icon}
         resizeMode="cover"
