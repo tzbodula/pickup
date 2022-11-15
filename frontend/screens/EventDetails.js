@@ -118,16 +118,12 @@ const EventDetails = ({route}) => {
       />
       <SafeAreaView style={styles.rectangleView1} />
       <Text style={styles.oPENCHATText}>OPEN CHAT</Text>
-      <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_location} || {eventDetails.event_time} || {route.params.sport_name} </Text>
-      {/* <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
+      <Text style={styles.uREC400PMFOOTBALL}>UREC | 4:00 PM | FOOTBALL</Text>
+      <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
       <Text style={styles.mOSSMACHINEText}>MOSSMACHINE</Text>
       <Text style={styles.wATCHYASELFText}>WATCHYASELF</Text>
       <Text style={styles.sACKATTACKText}>SACKATTACK</Text>
-      <Text style={styles.hIGHLIGHTREEL2Text}>HIGHLIGHTREEL2</Text> */}
-      {players?.map((player) => {
-        {console.log(player.account_username)}
-        <Text style={styles.bRUHMOMENTText}>{player.account_username}</Text>
-      })}
+      <Text style={styles.hIGHLIGHTREEL2Text}>HIGHLIGHTREEL2</Text>
       <Image
         style={styles.image2Icon}
         resizeMode="cover"
