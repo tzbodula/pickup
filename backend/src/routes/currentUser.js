@@ -3,8 +3,8 @@
  */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')
-const bcryptjs = require('bcryptjs');
 const checkSession = require('../utils/sessionChecker')
+const bcryptjs = require('bcryptjs');
 
 const router = Router();
 
@@ -77,5 +77,28 @@ router.get('/sports', (req, res) => {
         return res.status(200).send({data: result})
     })
 })
+
+// Update user password
+router.put('/updatePassword', (req, res) => {
+    const query = `SELECT * FROM accounts WHERE account_id = ?;`
+    const password = req.body.password
+    const numSaltRounds = 8;
+    const hash_password = bcryptjs.hashSync(password, numSaltRounds);
+
+    db.query(query, [req.session.account_id], (err, result) => {
+        //handle any errors
+        if  (result === undefined || result.length == 0) {
+            return res.status(400).send({message: 'User not found', status:400});
+        }
+        const updateStatement =
+        `UPDATE accounts SET account_password = ? WHERE account_id = ?;`
+
+    db.query(updateStatement, [hash_password, req.session.account_id], (err, res) => {
+        //Handle any errors
+    });
+
+    return res.status(200).send({message:'Update Successful', status:200}); 
+    });
+});
 
 module.exports = router;
