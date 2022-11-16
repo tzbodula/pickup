@@ -1,196 +1,317 @@
-import * as React from "react";
 import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { Avatar } from "@rneui/base";
+import { Storage } from 'expo-storage'
 
 import { AirbnbRating } from 'react-native-ratings';
+import {LOCAL_IP} from '@env';
+
+import React, { useState, useEffect } from 'react'
+
+let favoriteSportAdjustment = 10.75
 
 const ProfileUser = () => {
+  const [favoriteSports, setSportInfo] = useState([])
+  const [username, setUsername] = useState("")
+  const [rating, setRating] = useState("")
+  const [gamesJoined, setGamesJoined] = useState("")
+  const [gamesAttended, setGamesAttended] = useState("")
+  const [bio, setBio] = useState("")
+  const [email, setEmail] = useState("")
   const navigation = useNavigation();
 
-  return (
-    <SafeAreaView style={styles.profileUserView}>
-     <SafeAreaView style={styles.footerView}>
-      <Pressable
-          style={styles.singleTabPressable}
-          onPress={() => navigation.navigate("ProfileUser")}
-        >
-          <SafeAreaView style={styles.iconAndText}>
-            <Image
-              style={styles.homeIcon}
-              resizeMode="cover"
-              source={require("../assets/home3.png")}
-            />
-            <Text style={[styles.text, styles.mt2]}>Account</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable1}
-          onPress={() => navigation.navigate("Friends")}
-        >
-          <SafeAreaView style={styles.iconAndText1}>
-            <Image
-              style={styles.userIcon}
-              resizeMode="cover"
-              source={require("../assets/user.png")}
-            />
-            <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable2}
-          onPress={() => navigation.navigate("Map")}
-        >
-          <SafeAreaView style={styles.iconAndText2}>
-            <Image
-              style={styles.compassIcon}
-              resizeMode="cover"
-              source={require("../assets/compass.png")}
-            />
-            <Text style={[styles.text2, styles.mt2]}>Map</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.framePressable}
-          onPress={() => navigation.navigate("CreateEvent")}
-        >
-          <Image
-            style={styles.addEventCircle}
-            resizeMode="cover"
-            source={require("../assets/ellipse-1.png")}
-          />
-          <Text style={styles.addEventPlus}>+</Text>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable3}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <SafeAreaView style={styles.iconAndText3}>
-            <Image
-              style={styles.searchIcon}
-              resizeMode="cover"
-              source={require("../assets/search4.png")}
-            />
-            <Text style={[styles.text4, styles.mt2]}>Events</Text>
-          </SafeAreaView>
-        </Pressable>
-      </SafeAreaView>
-      <Avatar
-        containerStyle={{
-          borderWidth: 3,
-          borderColor: "#80ced7",
-          borderStyle: "solid",
-          position: "relative",
-          left: 30,
-          top: 10,
-        }}
-        size={"large"}
-        imageProps={{
-          resizeMode: 'cover',
-          width: 200
-        }}
-        rounded
-        source={{
-          uri: 'https://i.postimg.cc/mr2ZPx6T/icon.png'
-        }}
-        icon='../assets/icon.png' 
-      />
+  useEffect(() => {
+    return () => {
+        favoriteSportAdjustment = 10.75
+    }
+}, [])
+  const requestOnPageLoad = () => {
+    console.log("")
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json'}
+      }).then((res) => {return res.json()})
+      .then((retrieved) => {
+        if (retrieved.status == 200) {
+          setUsername(retrieved.data.account_username)
+          setRating(retrieved.data.rating)
+          setGamesJoined(retrieved.data.games_joined)
+          setGamesAttended(retrieved.data.games_attended);
+          setBio(retrieved.data.bio);
+          setEmail(retrieved.data.email)
+        }
+      }).then(() => {
+        fetch(`http://${LOCAL_IP}:3000/sports/favorite`)
+        .then((res) => {return res.json()})
+        .then((res) => {
+          if(res.data != undefined){
+            setSportInfo(res.data)
+          }
+        })
+        .catch((e) => {console.log(e)})
+      }).catch((e) => {console.log(e)})
+    
+  }
 
-      <Text style={styles.dOTUNIVERSITY4Text}>PICKUPDEVTEAM</Text>
-      <AirbnbRating size={20} defaultRating={4} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
-      <Text style={styles.allIKnowAreDots}>see you on the court</Text>
-      <Text style={styles.text5}>30</Text>
-      <Text style={styles.text6}>92%</Text>
-      <Text style={styles.gamesPlayedText}>Games Played</Text>
-      <Text style={styles.attendanceRateText}>Attendance Rate</Text>
+  useFocusEffect(React.useCallback(requestOnPageLoad, []))
+  if(username == null || rating == null || gamesAttended == null || gamesJoined == null || bio == null) {
+    return(
+    <SafeAreaView style={styles.footerView}>
+    <Text>Not rendered!</Text>
+    <Pressable
+        style={styles.singleTabPressable}
+        onPress={() => navigation.navigate("ProfileUser")}
+      >
+        <SafeAreaView style={styles.iconAndText}>
+          <Image
+            style={styles.homeIcon}
+            resizeMode="cover"
+            source={require("../assets/home3.png")}
+          />
+          <Text style={[styles.text, styles.mt2]}>Account</Text>
+        </SafeAreaView>
+      </Pressable>
       <Pressable
-        style={styles.buttonPressable}
-        onPress={() => navigation.navigate("EditSettings")}
+        style={styles.singleTabPressable1}
+        onPress={() => navigation.navigate("Friends")}
+      >
+        <SafeAreaView style={styles.iconAndText1}>
+          <Image
+            style={styles.userIcon}
+            resizeMode="cover"
+            source={require("../assets/user.png")}
+          />
+          <Text style={[styles.text1, styles.mt2]}>Friends</Text>
+        </SafeAreaView>
+      </Pressable>
+      <Pressable
+        style={styles.singleTabPressable2}
+        onPress={() => navigation.navigate("Map")}
+      >
+        <SafeAreaView style={styles.iconAndText2}>
+          <Image
+            style={styles.compassIcon}
+            resizeMode="cover"
+            source={require("../assets/compass.png")}
+          />
+          <Text style={[styles.text2, styles.mt2]}>Map</Text>
+        </SafeAreaView>
+      </Pressable>
+      <Pressable
+        style={styles.framePressable}
+        onPress={() => navigation.navigate("CreateEvent")}
       >
         <Image
-          style={styles.leadingIcon}
+          style={styles.addEventCircle}
           resizeMode="cover"
-          source={require("../assets/leading-icon17.png")}
+          source={require("../assets/ellipse-1.png")}
         />
-        <Text style={[styles.mediumText, styles.ml6]}>Edit Profile</Text>
-        <Image
-          style={[styles.trailingIcon, styles.ml6]}
-          resizeMode="cover"
-          source={require("../assets/trailing-icon13.png")}
-        />
+        <Text style={styles.addEventPlus}>+</Text>
       </Pressable>
-      <Image
-        style={styles.icon}
-        resizeMode="cover"
-        source={require("../assets/70314-1.png")}
-      />
       <Pressable
-        style={styles.vectorPressable}
+        style={styles.singleTabPressable3}
         onPress={() => navigation.navigate("MainPage")}
       >
-        <Image
-          style={styles.icon1}
-          resizeMode="cover"
-          source={require("../assets/vector31.png")}
-        />
+        <SafeAreaView style={styles.iconAndText3}>
+          <Image
+            style={styles.searchIcon}
+            resizeMode="cover"
+            source={require("../assets/search4.png")}
+          />
+          <Text style={[styles.text4, styles.mt2]}>Events</Text>
+        </SafeAreaView>
       </Pressable>
-      <Image
-        style={styles.ellipseIcon2}
-        resizeMode="cover"
-        source={require("../assets/ellipse-181.png")}
-      />
-      <Image
-        style={styles.ellipseIcon3}
-        resizeMode="cover"
-        source={require("../assets/ellipse-193.png")}
-      />
-      <Image
-        style={styles.ellipseIcon4}
-        resizeMode="cover"
-        source={require("../assets/ellipse-201.png")}
-      />
-      <Image
-        style={styles.ellipseIcon5}
-        resizeMode="cover"
-        source={require("../assets/ellipse-193.png")}
-      />
-      <Image
-        style={styles.basketball1Icon}
-        resizeMode="cover"
-        source={require("../assets/basketball-1.png")}
-      />
-      <Image
-        style={styles.soccerBall1}
-        resizeMode="cover"
-        source={require("../assets/soccer-ball-1.png")}
-      />
-      <Image
-        style={styles.tennisRacket1}
-        resizeMode="cover"
-        source={require("../assets/tennis-racket-1.png")}
-      />
-      <Image
-        style={styles.football1Icon}
-        resizeMode="cover"
-        source={require("../assets/football-1.png")}
-      />
-      <Text style={styles.footballText}>Football</Text>
-      <Text style={styles.timESText}>timES</Text>
-      <Text style={styles.timESText1}>timES</Text>
-      <Text style={styles.timESText2}>timES</Text>
-      <Text style={styles.timESText3}>timES</Text>
-      <Text style={styles.tENNISText}>TENNIS</Text>
-      <Text style={styles.sOCCERText}>SOCCER</Text>
-      <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
-      <Text style={styles.text7}>25</Text>
-      <Text style={styles.text8}>3</Text>
-      <Text style={styles.text9}>1</Text>
-      <Text style={styles.text10}>1</Text>
-      <Text style={styles.aLLTIMESPORTSPLAYED}>ALL TIME SPORTS PLAYED</Text>
-      <SafeAreaView style={styles.lineView} />
     </SafeAreaView>
-  );
+    );
+  } else {
+    return (
+      <SafeAreaView style={styles.profileUserView}>
+       <SafeAreaView style={styles.footerView}>
+        <Pressable
+            style={styles.singleTabPressable}
+            onPress={() => navigation.navigate("ProfileUser")}
+          >
+            <SafeAreaView style={styles.iconAndText}>
+              <Image
+                style={styles.homeIcon}
+                resizeMode="cover"
+                source={require("../assets/home3.png")}
+              />
+              <Text style={[styles.text, styles.mt2]}>Account</Text>
+            </SafeAreaView>
+          </Pressable>
+          <Pressable
+            style={styles.singleTabPressable1}
+            onPress={() => navigation.navigate("Friends")}
+          >
+            <SafeAreaView style={styles.iconAndText1}>
+              <Image
+                style={styles.userIcon}
+                resizeMode="cover"
+                source={require("../assets/user.png")}
+              />
+              <Text style={[styles.text1, styles.mt2]}>Friends</Text>
+            </SafeAreaView>
+          </Pressable>
+          <Pressable
+            style={styles.singleTabPressable2}
+            onPress={() => navigation.navigate("Map")}
+          >
+            <SafeAreaView style={styles.iconAndText2}>
+              <Image
+                style={styles.compassIcon}
+                resizeMode="cover"
+                source={require("../assets/compass.png")}
+              />
+              <Text style={[styles.text2, styles.mt2]}>Map</Text>
+            </SafeAreaView>
+          </Pressable>
+          <Pressable
+            style={styles.framePressable}
+            onPress={() => navigation.navigate("CreateEvent")}
+          >
+            <Image
+              style={styles.addEventCircle}
+              resizeMode="cover"
+              source={require("../assets/ellipse-1.png")}
+            />
+            <Text style={styles.addEventPlus}>+</Text>
+          </Pressable>
+          <Pressable
+            style={styles.singleTabPressable3}
+            onPress={() => navigation.navigate("MainPage")}
+          >
+            <SafeAreaView style={styles.iconAndText3}>
+              <Image
+                style={styles.searchIcon}
+                resizeMode="cover"
+                source={require("../assets/search4.png")}
+              />
+              <Text style={[styles.text4, styles.mt2]}>Events</Text>
+            </SafeAreaView>
+          </Pressable>
+        </SafeAreaView>
+        <Avatar
+          containerStyle={{
+            borderWidth: 3,
+            borderColor: "#80ced7",
+            borderStyle: "solid",
+            position: "relative",
+            left: 30,
+            top: 10,
+          }}
+          size={"large"}
+          imageProps={{
+            resizeMode: 'cover',
+            width: 200
+          }}
+          rounded
+          source={{
+            uri: 'https://i.postimg.cc/mr2ZPx6T/icon.png'
+          }}
+          icon='../assets/icon.png' 
+        />
+  
+        <Text style={styles.dOTUNIVERSITY4Text}>{username}</Text>
+        <AirbnbRating size={20} defaultRating={rating} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
+        <Text style={styles.bioStyle}>{bio}</Text>
+        <Text style={styles.text5}>{gamesAttended}</Text>
+        <Text style={styles.text6}>{(((1.0 * gamesAttended) / gamesJoined) * 100)}%</Text>
+        <Text style={styles.gamesPlayedText}>Games Played</Text>
+        <Text style={styles.attendanceRateText}>Attendance Rate</Text>
+        <Pressable
+          style={styles.buttonPressable}
+          onPress={() => navigation.navigate("EditSettings", {
+            username: username,
+            bio: bio,
+            email: email,
+            favoriteSports: favoriteSports,
+          })}
+        >
+          <Image
+            style={styles.leadingIcon}
+            resizeMode="cover"
+            source={require("../assets/leading-icon17.png")}
+          />
+          <Text style={[styles.mediumText, styles.ml6]}>Edit Profile</Text>
+          <Image
+            style={[styles.trailingIcon, styles.ml6]}
+            resizeMode="cover"
+            source={require("../assets/trailing-icon13.png")}
+          />
+        </Pressable>
+        <Image
+          style={styles.icon}
+          resizeMode="cover"
+          source={require("../assets/70314-1.png")}
+        />
+        <Pressable
+          style={styles.vectorPressable}
+          onPress={() => navigation.navigate("MainPage")}
+        >
+          <Image
+            style={styles.icon1}
+            resizeMode="cover"
+            source={require("../assets/vector31.png")}
+          />
+        </Pressable>
+        <Image
+          style={styles.ellipseIcon2}
+          resizeMode="cover"
+          source={require("../assets/ellipse-193.png")}
+        />
+        <Image
+          style={styles.ellipseIcon3}
+          resizeMode="cover"
+          source={require("../assets/ellipse-193.png")}
+        />
+
+        <Image
+          style={styles.basketball1Icon}
+          resizeMode="cover"
+          source={require("../assets/basketball-1.png")}
+        />
+        <Image
+          style={styles.football1Icon}
+          resizeMode="cover"
+          source={require("../assets/soccer-ball-1.png")}
+        />
+
+
+        
+       {/*  <Text style={styles.footballText}>Football</Text>
+        <Text style={styles.timESText}>timES</Text>
+        <Text style={styles.timESText1}>timES</Text>
+        <Text style={styles.timESText2}>timES</Text>
+        <Text style={styles.timESText3}>timES</Text>
+        <Text style={styles.tENNISText}>TENNIS</Text>
+        <Text style={styles.sOCCERText}>SOCCER</Text>
+        <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
+        <Text style={styles.text7}>25</Text>
+        <Text style={styles.text8}>3</Text>
+        <Text style={styles.text9}>1</Text>
+        <Text style={styles.text10}>1</Text> */}
+        
+        <Text style={styles.aLLTIMESPORTSPLAYED}>Favorite Sports</Text>
+        
+        {
+          //Please do your CSS magic Thomas to get these to align property thx
+          
+          favoriteSports.map((sport) => {
+            favoriteSportAdjustment = favoriteSportAdjustment + 6
+            let topPercentage = favoriteSportAdjustment + "%"
+
+            return <Text style={{position: "absolute", top: topPercentage, left: 70, fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
+        })
+        }
+        
+        <SafeAreaView style={styles.lineView} />
+      </SafeAreaView>
+    );
+  }
+
 };
 
 const styles = StyleSheet.create({
@@ -535,11 +656,11 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     maxHeight: "100%",
   },
-  allIKnowAreDots: {
+  bioStyle: {
     position: "absolute",
     top: "12.3%",
     left: "34%",
-    fontSize: 10,
+    fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp Soft",
     color: "#000",
@@ -550,7 +671,7 @@ const styles = StyleSheet.create({
     color: "#34495e",
     position: "absolute",
     left: "32%",
-    top: "16%",
+    top: "21%",
   },
   text5: {
     position: "absolute",
@@ -575,7 +696,7 @@ const styles = StyleSheet.create({
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "center",
-    width: 60,
+    width: 70,
     height: 25,
   },
   gamesPlayedText: {
@@ -629,7 +750,7 @@ const styles = StyleSheet.create({
   },
   buttonPressable: {
     position: "absolute",
-    top: "16%",
+    top: "21%",
     left: 272,
     borderRadius: 4,
     backgroundColor: "#fff",
@@ -648,7 +769,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: "16.5%",
+    top: "21.75%",
     left: 276,
     width: 21,
     height: 19,

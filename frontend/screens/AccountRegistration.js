@@ -18,11 +18,38 @@ import { Button, CheckBox, Icon } from "@rneui/themed";
 
 import { useNavigation } from "@react-navigation/native";
 
-
+import {LOCAL_IP} from "@env";
 const AccountRegistration = () => {
   const navigation = useNavigation();
 
   const [isChecked, setIsChecked] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = () => {
+    const data = {
+      "first_name": firstName,
+      "last_name": lastName,
+      "email": email,
+      "password": password,
+      "username": username
+    }
+    console.log(data);
+
+    fetch(`http://${LOCAL_IP}:3000/users`, {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json'},
+      body: JSON.stringify(data)
+    }).then((res) => {return res.json()})
+    .then((data) => {if(data.status = 200) navigation.navigate('Login')})
+    .then((e) => {console.log(e)})
+  }
 
   return (
     <SafeAreaView style={styles.accountRegistrationView}>
@@ -45,7 +72,7 @@ const AccountRegistration = () => {
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <TextInput style={styles.input}>Last Name</TextInput>
+              <TextInput style={styles.input} onChangeText={(e) => setLastName(e)}>Last Name</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText}>Last Name</Text>
           </SafeAreaView>
@@ -61,7 +88,7 @@ const AccountRegistration = () => {
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <TextInput style={styles.input}>Password</TextInput>
+              <TextInput style={styles.input} onChangeText={(e) => setPassword(e)}>Password</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText1}>Enter your password</Text>
           </SafeAreaView>
@@ -79,7 +106,7 @@ const AccountRegistration = () => {
               />
               <TextInput style={styles.input}>Password</TextInput>
             </SafeAreaView>
-            <Text style={styles.labelText2}>CONFIRM YOUR PASSWORD</Text>
+            <Text style={styles.labelText2} onChangeText={(e) => setConfirmPassword(e)}>CONFIRM YOUR PASSWORD</Text>
           </SafeAreaView>
           <SafeAreaView style={styles.textFieldUsername}>
             <Image
@@ -93,7 +120,7 @@ const AccountRegistration = () => {
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <TextInput style={styles.input}>Username</TextInput>
+              <TextInput style={styles.input} onChangeText={(e) => setUsername(e)}>Username</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText3}>Enter your username</Text>
           </SafeAreaView>
@@ -107,7 +134,8 @@ const AccountRegistration = () => {
                 resizeMode="cover"
                 source={require("../assets/leading-icon7.png")}
               />
-              <Button 
+              <Button
+               onPress={handleSubmit}
                 titleStyle={{
                     color: "white",
                     fontFamily: "GearUp",
@@ -132,7 +160,7 @@ const AccountRegistration = () => {
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <TextInput style={styles.input}>First Name</TextInput>
+              <TextInput style={styles.input} onChangeText={(e) => setFirstName(e)}>First Name</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText4}>First Name</Text>
           </SafeAreaView>
@@ -148,7 +176,7 @@ const AccountRegistration = () => {
                 resizeMode="cover"
                 source={require("../assets/leading-icon3.png")}
               />
-              <TextInput style={styles.input}>Email</TextInput>
+              <TextInput style={styles.input} onChangeText={(e) => setEmail(e)}>Email</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText5}>Enter your email</Text>
           </SafeAreaView>

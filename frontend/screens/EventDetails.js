@@ -1,10 +1,30 @@
-import * as React from "react";
+import React, {useState} from 'react';
 import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-const EventDetails = () => {
+import {LOCAL_IP} from "@env";
+
+const EventDetails = ({route}) => {
   const navigation = useNavigation();
+  const [eventDetails, setEventDetails] = useState({})
+  const [players, setPlayers] = useState([])
+  
+  const requestOnPageLoad = () => {
+    fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
+    .then((res) => {return res.json()})
+    .then((data) => {
+      console.log(data.data.account_id)
+      setEventDetails(data.data)}
+      )
+    .then(
+      fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
+      .then((res) => {return res.json()})
+      .then((data) => {setPlayers(data.data) 
+        console.log(data.data)})
+    )
+  }
 
+  useFocusEffect((React.useCallback(requestOnPageLoad, [])))
   return (
     <SafeAreaView style={styles.eventDetailsView}>
       <SafeAreaView style={styles.footerView}>
