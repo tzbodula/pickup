@@ -26,29 +26,24 @@ const MainPage = () => {
 
   const [currentEvents, setCurrentEvents] = useState(null)
 
-  const [eventCity, setEventCity] = useState("Pickup")
+  //const [eventCity, setEventCity] = useState("Pickup")
 
-  const getCityByID = async (id) => {
-    console.log("ID passed is", id)
-    let city = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${id}&fields=formatted_address&key=${GOOGLE_PLACES_API_KEY}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then((res) => { 
-        return res.json() 
-      })
-      .then((data) => {
-        city = data.result.formatted_address.split(',')[1].trim()
-        return data.result.formatted_address.split(',')[1].trim()
-      })
-    console.log("City after fetching is", city)
-    setEventCity(city)
-  }
+  // const getCityByID = async (id) => {
+  //   console.log("ID passed is", id)
+  //   const response = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${id}&fields=formatted_address&key=${GOOGLE_PLACES_API_KEY}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //   })
+  //   const data = await response.json();
+  //   console.log(data.result.formatted_address);
+  //   return data.result.formatted_address.split(',')[1].trim()
+  // }
 
-  const getStateByID = (id) => {
-    console.log("ID passed is", id)
-  }
+  // const getStateByID = (id) => {
+  //   console.log("ID passed is", id)
+  // }
 
   const requestOnPageLoad = () => {
     cardPosition = -16
@@ -63,7 +58,10 @@ const MainPage = () => {
           if (retrieved.status == 200) {
             setCurrentEvents(retrieved.data)
           }
-        }).catch((e) => console.log(e))
+    }).catch((e) => console.log(e))
+    .then(
+      fetch
+    )
   }
   
   useFocusEffect(
@@ -347,10 +345,10 @@ const MainPage = () => {
           currentEvents.map((event, index) => {
             cardPosition = cardPosition + 14
             let cardPercentage = cardPosition + "%"
-            console.log("Card Percentage is", cardPercentage)
-            console.log("Event Location is", event)
-            console.log("Event city is", eventCity)
-            let eventState = getStateByID(event.event_location)
+            //console.log("Card Percentage is", cardPercentage)
+            //console.log("Event Location is", event)
+            //console.log("Event city is", eventCity)
+            //console.log(getCityByID(event.event_location))
             return (
               <Card key={index} containerStyle={{top: cardPercentage , marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0,}}>
                 <Pressable
@@ -365,12 +363,12 @@ const MainPage = () => {
 
                 <Pressable
                   style={styles.rectanglePressable}
-                  onPress={() => navigation.navigate("EventDetails", {event_id:event.event_id, sport_name:event.sport_name})}
+                  onPress={() => navigation.navigate("EventDetails")}
                 />
                 {console.log(event.event_id)}
                 <Text style={styles.eventTitle}>{event.event_name}</Text>
                 <Text style={styles.eventTime}>{event.event_time}</Text>
-                <Text style={styles.eventLocation}>{eventCity + ", " + eventState}</Text>
+                <Text style={styles.eventLocation}>{event.event_city + "," + event.event_state} </Text>
                 <Text style={styles.eventHostName}>{event.account_username}</Text>
                 <Text style={styles.eventDate}>{event.event_date}</Text>
                 <Text style={styles.eventPlayerCount}>{event.current_players}/{event.maximum_players} PLAYERS</Text>
