@@ -97,6 +97,18 @@ const CreateEvent = () => {
       console.log("Event Selected Date", selectedDate)
       console.log("Attempting to create an event")
 
+      const response = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeID}&fields=formatted_address&key=${GOOGLE_PLACES_API_KEY}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const locationData = await response.json();
+      const city = locationData.result.formatted_address.split(',')[1].trim()
+      const state = locationData.result.formatted_address.split(',')[2].trim().substring(0, 2)
+      const fullAddress = locationData.result.formatted_address
+
+
       let sportID = 1
       if (eventSport == "Soccer") {
         sportID = 1
@@ -130,10 +142,11 @@ const CreateEvent = () => {
           "event_name": eventName,
           "sport_id": sportID,
           "total_players": eventTotalPlayers,
-          "location": placeID,
+          "location": fullAddress,
           "date": dateString,
           "time": timeString,
-
+          "city": city,
+          "state": state,
         })
       }).then((res) => {return res.json()})
       .then((data) => {if(data.status == 200) {navigation.navigate('MainPage')}})
