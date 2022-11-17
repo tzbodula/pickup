@@ -22,6 +22,8 @@ const CreateEvent = () => {
 
   const [eventName, setEventName] = useState("Your Event Name")
 
+
+
   const [eventSport, setEventSport] = useState("No Sport Selected")
 
   const [eventTotalPlayers, setEventTotalPlayers] = useState("1")
@@ -134,6 +136,7 @@ const CreateEvent = () => {
 
         })
       }).then((res) => {return res.json()})
+      .then((data) => {if(data.status == 200) {navigation.navigate('MainPage')}})
 
     }
 
@@ -293,25 +296,10 @@ const CreateEvent = () => {
           label: "Select your location",
         }}
       />
-      <Pressable
-        style={styles.framePressable}
-        onPress={() => navigation.navigate("MainPage")}
-      >
-        <Image
-          style={styles.ellipseIcon}
-          resizeMode="cover"
-          source={require("../assets/ellipse-273.png")}
-        />
-        <Pressable
-          style={styles.pressable}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <Text style={styles.text1}>X</Text>
-        </Pressable>
-      </Pressable>
+     
       <Pressable
         style={styles.createEventButton}
-        onPress={() => navigation.navigate("MainPage")}
+        onPress={() => handleCreateEvent()}
       >
         <Pressable
           style={styles.rectanglePressable}

@@ -16,7 +16,7 @@ import { StatusBar } from 'expo-status-bar';
 
 import React, { useState, useEffect } from 'react'
 
-import { LOCAL_IP } from '@env';
+import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import { Card } from "@rneui/themed";
 
@@ -26,6 +26,29 @@ const MainPage = () => {
 
   const [currentEvents, setCurrentEvents] = useState(null)
 
+  const [eventCity, setEventCity] = useState("Pickup")
+
+  const getCityByID = async (id) => {
+    console.log("ID passed is", id)
+    let city = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${id}&fields=formatted_address&key=${GOOGLE_PLACES_API_KEY}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((res) => { 
+        return res.json() 
+      })
+      .then((data) => {
+        city = data.result.formatted_address.split(',')[1].trim()
+        return data.result.formatted_address.split(',')[1].trim()
+      })
+    console.log("City after fetching is", city)
+    setEventCity(city)
+  }
+
+  const getStateByID = (id) => {
+    console.log("ID passed is", id)
+  }
 
   const requestOnPageLoad = () => {
     cardPosition = -16
@@ -325,6 +348,9 @@ const MainPage = () => {
             cardPosition = cardPosition + 14
             let cardPercentage = cardPosition + "%"
             console.log("Card Percentage is", cardPercentage)
+            console.log("Event Location is", event)
+            console.log("Event city is", eventCity)
+            let eventState = getStateByID(event.event_location)
             return (
               <Card key={index} containerStyle={{top: cardPercentage , marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0,}}>
                 <Pressable
@@ -344,7 +370,7 @@ const MainPage = () => {
                 {console.log(event.event_id)}
                 <Text style={styles.eventTitle}>{event.event_name}</Text>
                 <Text style={styles.eventTime}>{event.event_time}</Text>
-                <Text style={styles.eventLocation}>{event.event_location}</Text>
+                <Text style={styles.eventLocation}>{eventCity + ", " + eventState}</Text>
                 <Text style={styles.eventHostName}>{event.account_username}</Text>
                 <Text style={styles.eventDate}>{event.event_date}</Text>
                 <Text style={styles.eventPlayerCount}>{event.current_players}/{event.maximum_players} PLAYERS</Text>
