@@ -104,7 +104,7 @@ router.post('/',  (req, res) => {
     const insertStatement =
         `INSERT INTO pickup_events
             (event_name, account_id, sport_id, maximum_players, event_date, event_time, event_location, event_city, event_state, current_players)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?) ;`;
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;`;
     
     db.query(insertStatement, eventToAdd, (err, result) => {
         const event_id = result.insertId;
