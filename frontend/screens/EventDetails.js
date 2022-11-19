@@ -3,14 +3,31 @@ import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "re
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {Storage} from "expo-storage";
 import {LOCAL_IP} from "@env";
-import {GenerateJoinButton} from "../components/GenerateJoinButton"
 
+import { Button } from "@rneui/themed";
+    
 const EventDetails = ({route}) => {
   const navigation = useNavigation();
   const [eventDetails, setEventDetails] = useState({})
   const [players, setPlayers] = useState([])
-  
+  const [account_id, setAccountId] = useState(null)
+
+  const getCurrentAccountId = () => {
+    Storage.getItem({ key: `account_id` })
+    .then((data) => {setAccountId(data)})
+    
+  }
+
+  const checkIfPlayerInEvent = () => {
+    console.log(players)
+    if (players.find(player => player.account_id == account_id)) {
+      return true
+    }
+
+    return false
+  }
   const requestOnPageLoad = () => {
+    getCurrentAccountId();
     fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
     .then((res) => {return res.json()})
     .then((data) => {
@@ -36,6 +53,10 @@ const EventDetails = ({route}) => {
 
 
   useFocusEffect((React.useCallback(requestOnPageLoad, [])))
+
+  if (!eventDetails || !players || !account_id) { //There should always be at least 1 player in this array (the host)
+    return null
+  } else {
   return (
     <SafeAreaView style={styles.eventDetailsView}>
       <SafeAreaView style={styles.footerView}>
@@ -131,7 +152,7 @@ const EventDetails = ({route}) => {
       <Text style={styles.oPENCHATText}>OPEN CHAT</Text>
       <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_city} | {eventDetails.event_time} | {eventDetails.sport_name}</Text>
       {/**
-       * TODO - use map function to players.
+       * TODO - use map function to map players.
        * */ 
       }
       <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
@@ -261,11 +282,29 @@ const EventDetails = ({route}) => {
       <Pressable>
       <SafeAreaView style={styles.joinLeaveEventView}>
         <SafeAreaView/>
-        <GenerateJoinButton leader_account_id={eventDetails.account_id}/>
+        {(() => {
+          console.log(players)
+          if (eventDetails.account_id == account_id) {
+            return (
+              <SafeAreaView>
+              <Button title="DELETE EVENT"></Button>
+
+              <Button title="EDIT EVENT"></Button>
+
+              </SafeAreaView>
+            );
+          }
+
+          if (checkIfPlayerInEvent()) {
+            return <Button title="Leave Event" onPress={joinEvent}></Button> 
+          }
+          return <Button title="Join" onPress={joinEvent}></Button>
+        })()}
       </SafeAreaView>
       </Pressable>
     </SafeAreaView>
   );
+}
 };
 
 const styles = StyleSheet.create({
