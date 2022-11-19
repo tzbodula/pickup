@@ -57,13 +57,25 @@ const EventDetails = ({route}) => {
           console.log("You should have joined the event...");
           setStateChange(!stateChange)
         }
-
       })
   }
 
+  const leaveEvent = () => {
+    fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/leave`, {
+      method: 'DELETE',
+      headers: {
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json'}})
+      .then((res) => {return res.json()})
+      .then((data) => {
+        if (data.status == 200) {
+          console.log("You should have left the event...");
+          setStateChange(!stateChange)
+        }
+      })
+  }
 
   useFocusEffect((React.useCallback(requestOnPageLoad, [stateChange])))
-
   if (!eventDetails || !players || !account_id) { //There should always be at least 1 player in this array (the host)
     return null
   } else {
@@ -306,7 +318,7 @@ const EventDetails = ({route}) => {
           }
 
           if (checkIfPlayerInEvent()) {
-            return <Button title="Leave Event" onPress={joinEvent}></Button> 
+            return <Button title="Leave Event" onPress={leaveEvent}></Button> 
           }
           return <Button title="Join" onPress={joinEvent}></Button>
         })()}
