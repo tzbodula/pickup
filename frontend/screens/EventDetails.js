@@ -9,22 +9,23 @@ const EventDetails = ({route}) => {
   const [eventDetails, setEventDetails] = useState({})
   const [players, setPlayers] = useState([])
   
-  // const requestOnPageLoad = () => {
-  //   fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
-  //   .then((res) => {return res.json()})
-  //   .then((data) => {
-  //     console.log(data.data.account_id)
-  //     setEventDetails(data.data)}
-  //     )
-  //   .then(
-  //     fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
-  //     .then((res) => {return res.json()})
-  //     .then((data) => {setPlayers(data.data) 
-  //       console.log(data.data)})
-  //   )
-  // }
+  const requestOnPageLoad = () => {
+    fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
+    .then((res) => {return res.json()})
+    .then((data) => {
+      console.log(data.data.account_id)
+      setEventDetails(data.data)}
+      )
+    .then(
+      fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
+      .then((res) => {return res.json()})
+      .then((data) => {setPlayers(data.data) 
+        console.log(data.data)})
+    )
+  }
+  console.log(eventDetails)
 
-  //useFocusEffect((React.useCallback(requestOnPageLoad, [])))
+  useFocusEffect((React.useCallback(requestOnPageLoad, [])))
   return (
     <SafeAreaView style={styles.eventDetailsView}>
       <SafeAreaView style={styles.footerView}>
@@ -109,7 +110,7 @@ const EventDetails = ({route}) => {
           source={require("../assets/vector6.png")}
         />
       </Pressable>
-      <Text style={styles.v3CASUALText}>3V3 CASUAL </Text>
+      <Text style={styles.v3CASUALText}> {eventDetails.event_name} </Text>
       <Text style={styles.playersText}>Players</Text>
       <Image
         style={styles.vectorIcon1}
@@ -118,7 +119,11 @@ const EventDetails = ({route}) => {
       />
       <SafeAreaView style={styles.rectangleView1} />
       <Text style={styles.oPENCHATText}>OPEN CHAT</Text>
-      <Text style={styles.uREC400PMFOOTBALL}>UREC | 4:00 PM | FOOTBALL</Text>
+      <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_city} | {eventDetails.event_time} | {eventDetails.sport_name}</Text>
+      {/**
+       * TODO - use map function to players.
+       * */ 
+      }
       <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
       <Text style={styles.mOSSMACHINEText}>MOSSMACHINE</Text>
       <Text style={styles.wATCHYASELFText}>WATCHYASELF</Text>
@@ -217,7 +222,7 @@ const EventDetails = ({route}) => {
       />
       <Text
         style={styles.craverRdCharlotteNC28262}
-      >{`Craver Rd, Charlotte, NC 28262 `}</Text>
+      >{eventDetails.event_location}</Text>
       <SafeAreaView style={styles.rectangleView13} />
       <Text style={styles.vSText}>VS</Text>
       <Image
