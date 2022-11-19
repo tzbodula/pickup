@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-
+import {Storage} from "expo-storage";
 import {LOCAL_IP} from "@env";
+import {GenerateJoinButton} from "../components/GenerateJoinButton"
 
 const EventDetails = ({route}) => {
   const navigation = useNavigation();
@@ -13,17 +14,26 @@ const EventDetails = ({route}) => {
     fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
     .then((res) => {return res.json()})
     .then((data) => {
-      console.log(data.data.account_id)
       setEventDetails(data.data)}
       )
     .then(
       fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
       .then((res) => {return res.json()})
-      .then((data) => {setPlayers(data.data) 
-        console.log(data.data)})
+      .then((data) => {setPlayers(data.data)})
     )
   }
-  console.log(eventDetails)
+
+  const joinEvent = () => {
+    console.log("test")
+    fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/join`, {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json'}})
+      .then((res) => {return res.json()})
+      .then((data) => {console.log(data)})
+  }
+
 
   useFocusEffect((React.useCallback(requestOnPageLoad, [])))
   return (
@@ -248,11 +258,12 @@ const EventDetails = ({route}) => {
           <Text style={[styles.text6, styles.mt2]}>Map</Text>
         </SafeAreaView>
       </Pressable>
+      <Pressable>
       <SafeAreaView style={styles.joinLeaveEventView}>
-        <SafeAreaView style={styles.rectangleView14} />
-        <Text style={styles.joinText}>join</Text>
-        <Text style={styles.pLAYER6Text}>PLAYER 6</Text>
+        <SafeAreaView/>
+        <GenerateJoinButton leader_account_id={eventDetails.account_id}/>
       </SafeAreaView>
+      </Pressable>
     </SafeAreaView>
   );
 };
@@ -942,8 +953,8 @@ const styles = StyleSheet.create({
   },
   joinLeaveEventView: {
     position: "absolute",
-    top: 283,
-    left: 141,
+    top: 310,
+    left: 100,
     width: 178,
     height: 65,
   },
