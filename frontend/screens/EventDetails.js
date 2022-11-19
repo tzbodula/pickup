@@ -11,6 +11,7 @@ const EventDetails = ({route}) => {
   const [eventDetails, setEventDetails] = useState({})
   const [players, setPlayers] = useState([])
   const [account_id, setAccountId] = useState(null)
+  const [stateChange, setStateChange] = useState(false)
 
   const getCurrentAccountId = () => {
     Storage.getItem({ key: `account_id` })
@@ -19,7 +20,7 @@ const EventDetails = ({route}) => {
   }
 
   const checkIfPlayerInEvent = () => {
-    console.log(players)
+    //console.log(players)
     if (players.find(player => player.account_id == account_id)) {
       return true
     }
@@ -27,17 +28,20 @@ const EventDetails = ({route}) => {
     return false
   }
   const requestOnPageLoad = () => {
-    getCurrentAccountId();
-    fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
-    .then((res) => {return res.json()})
-    .then((data) => {
-      setEventDetails(data.data)}
-      )
-    .then(
-      fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
+    console.log("made api request");
+    // This makes sure that useFocusEffect() only calls this method once.
+      getCurrentAccountId();
+      fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
       .then((res) => {return res.json()})
-      .then((data) => {setPlayers(data.data)})
-    )
+      .then((data) => {
+        setEventDetails(data.data)}
+        )
+      .then(
+        fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
+        .then((res) => {return res.json()})
+        .then((data) => {setPlayers(data.data)})
+      )
+    
   }
 
   const joinEvent = () => {
@@ -48,11 +52,17 @@ const EventDetails = ({route}) => {
       'Content-Type': 'application/json', 
       'Accept': 'application/json'}})
       .then((res) => {return res.json()})
-      .then((data) => {console.log(data)})
+      .then((data) => {
+        if (data.status == 200) {
+          console.log("You should have joined the event...");
+          setStateChange(!stateChange)
+        }
+
+      })
   }
 
 
-  useFocusEffect((React.useCallback(requestOnPageLoad, [])))
+  useFocusEffect((React.useCallback(requestOnPageLoad, [stateChange])))
 
   if (!eventDetails || !players || !account_id) { //There should always be at least 1 player in this array (the host)
     return null
@@ -283,7 +293,7 @@ const EventDetails = ({route}) => {
       <SafeAreaView style={styles.joinLeaveEventView}>
         <SafeAreaView/>
         {(() => {
-          console.log(players)
+          //console.log(players)
           if (eventDetails.account_id == account_id) {
             return (
               <SafeAreaView>
