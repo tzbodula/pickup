@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import { Text, StyleSheet, SafeAreaView, Image, Pressable, TextInput } from "react-native";
 import { Button } from "@rneui/themed";
@@ -178,7 +177,7 @@ const CreateEvent = () => {
         textTransform: "uppercase", 
         color: "#80ced7", 
         fontFamily: "GearUp", 
-        fontSize: "16" 
+        fontSize: 16 
       }}
       value={eventName}
       onChangeText = {(eventName) => setEventName(eventName)}
@@ -207,13 +206,13 @@ const CreateEvent = () => {
             textTransform: "uppercase", 
             color: "#80ced7", 
             fontFamily: "GearUp", 
-            fontSize: "16" 
+            fontSize: 16 
           }}
           rowTextStyle={{
             textTransform: "uppercase", 
             color: "#80ced7", 
             fontFamily: "GearUp", 
-            fontSize: "16" 
+            fontSize: 16 
           }}
           rowStyle={{
             backgroundColor: "#00060a", 
@@ -236,7 +235,7 @@ const CreateEvent = () => {
         textTransform: "uppercase", 
         color: "#80ced7", 
         fontFamily: "GearUp", 
-        fontSize: "16" 
+        fontSize: 16
       }} 
         value={eventTotalPlayers}
         keyboardType="numeric"

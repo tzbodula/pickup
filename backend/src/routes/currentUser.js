@@ -79,11 +79,13 @@ router.put('/updateProfile', (req, res) => {
         const updateStatement =
         `UPDATE accounts SET account_username = ?, bio = ? WHERE account_id = ?;`
 
-    db.query(updateStatement, [req.body.newUsername, req.body.newBio, req.session.account_id], (err, res) => {
+    db.query(updateStatement, [req.body.newUsername, req.body.newBio, req.session.account_id], (err, result) => {
         //Handle any errors
+        req.session.username = req.body.newUsername;
+        return res.status(200).send({message:'Update Successful', status:200}); 
     });
 
-    return res.status(200).send({message:'Update Successful', status:200}); 
+    
     });
 });
 

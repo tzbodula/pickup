@@ -35,7 +35,7 @@ router.post('/:id/join',  (req, res) => {
             const query3 = `UPDATE pickup_events SET current_players = current_players + 1 WHERE event_id = ?;`
             db.query(query3, [req.params.id], (err, result) => {
                 if (result === undefined || result.length == 0) {
-                    return res.status(400).send({message: "Error. Couldn't increment current players in event.", status: 400})
+                    return res.status(400).send({message: "Error. Couldn't increment current players in event.", status: 400, username: req.session.account_username})
                 }
                 return res.status(200).send({message: "Player joined event.", status: 200});
             });
@@ -66,8 +66,14 @@ router.delete('/:id/leave', (req,res) => {
             if (err) {
                 //handle errors
             }
+            const query3 = `UPDATE pickup_events SET current_players = current_players - 1 WHERE event_id = ?;`
+            db.query(query3, [req.params.id], (err, result) => {
+                if (result === undefined || result.length == 0) {
+                    return res.status(400).send({message: "Error. Couldn't increment current players in event.", status: 400, username: req.session.account_username})
+                }
+                return res.status(200).send({message:"Event left successfully", status:200})
+            });
 
-            return res.status(200).send({message:"Event left successfully", status:200})
         })
     }) 
 })

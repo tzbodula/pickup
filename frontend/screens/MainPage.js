@@ -26,25 +26,6 @@ const MainPage = () => {
 
   const [currentEvents, setCurrentEvents] = useState(null)
 
-  //const [eventCity, setEventCity] = useState("Pickup")
-
-  // const getCityByID = async (id) => {
-  //   console.log("ID passed is", id)
-  //   const response = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${id}&fields=formatted_address&key=${GOOGLE_PLACES_API_KEY}`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //   })
-  //   const data = await response.json();
-  //   console.log(data.result.formatted_address);
-  //   return data.result.formatted_address.split(',')[1].trim()
-  // }
-
-  // const getStateByID = (id) => {
-  //   console.log("ID passed is", id)
-  // }
-
   const requestOnPageLoad = () => {
     cardPosition = -16
     console.log("Attempting to get the main page")
@@ -363,7 +344,7 @@ const MainPage = () => {
 
                 <Pressable
                   style={styles.rectanglePressable}
-                  onPress={() => navigation.navigate("EventDetails")}
+                  onPress={() => navigation.navigate("EventDetails", {event_id: event.event_id})}
                 />
                 {console.log(event.event_id)}
                 <Text style={styles.eventTitle}>{event.event_name}</Text>

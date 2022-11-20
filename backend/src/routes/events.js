@@ -72,7 +72,10 @@ router.delete('/:id',  (req, res) => {
 });
 
 router.get('/:id',  (req, res) => {
-    const query = `SELECT * FROM pickup_events WHERE event_id = ? ;`
+    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+    JOIN accounts ON pickup_events.account_id = accounts.account_id
+    JOIN sports ON pickup_events.sport_id = sports.sport_id
+    WHERE event_id = ?;`
     db.query(query, [req.params.id], (err, result) => {
         //handle any errors
 
