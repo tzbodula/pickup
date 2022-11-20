@@ -9,7 +9,6 @@ import {LOCAL_IP} from '@env';
 
 import React, { useState, useEffect } from 'react'
 
-let favoriteSportAdjustment = 10.75
 
 const ProfileUser = () => {
   const [favoriteSports, setSportInfo] = useState([])
@@ -20,12 +19,8 @@ const ProfileUser = () => {
   const [bio, setBio] = useState("")
   const [email, setEmail] = useState("")
   const navigation = useNavigation();
+  let favoriteSportAdjustment = 34.5
 
-  useEffect(() => {
-    return () => {
-        favoriteSportAdjustment = 10.75
-    }
-}, [])
   const requestOnPageLoad = () => {
     console.log("")
     fetch(`http://${LOCAL_IP}:3000/user/`, {

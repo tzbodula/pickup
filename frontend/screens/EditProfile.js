@@ -390,13 +390,13 @@ const EditProfile = ({route}) => {
                   resizeMode="cover"
                   source={require("../assets/football-1.png")}
                 />
-                <Pressable style={{position: "absolute", height: "100%", width: "15%", top: "-15%", right: "0%", bottom: "65.02%", left: "86%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}} 
+                <Pressable style={{position: "absolute", height: "100%", width: "15%", right: "0%", bottom: "15%", left: "80%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%"}} 
                  onPress={() => {
                     removeFavSport(sport.sport_id)
                     deleteSport(sport.sport_id)
                   }}>
                   <Image
-                    resizeMode="cover" 
+                    resizeMode="center" 
                     source={require("../assets/vector13.png")}
                   />
                 </Pressable>
