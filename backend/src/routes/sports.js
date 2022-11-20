@@ -45,7 +45,6 @@ router.delete('/favorite',  (req, res) => {
     const query = `DELETE FROM player_sport_favorite WHERE account_id = ? AND sport_id = ?;`
 
     db.query(query, [req.session.account_id, req.body.sport_id], (err, result) => {
-        console.log(result)
         if (result === undefined || result.length == 0) {
             return res.status(400).send({message:"Error. User doesn't have this sport favorited.", status: 400})
         }
@@ -64,8 +63,8 @@ router.post('/favorite',  (req, res) => {
             VALUES (?, ?) ;`;
 
     db.query(insertStatement, [req.session.account_id, req.body.sport_id], (err, result) => {
-        if (err) {
-            console.log(err)
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send({message:"Error. Cannot add same favorite sport twice.", status: 400})
         }
         return res.status(200).send({message: 'Favorite sport has been added!', status: 200});
     });
