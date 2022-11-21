@@ -8,7 +8,7 @@ const checkSession = require('../utils/sessionChecker')
 const router = Router();
 
 // Gets all sports 
-router.get('/', (req, res) => {
+router.get('/', checkSession, (req, res) => {
     const query = `SELECT * FROM sports`
 
     db.query(query, (err, result) => {
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 });
 
 // Sends the list of this player's favorite sport
-router.get('/favorite',  (req, res) => {
+router.get('/favorite',  checkSession, (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
@@ -40,7 +40,7 @@ router.get('/favorite',  (req, res) => {
 });
 
 // Delete sport from user's favorite sports list
-router.delete('/favorite',  (req, res) => {
+router.delete('/favorite',  checkSession, (req, res) => {
 
     const query = `DELETE FROM player_sport_favorite WHERE account_id = ? AND sport_id = ?;`
 
@@ -55,7 +55,7 @@ router.delete('/favorite',  (req, res) => {
 });
 
 // Adds sport to user's favorite sports list
-router.post('/favorite',  (req, res) => {
+router.post('/favorite',  checkSession, (req, res) => {
 
     const insertStatement =
         `INSERT INTO player_sport_favorite
