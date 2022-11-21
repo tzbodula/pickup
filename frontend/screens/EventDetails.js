@@ -147,147 +147,35 @@ const EventDetails = ({route}) => {
           <Text style={[styles.text5, styles.mt2]}>Account</Text>
         </SafeAreaView>
       </Pressable>
-      <Image
-        style={styles.vectorIcon}
-        resizeMode="cover"
-        source={require("../assets/vector-3.png")}
-      />
+     
       <SafeAreaView style={styles.rectangleView} />
       <Pressable
         style={styles.vectorPressable}
         onPress={() => navigation.navigate("MainPage")}
       >
-        <Image
-          style={styles.icon}
-          resizeMode="cover"
-          source={require("../assets/vector6.png")}
-        />
+        
       </Pressable>
       <Text style={styles.v3CASUALText}> {eventDetails.event_name} </Text>
       <Text style={styles.playersText}>Players</Text>
-      <Image
-        style={styles.vectorIcon1}
-        resizeMode="cover"
-        source={require("../assets/vector-5.png")}
-      />
-      <SafeAreaView style={styles.rectangleView1} />
-      <Text style={styles.oPENCHATText}>OPEN CHAT</Text>
+      
+      <SafeAreaView/>
+      
       <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_city} | {eventDetails.event_time} | {eventDetails.sport_name}</Text>
-      {/**
-       * TODO - use map function to map players.
-       * */ 
+      
+      {
+        players.map((player => {
+          return <Pressable><Text style={styles.bRUHMOMENTText}>{player.account_username}</Text></Pressable>
+        }))
       }
-      <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
-      <Text style={styles.mOSSMACHINEText}>MOSSMACHINE</Text>
-      <Text style={styles.wATCHYASELFText}>WATCHYASELF</Text>
-      <Text style={styles.sACKATTACKText}>SACKATTACK</Text>
-      <Text style={styles.hIGHLIGHTREEL2Text}>HIGHLIGHTREEL2</Text>
-      <Image
-        style={styles.image2Icon}
-        resizeMode="cover"
-        source={require("../assets/image-2.png")}
-      />
-      <Image
-        style={styles.ellipseIcon1}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon2}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon3}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon4}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon5}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon6}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon7}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon8}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon9}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon10}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.eye191545412801Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-1.png")}
-      />
-      <Image
-        style={styles.eye191545412802Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-1.png")}
-      />
-      <Image
-        style={styles.eye191545412805Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-7.png")}
-      />
-      <Pressable
-        style={styles.eye191545412806Pressable}
-        onPress={() => navigation.navigate("ProfileOfAnotherUser")}
-      >
-        <Image
-          style={styles.icon1}
-          resizeMode="cover"
-          source={require("../assets/eye1915454-1280-7.png")}
-        />
-      </Pressable>
-      <Image
-        style={styles.eye191545412807Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-7.png")}
-      />
 
-      <Image
-        style={styles.image1Icon}
-        resizeMode="cover"
-        source={require("../assets/image-1.png")}
-      />
+
+     
       <Text
         style={styles.craverRdCharlotteNC28262}
       >{eventDetails.event_location}</Text>
-      <SafeAreaView style={styles.rectangleView13} />
-      <Text style={styles.vSText}>VS</Text>
-      <Image
-        style={styles.vectorIcon2}
-        resizeMode="cover"
-        source={require("../assets/vector-4.png")}
-      />
-      <Image
-        style={styles.image3Icon}
-        resizeMode="cover"
-        source={require("../assets/image-3.png")}
-      />
+      
+      
+      
       <Pressable
         style={styles.iconAndText5}
         onPress={() => navigation.navigate("Map")}
@@ -309,10 +197,7 @@ const EventDetails = ({route}) => {
           if (eventDetails.account_id == account_id) {
             return (
               <SafeAreaView>
-              <Button title="DELETE EVENT"></Button>
-
-              <Button title="EDIT EVENT"></Button>
-
+                <Button title="EDIT EVENT"></Button>
               </SafeAreaView>
             );
           }
@@ -697,16 +582,6 @@ const styles = StyleSheet.create({
     width: 206,
     height: 57,
   },
-  oPENCHATText: {
-    position: "absolute",
-    top: 362,
-    left: 91,
-    fontSize: 24,
-    lineHeight: 50,
-    fontFamily: "GearUp",
-    color: "#000",
-    textAlign: "center",
-  },
   uREC400PMFOOTBALL: {
     paddingTop: "10%",
     position: "absolute",
@@ -755,8 +630,8 @@ const styles = StyleSheet.create({
   },
   sACKATTACKText: {
     position: "absolute",
-    top: 246,
-    left: 228,
+    top: "25%",
+    left: "%",
     fontSize: 10,
     lineHeight: 14,
     fontFamily: "GearUp",
