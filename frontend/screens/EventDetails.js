@@ -7,6 +7,7 @@ import {LOCAL_IP} from "@env";
 import { Button } from "@rneui/themed";
     
 const EventDetails = ({route}) => {
+  let margin = 0;
   const navigation = useNavigation();
   const [eventDetails, setEventDetails] = useState({})
   const [players, setPlayers] = useState([])
@@ -42,6 +43,10 @@ const EventDetails = ({route}) => {
         .then((data) => {setPlayers(data.data)})
       )
     
+  }
+
+  const testLog = () => {
+    console.log("pressed")
   }
 
   const joinEvent = () => {
@@ -162,9 +167,30 @@ const EventDetails = ({route}) => {
       
       <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_city} | {eventDetails.event_time} | {eventDetails.sport_name}</Text>
       
+
+
+
+      {/*
+      Important note: need to make these pressable eventually so we can view profile
+      */}
       {
         players.map((player => {
-          return <Pressable><Text style={styles.bRUHMOMENTText}>{player.account_username}</Text></Pressable>
+          {margin += 40}
+          return (
+          <Text style={{
+            position: "absolute",
+            top: 218 + margin,
+            left: 47,
+            fontSize: 10,
+            lineHeight: 14,
+            fontFamily: "GearUp Soft",
+            color: "black",
+            textAlign: "center"
+          }}>{player.account_username}
+          </Text>
+         
+          )
+
         }))
       }
 
@@ -600,7 +626,7 @@ const styles = StyleSheet.create({
   },
   bRUHMOMENTText: {
     position: "absolute",
-    top: 208,
+    top: 218,
     left: 47,
     fontSize: 10,
     lineHeight: 14,
@@ -772,7 +798,7 @@ const styles = StyleSheet.create({
   },
   craverRdCharlotteNC28262: {
     position: "absolute",
-    top: 442,
+    top: 500,
     left: 62,
     fontSize: 10,
     lineHeight: 14,
@@ -889,7 +915,7 @@ const styles = StyleSheet.create({
   },
   joinLeaveEventView: {
     position: "absolute",
-    top: 310,
+    top: 400,
     left: 100,
     width: 178,
     height: 65,
