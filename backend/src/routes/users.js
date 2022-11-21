@@ -9,7 +9,7 @@ const bcryptjs = require('bcryptjs');
 
 const router = Router();
 
-router.post('/', (req, res, next) => {
+router.post('/', checkSession, (req, res, next) => {
     const numSaltRounds = 8;
     const password = req.body.password
     const hash_password = bcryptjs.hashSync(password, numSaltRounds);
@@ -47,7 +47,7 @@ router.post('/', (req, res, next) => {
 });
 
 // Gets the ID of some other user
-router.get('/:id', (req, res) => {
+router.get('/:id', checkSession, (req, res) => {
 
     const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
     WHERE accounts.account_id = ? ;`

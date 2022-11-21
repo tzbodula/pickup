@@ -7,7 +7,7 @@ const router = Router();
  * This class file is related to performing more operations with junction tables. Specifically, this class has a lot more JOIN operations
  * and you can think of this as being the class that performs operations when you have a specific event in mind.
  */
-router.post('/:event_id/join',  (req, res, next) => {
+router.post('/:event_id/join',  checkSession, (req, res, next) => {
     let query = `SELECT * FROM pickup_events WHERE event_id = ?`
     db.query(query, [req.params.event_id], (err, result) => {
 
@@ -43,7 +43,7 @@ router.post('/:event_id/join',  (req, res, next) => {
 }
 );
 
-router.delete('/:event_id/leave', (req, res, next) => {
+router.delete('/:event_id/leave', checkSession, (req, res, next) => {
     const validate_query = `SELECT * FROM player_event WHERE event_id = ? AND account_id = ?`
     db.query(validate_query, [req.params.event_id, req.session.account_id], (err, result) => {
         if (result === undefined || result.length == 0) {
@@ -76,7 +76,7 @@ router.delete('/:event_id/leave', (req, res, next) => {
     });
 });
 
-router.get('/:event_id/players',  (req, res) => {
+router.get('/:event_id/players', checkSession, (req, res) => {
 
     const query = `SELECT accounts.account_id, accounts.account_username, accounts.games_joined, accounts.games_attended, is_leader FROM player_event 
     JOIN accounts ON player_event.account_id = accounts.account_id 

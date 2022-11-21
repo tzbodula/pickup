@@ -9,7 +9,7 @@ const router = Router();
 
 
 // Sends back list of events filtered by the sport entered in as query parameter
-router.get('/sport',  (req, res) => {
+router.get('/sport',  checkSession, (req, res) => {
     
     const query = `SELECT * FROM pickup_events WHERE sport_id = ? ;`
     db.query(query, [req.query.sport_id], (err, result) => {
@@ -27,7 +27,7 @@ router.get('/sport',  (req, res) => {
 
 });
 
-router.get('/',  (req, res) => {
+router.get('/', checkSession, (req, res) => {
 
     const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
     JOIN accounts ON pickup_events.account_id = accounts.account_id
@@ -44,11 +44,7 @@ router.get('/',  (req, res) => {
 });
 
 // Event deletion
-router.delete('/:id',  (req, res, next) => {
-
-    if (!req.session.account_id) {
-        return res.status(401).json({message: "unauthorized to make a delete", status: 401})
-    }
+router.delete('/:id',  checkSession, (req, res, next) => {
 
     const query = `SELECT * FROM pickup_events WHERE event_id = ?`
     db.query(query, [req.params.id], (err, result) => {
@@ -70,7 +66,7 @@ router.delete('/:id',  (req, res, next) => {
     });
 });
 
-router.get('/:id',  (req, res) => {
+router.get('/:id',  checkSession, (req, res) => {
     const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id
@@ -89,7 +85,7 @@ router.get('/:id',  (req, res) => {
 /**
  * This post route creates an event based on the currently logged in user
  */
-router.post('/',  (req, res, next) => {
+router.post('/',  checkSession, (req, res, next) => {
     const eventToAdd = [
         req.body.event_name,
         req.session.account_id, //This will always be the current session account_id
@@ -126,7 +122,7 @@ router.post('/',  (req, res, next) => {
 }
 );
 
-router.put('/:id/update', (req, res, next) => {
+router.put('/:id/update', checkSession, (req, res, next) => {
 
     const query = `SELECT * FROM pickup_events WHERE event_id = ?`
     db.query(query, req.params.id, (err, result) => {

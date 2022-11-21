@@ -37,7 +37,7 @@ router.post('/login', (req, res) => {
     
 })
 
-router.get('/getEvents',  checkSession,(req, res) => {
+router.get('/getEvents',  checkSession, (req, res) => {
     
     //console.log("We are getting the command still");
 
@@ -64,7 +64,7 @@ router.post('/logout', (req, res) => {
 })
 
 // Update Username and Bio of User's Profile
-router.put('/updateProfile', (req, res, next) => {
+router.put('/updateProfile', checkSession, (req, res, next) => {
     const query = `SELECT * FROM accounts WHERE account_username = ?;`
     db.query(query, [req.body.newUsername], (err, result) => {
         // If there exists a user that comes up with that username
@@ -87,17 +87,14 @@ router.put('/updateProfile', (req, res, next) => {
 }
 );
 
-router.get('/',  (req, res) => {
-    if (req.session.account_id == null) {
-        return res.status(200).send({status: 400, message: "Not authorized"})
-    }
+router.get('/',  checkSession, (req, res) => {
     const query = `SELECT account_username, games_joined, games_attended, rating, bio FROM accounts WHERE account_id = ? ;`
     db.query(query, [req.session.account_id], (err, result) => {
         return res.status(200).send({data: result[0], status: 200})
     })
 });
 
-router.get('/sports', (req, res) => {
+router.get('/sports', checkSession, (req, res) => {
     const query = `SELECT * FROM player_sport_favorite
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id
     WHERE player_sport_favorite.account_id = ? ;`
@@ -107,7 +104,7 @@ router.get('/sports', (req, res) => {
 })
 
 // Update user password
-router.put('/updatePassword', (req, res, next) => {
+router.put('/updatePassword', checkSession, (req, res, next) => {
     const query = `SELECT * FROM accounts WHERE account_id = ?;`
     const password = req.body.password
     const numSaltRounds = 8;
