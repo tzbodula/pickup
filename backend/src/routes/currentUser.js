@@ -64,7 +64,7 @@ router.post('/logout', (req, res) => {
 })
 
 // Update Username and Bio of User's Profile
-router.put('/updateProfile', (req, res) => {
+router.put('/updateProfile', (req, res, next) => {
     const query = `SELECT * FROM accounts WHERE account_username = ?;`
     db.query(query, [req.body.newUsername], (err, result) => {
         // If there exists a user that comes up with that username
@@ -76,6 +76,7 @@ router.put('/updateProfile', (req, res) => {
         }
         next();
     });
+
 }, (req, res) => {
     const updateStatement =`UPDATE accounts SET account_username = ?, bio = ? WHERE account_id = ?;`
     db.query(updateStatement, [req.body.newUsername, req.body.newBio, req.session.account_id], (err, result) => {
@@ -99,16 +100,14 @@ router.get('/',  (req, res) => {
 router.get('/sports', (req, res) => {
     const query = `SELECT * FROM player_sport_favorite
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id
-    WHERE player_sport_favorite.account_id = ?
-    ;`
-
+    WHERE player_sport_favorite.account_id = ? ;`
     db.query(query, [req.session.account_id], (err, result) => {
         return res.status(200).send({data: result})
     })
 })
 
 // Update user password
-router.put('/updatePassword', (req, res) => {
+router.put('/updatePassword', (req, res, next) => {
     const query = `SELECT * FROM accounts WHERE account_id = ?;`
     const password = req.body.password
     const numSaltRounds = 8;
@@ -119,15 +118,15 @@ router.put('/updatePassword', (req, res) => {
         if  (result === undefined || result.length == 0) {
             return res.status(400).send({message: 'User not found', status:400});
         }
-        const updateStatement =
-        `UPDATE accounts SET account_password = ? WHERE account_id = ?;`
-
-    db.query(updateStatement, [hash_password, req.session.account_id], (err, res) => {
+        next();
+    });
+}, (req, res) => {
+    const updateStatement =`UPDATE accounts SET account_password = ? WHERE account_id = ?;`
+    db.query(updateStatement, [hash_password, req.session.account_id], (err, result) => {
         //Handle any errors
+        return res.status(200).send({message:'Update Successful', status:200});
     });
-
-    return res.status(200).send({message:'Update Successful', status:200}); 
-    });
-});
+}
+);
 
 module.exports = router;

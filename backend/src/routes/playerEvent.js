@@ -66,8 +66,8 @@ router.delete('/:event_id/leave', (req, res, next) => {
         next();
     })
 }, (req, res) => {
-    const query3 = `UPDATE pickup_events SET current_players = current_players - 1 WHERE event_id = ?;`
-    db.query(query3, [req.params.event_id], (err, result) => {
+    const update = `UPDATE pickup_events SET current_players = current_players - 1 WHERE event_id = ?;`
+    db.query(update, [req.params.event_id], (err, result) => {
         if (result === undefined || result.length == 0) {
             return res.status(400).send({message: "Error. Couldn't increment current players in event.", status: 400, username: req.session.account_username})
         }
