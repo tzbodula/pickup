@@ -74,28 +74,24 @@ router.put('/updateProfile', (req, res) => {
                 return res.status(400).send({message: 'Username is already in use', status:400});
             }
         }
-
-        
-        const updateStatement =
-        `UPDATE accounts SET account_username = ?, bio = ? WHERE account_id = ?;`
-
+        next();
+    });
+}, (req, res) => {
+    const updateStatement =`UPDATE accounts SET account_username = ?, bio = ? WHERE account_id = ?;`
     db.query(updateStatement, [req.body.newUsername, req.body.newBio, req.session.account_id], (err, result) => {
         //Handle any errors
         req.session.username = req.body.newUsername;
         return res.status(200).send({message:'Update Successful', status:200}); 
     });
-
-    
-    });
-});
+}
+);
 
 router.get('/',  (req, res) => {
     if (req.session.account_id == null) {
         return res.status(200).send({status: 400, message: "Not authorized"})
     }
-    const account_id = req.session.account_id;
     const query = `SELECT account_username, games_joined, games_attended, rating, bio FROM accounts WHERE account_id = ? ;`
-    db.query(query, [account_id], (err, result) => {
+    db.query(query, [req.session.account_id], (err, result) => {
         return res.status(200).send({data: result[0], status: 200})
     })
 });
