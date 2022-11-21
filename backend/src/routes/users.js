@@ -9,11 +9,10 @@ const bcryptjs = require('bcryptjs');
 
 const router = Router();
 
-router.post('/', checkSession, (req, res, next) => {
+router.post('/', (req, res, next) => {
     const numSaltRounds = 8;
     const password = req.body.password
-    const hash_password = bcryptjs.hashSync(password, numSaltRounds);
-    
+        
     const query = `SELECT * FROM accounts WHERE account_username = ? OR email = ? ;`
     db.query(query, [req.body.username, req.body.email], (err, result) => {
 
@@ -21,7 +20,7 @@ router.post('/', checkSession, (req, res, next) => {
         if (result[0]) {
             return res.status(400).send({message: 'Username or Password is already in use', status:400});
         }
-
+        res.locals.hash_password = bcryptjs.hashSync(password, numSaltRounds);
         next();
     
     });
@@ -30,7 +29,7 @@ router.post('/', checkSession, (req, res, next) => {
         req.body.first_name,
         req.body.last_name,
         req.body.username,    
-        hash_password,
+        res.locals.hash_password,
         req.body.email];
 
     const insertStatement =`INSERT INTO accounts

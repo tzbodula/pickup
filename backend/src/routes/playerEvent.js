@@ -8,7 +8,7 @@ const router = Router();
  * and you can think of this as being the class that performs operations when you have a specific event in mind.
  */
 router.post('/:event_id/join',  checkSession, (req, res, next) => {
-    let query = `SELECT * FROM pickup_events WHERE event_id = ?`
+    const query = `SELECT * FROM pickup_events WHERE event_id = ?`
     db.query(query, [req.params.event_id], (err, result) => {
 
         if (result === undefined || result.length == 0) {
@@ -25,7 +25,7 @@ router.post('/:event_id/join',  checkSession, (req, res, next) => {
 
 }, (req, res, next) => {
     const usertoJoin = [req.session.account_id, req.params.event_id, 0];
-    query = `INSERT INTO player_event(account_id, event_id, is_leader) VALUES (?, ?, ?) ;`;
+    const query = `INSERT INTO player_event(account_id, event_id, is_leader) VALUES (?, ?, ?) ;`;
     db.query(query, usertoJoin, (err, result) => {
         if (result === undefined || result.length == 0) {
             return res.status(400).send({message: "Error. Couldn't join event.", status: 400})
@@ -33,7 +33,7 @@ router.post('/:event_id/join',  checkSession, (req, res, next) => {
         next();
     });
 }, (req, res) => {
-    query = `UPDATE pickup_events SET current_players = current_players + 1 WHERE event_id = ?;`
+    const query = `UPDATE pickup_events SET current_players = current_players + 1 WHERE event_id = ?;`
     db.query(query, [req.params.event_id], (err, result) => {
         if (result === undefined || result.length == 0) {
             return res.status(400).send({message: "Error. Couldn't increment current players in event.", status: 400, username: req.session.account_username})
