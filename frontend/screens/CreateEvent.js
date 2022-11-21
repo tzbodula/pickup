@@ -322,7 +322,7 @@ const CreateEvent = () => {
 
 
 
-      <Button containerStyle={{ position: "relative", bottom: "25%", width: "94%", marginLeft: "2.5%" }} titleStyle={{ fontFamily: "GearUp", color: "#80ced7", fontSize: "14" }} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
+      <Button containerStyle={{ position: "relative", bottom: "25%", width: "94%", marginLeft: "2.5%" }} titleStyle={{ fontFamily: "GearUp", color: "#80ced7", fontSize: 14 }} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
       <Text style={styles.dateTimeText}>PICK YOUR DATE AND TIME</Text>
       <DateTimePicker
         isVisible={datePickerVisibility}
