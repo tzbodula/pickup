@@ -167,9 +167,6 @@ const EventDetails = ({route}) => {
       
       <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_city} | {eventDetails.event_time} | {eventDetails.sport_name}</Text>
       
-
-
-
       {/*
       Important note: need to make these pressable eventually so we can view profile
       */}
