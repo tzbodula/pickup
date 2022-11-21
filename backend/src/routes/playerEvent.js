@@ -15,7 +15,8 @@ router.post('/:event_id/join',  (req, res, next) => {
             return res.status(400).send({message: "Error. Couldn't find event.", status: 400})
         }
 
-        if(result[0].currentplayers == result[0].maximum_players){
+        console.log(result[0].current_players == result[0].maximum_players)
+        if(result[0].current_players == result[0].maximum_players){
             return res.status(400).send({message: "Error. Event is already full.", status: 400})
         }
     
