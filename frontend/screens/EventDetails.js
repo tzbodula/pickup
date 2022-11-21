@@ -193,7 +193,7 @@ const EventDetails = ({route}) => {
       <SafeAreaView style={styles.joinLeaveEventView}>
         <SafeAreaView/>
         {(() => {
-          //console.log(players)
+
           if (eventDetails.account_id == account_id) {
             return (
               <SafeAreaView>
