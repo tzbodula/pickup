@@ -81,6 +81,7 @@ const EventDetails = ({route}) => {
   }
 
   useFocusEffect((React.useCallback(requestOnPageLoad, [stateChange])))
+  console.log(eventDetails)
   if (!eventDetails || !players || !account_id) { //There should always be at least 1 player in this array (the host)
     return null
   } else {

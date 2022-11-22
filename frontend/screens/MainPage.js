@@ -64,12 +64,12 @@ const MainPage = () => {
   )
 
   const renderEvents = ({ item, index }) => {
-
+    console.log("testing render")
     return (
       <SafeAreaView style={styles.cardWrapperStyle}>
         <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
           <Pressable
-            onPress={() => navigation.navigate("EventDetails")}
+            onPress={() => navigation.navigate("EventDetails", {event_id: item.event_id})}
           >
             <ImageBackground
               style={styles.eventImage}
@@ -80,7 +80,7 @@ const MainPage = () => {
 
           <Pressable
             style={styles.rectanglePressable}
-            onPress={() => navigation.navigate("EventDetails")}
+            onPress={() => navigation.navigate("EventDetails", {event_id: item.event_id})}
           />
           <Text style={styles.eventTitle}>{item.event_name}</Text>
           <Text style={styles.eventTime}>{item.event_time}</Text>
@@ -113,9 +113,9 @@ const MainPage = () => {
     console.log("Loading more!")
   }
 
-
   if (currentEvents == null) {
-    <SafeAreaView style={styles.mainPageView} >
+    return (
+      <SafeAreaView style={styles.mainPageView} >
       <StatusBar
         animated={true}
         backgroundColor="#61dafb"
@@ -268,7 +268,10 @@ const MainPage = () => {
         />
       </SafeAreaView>
     </SafeAreaView>
+    )
+    
   } else {
+    console.log("asd", currentEvents)
     return (
       <SafeAreaView style={styles.mainPageView} >
 
