@@ -36,7 +36,7 @@ const MainPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const requestOnPageLoad = () => {
-    console.log("Request on page load called")
+    console.log("")
     cardPosition = -16
     setIsLoading(true)
     console.log("Attempting to get the ", currentPage, " page")

@@ -113,12 +113,15 @@ router.post('/',  checkSession, (req, res, next) => {
         req.body.city,
         req.body.state,
         1, //always at least 1
+        req.body.place_id
     ];
+
+    console.log(eventToAdd)
     
     const insertStatement =
         `INSERT INTO pickup_events
-            (event_name, account_id, sport_id, maximum_players, event_date, event_time, event_location, event_city, event_state, current_players)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;`;
+            (event_name, account_id, sport_id, maximum_players, event_date, event_time, event_location, event_city, event_state, current_players, place_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;`;
     
     db.query(insertStatement, eventToAdd, (err, result) => {
         const event_id = result.insertId;

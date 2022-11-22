@@ -7,6 +7,7 @@ import {LOCAL_IP} from "@env";
 import { Button } from "@rneui/themed";
     
 const EventDetails = ({route}) => {
+
   let margin = 0;
   const navigation = useNavigation();
   const [eventDetails, setEventDetails] = useState({})
@@ -66,6 +67,7 @@ const EventDetails = ({route}) => {
   }
 
   const leaveEvent = () => {
+    console.log("")
     fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/leave`, {
       method: 'DELETE',
       headers: {
@@ -80,7 +82,22 @@ const EventDetails = ({route}) => {
       })
   }
 
+  const goToEventUpdate = () => {
+
+    const dataProp = {
+      eventName: eventDetails.event_name,
+      eventSport: eventDetails.sport_name,
+      eventTotalPlayers: eventDetails.maximum_players,
+      eventLocation: eventDetails.event_location,
+      placeID: eventDetails.place_id,
+      dateString: eventDetails.event_date,
+      timeString: eventDetails.event_time
+    }
+    navigation.navigate('EditEvent', {dataProp})
+  }
+
   useFocusEffect((React.useCallback(requestOnPageLoad, [stateChange])))
+
   console.log(eventDetails)
   if (!eventDetails || !players || !account_id) { //There should always be at least 1 player in this array (the host)
     return null
@@ -221,7 +238,7 @@ const EventDetails = ({route}) => {
           if (eventDetails.account_id == account_id) {
             return (
               <SafeAreaView>
-                <Button title="EDIT EVENT"></Button>
+                <Button title="EDIT EVENT" onPress={goToEventUpdate}></Button>
               </SafeAreaView>
             );
           }
