@@ -272,9 +272,6 @@ const MainPage = () => {
     return (
       <SafeAreaView style={styles.mainPageView} >
 
-
-        {/*  Start of displaying the event data */}
-
         <FlatList
           data={currentEvents}
           renderItem={renderEvents}
