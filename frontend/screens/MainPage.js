@@ -1,13 +1,15 @@
-
 import { Dimensions } from 'react-native';
 
 import {
   Image,
   StyleSheet,
   Text,
+  View,
   SafeAreaView,
   Pressable,
   ImageBackground,
+  FlatList,
+  ActivityIndicator
 
 } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -20,34 +22,96 @@ import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import { Card } from "@rneui/themed";
 
+import Header from '../components/Header';
+import Footer from "../components/Footer"
+
 let cardPosition = -16;
 const MainPage = () => {
   const navigation = useNavigation();
 
-  const [currentEvents, setCurrentEvents] = useState(null)
+  const [currentEvents, setCurrentEvents] = useState([])
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const requestOnPageLoad = () => {
+    console.log("Request on page load called")
     cardPosition = -16
-    console.log("Attempting to get the main page")
-    fetch(`http://${LOCAL_IP}:3000/events/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+    setIsLoading(true)
+    console.log("Attempting to get the ", currentPage, " page")
+    fetch(`http://${LOCAL_IP}:3000/events?page=${currentPage}&limit=10`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((res) => { return res.json() })
+      .then((retrieved) => {
+        if (retrieved.status == 200) {
+          console.log("Retrieved Data is", retrieved.data)
+          setCurrentEvents(retrieved.data)
+          setIsLoading(false)
         }
-      }).then((res) => { return res.json() })
-        .then((retrieved) => {
-          if (retrieved.status == 200) {
-            setCurrentEvents(retrieved.data)
-          }
-    }).catch((e) => console.log(e))
-    .then(
-      fetch
+      }).catch((e) => console.log(e))
+      .then(
+        fetch
+      )
+    console.log("Loading Status: ", isLoading)
+  }
+
+  useFocusEffect(
+    React.useCallback(requestOnPageLoad, [currentPage])
+  )
+
+  const renderEvents = ({ item, index }) => {
+
+    return (
+      <SafeAreaView style={styles.cardWrapperStyle}>
+        <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
+          <Pressable
+            onPress={() => navigation.navigate("EventDetails")}
+          >
+            <ImageBackground
+              style={styles.eventImage}
+              resizeMode="cover"
+              source={require("../assets/chestnut1.png")}
+            />
+          </Pressable>
+
+          <Pressable
+            style={styles.rectanglePressable}
+            onPress={() => navigation.navigate("EventDetails")}
+          />
+          <Text style={styles.eventTitle}>{item.event_name}</Text>
+          <Text style={styles.eventTime}>{item.event_time}</Text>
+          <Text style={styles.eventLocation}>{item.event_city + "," + item.event_state} </Text>
+          <Text style={styles.eventHostName}>{item.account_username}</Text>
+          <Text style={styles.eventDate}>{item.event_date}</Text>
+          <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
+          <ImageBackground
+            style={styles.crownIcon}
+            resizeMode="cover"
+            source={require("../assets/crown1.png")}
+          />
+        </Card>
+      </SafeAreaView>
+
     )
   }
-  
-  useFocusEffect(
-    React.useCallback(requestOnPageLoad, [])
-  )
+
+  const renderLoader = () => {
+    return (
+      isLoading ?
+        <SafeAreaView style={styles.loaderStyle}>
+          <ActivityIndicator size="large" color="#aaa" />
+        </SafeAreaView> : null
+    )
+  }
+
+  const loadMoreItem = () => {
+    // setCurrentPage(currentPage + 1) <- ERROR: This causes the app to bug out, calling useFocusEffect 4 times and swapping pages too fast
+    console.log("Loading more!")
+  }
 
 
   if (currentEvents == null) {
@@ -107,7 +171,7 @@ const MainPage = () => {
             resizeMode="cover"
             source={require("../assets/ellipse-1.png")}
           />
-          <Text style={styles.addEventPlus}>+</Text>
+          <Image style={styles.addEventPlus}>+</Image>
         </Pressable>
         <Pressable
           style={styles.singleTabPressable3}
@@ -205,431 +269,51 @@ const MainPage = () => {
       </SafeAreaView>
     </SafeAreaView>
   } else {
-    console.log("Data loaded", currentEvents)
     return (
       <SafeAreaView style={styles.mainPageView} >
-        <StatusBar
-          animated={true}
-          backgroundColor="#61dafb"
-          barStyle="dark-content"
-          showHideTransition="fade"
-          hidden={false} />
-        <SafeAreaView style={styles.footerView}>
-          <Pressable
-            style={styles.singleTabPressable}
-            onPress={() => navigation.navigate("ProfileUser")}
-          >
-            <SafeAreaView style={styles.iconAndText}>
-              <Image
-                style={styles.homeIcon}
-                resizeMode="cover"
-                source={require("../assets/home7.png")}
-              />
-              <Text style={[styles.text, styles.mt2]}>Account</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable1}
-            onPress={() => navigation.navigate("Friends")}
-          >
-            <SafeAreaView style={styles.iconAndText1}>
-              <Image
-                style={styles.userIcon}
-                resizeMode="cover"
-                source={require("../assets/user.png")}
-              />
-              <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable2}
-            onPress={() => navigation.navigate("Map")}
-          >
-            <SafeAreaView style={styles.iconAndText2}>
-              <Image
-                style={styles.compassIcon}
-                resizeMode="cover"
-                source={require("../assets/compass.png")}
-              />
-              <Text style={[styles.text2, styles.mt2]}>Map</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.framePressable}
-            onPress={() => navigation.navigate("CreateEvent")}
-          >
-            <Image
-              style={styles.addEventCircle}
-              resizeMode="cover"
-              source={require("../assets/ellipse-1.png")}
-            />
-            <Text style={styles.addEventPlus}>+</Text>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable3}
-            onPress={() => navigation.navigate("MainPage")}
-          >
-            <SafeAreaView style={styles.iconAndText3}>
-              <Image
-                style={styles.searchIcon}
-                resizeMode="cover"
-                source={require("../assets/search.png")}
-              />
-              <Text style={[styles.text4, styles.mt2]}>Events</Text>
-            </SafeAreaView>
-          </Pressable>
-        </SafeAreaView>
-        <SafeAreaView style={styles.rectangleView} />
-        <Image
-          style={styles.ellipseIcon1}
-          resizeMode="cover"
-          source={require("../assets/ellipse-18.png")}
-        />
-        <Image
-          style={styles.ellipseIcon2}
-          resizeMode="cover"
-          source={require("../assets/ellipse-19.png")}
-        />
-        <Pressable
-          style={styles.ellipsePressable}
-          onPress={() => navigation.navigate("MainPageSoccer1")}
-        >
-          <Image
-            style={styles.icon}
-            resizeMode="cover"
-            source={require("../assets/ellipse-20.png")}
-          />
-        </Pressable>
-        <Image
-          style={styles.ellipseIcon3}
-          resizeMode="cover"
-          source={require("../assets/ellipse-19.png")}
-        />
-        <Image
-          style={styles.ellipseIcon4}
-          resizeMode="cover"
-          source={require("../assets/ellipse-22.png")}
-        />
-        <Pressable
-          style={styles.vectorPressable}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <Image
-            style={styles.icon1}
-            resizeMode="cover"
-            source={require("../assets/vector.png")}
-          />
-        </Pressable>
-        {/*  Start of displaying the event data */}
-        {
 
-          currentEvents.map((event, index) => {
-            cardPosition = cardPosition + 14
-            let cardPercentage = cardPosition + "%"
-            //console.log("Card Percentage is", cardPercentage)
-            //console.log("Event Location is", event)
-            //console.log("Event city is", eventCity)
-            //console.log(getCityByID(event.event_location))
-            return (
-              <Card key={index} containerStyle={{top: cardPercentage , marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0,}}>
-                <Pressable
-                  onPress={() => navigation.navigate("EventDetails")}
-                >
-                  <ImageBackground
-                    style={styles.eventImage}
-                    resizeMode="cover"
-                    source={require("../assets/chestnut1.png")}
-                  />
-                </Pressable>
+        <FlatList
+          data={currentEvents}
+          renderItem={renderEvents}
+          keyExtractor={item => item.event_id}
+          ItemSeparatorComponent={() => <View style={{ height: 110 }} />}
+          onEndReached={loadMoreItem}
+          ListFooterComponent={renderLoader}
+          ListFooterComponentStyle={{borderColor: "#BE4025", borderTopWidth: 4,}}
 
-                <Pressable
-                  style={styles.rectanglePressable}
-                  onPress={() => navigation.navigate("EventDetails", {event_id: event.event_id})}
-                />
-                {console.log(event.event_id)}
-                <Text style={styles.eventTitle}>{event.event_name}</Text>
-                <Text style={styles.eventTime}>{event.event_time}</Text>
-                <Text style={styles.eventLocation}>{event.event_city + "," + event.event_state} </Text>
-                <Text style={styles.eventHostName}>{event.account_username}</Text>
-                <Text style={styles.eventDate}>{event.event_date}</Text>
-                <Text style={styles.eventPlayerCount}>{event.current_players}/{event.maximum_players} PLAYERS</Text>
-                <ImageBackground
-                  style={styles.crownIcon}
-                  resizeMode="cover"
-                  source={require("../assets/crown1.png")}
-                />
-              </Card>
-            )
-            marginOffset = marginOffset + 15
-          })
+        ></FlatList>
 
-        }
-
-  
         {/*  End of displaying the event data */}
-        <Image
-          style={styles.sportIcon}
-          resizeMode="cover"
-          source={require("../assets/football-1.png")}
-        />
-        <Image
-          style={styles.basketball1Icon}
-          resizeMode="cover"
-          source={require("../assets/basketball-1.png")}
-        />
-        <Image
-          style={styles.soccerBall1}
-          resizeMode="cover"
-          source={require("../assets/soccer-ball-1.png")}
-        />
-        <Image
-          style={styles.tennisRacket1}
-          resizeMode="cover"
-          source={require("../assets/tennis-racket-1.png")}
-        />
+        <Header/>
+        {/*  Footer */}
+        <Footer pageID={0} />
 
-        <SafeAreaView style={styles.changeMilesView}>
-          <Text style={styles.mILESMAXText}>30 MILES MAX</Text>
-          <SafeAreaView style={styles.rectangleView1} />
-          <Image
-            style={styles.vectorIcon}
-            resizeMode="cover"
-            source={require("../assets/vector1.png")}
-          />
-          <SafeAreaView style={styles.rectangleView2} />
-          <Image
-            style={styles.vectorIcon1}
-            resizeMode="cover"
-            source={require("../assets/vector2.png")}
-          />
-        </SafeAreaView>
       </SafeAreaView>
     );
   }
 };
 
 const styles = StyleSheet.create({
-  mt2: {
-    marginTop: 2,
-  },
-  homeIcon: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    flexShrink: 0,
-    overflow: "hidden",
-  },
-  text: {
-    position: "relative",
-    fontSize: 7,
-    lineHeight: 14,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "center",
-  },
-  iconAndText: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -20,
-      },
-      {
-        translateX: -24,
-      },
-    ],
-    top: "50%",
-    left: "50%",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  singleTabPressable: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.33%",
-    top: "17.65%",
-    right: "0%",
-    bottom: "0%",
-    left: "78.67%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  singleTabPressable1: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.32%",
-    top: "17.65%",
-    right: "57.35%",
-    bottom: "0%",
-    left: "21.33%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  userIcon: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    flexShrink: 0,
-    overflow: "hidden",
-  },
-  text1: {
-    position: "relative",
-    fontSize: 7,
-    lineHeight: 14,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "center",
-  },
-  iconAndText1: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -20,
-      },
-      {
-        translateX: -21.97,
-      },
-    ],
-    top: "50%",
-    left: "50%",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  compassIcon: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    flexShrink: 0,
-    overflow: "hidden",
-  },
-  text2: {
-    position: "relative",
-    fontSize: 7,
-    lineHeight: 14,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "center",
-  },
-  iconAndText2: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -20,
-      },
-      {
-        translateX: -12.97,
-      },
-    ],
-    top: "50%",
-    left: "50%",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
+
+
+
+  headerText: {
+    borderWidth: 2,
+    borderColor: "#E23418",
+    color: "#000000",
   },
 
-  addEventCircle: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    top: "0%",
-    right: "0%",
-    bottom: "0%",
-    left: "30%",
-    maxWidth: "100%",
-    overflow: "hidden",
-    maxHeight: "100%",
+  cardWrapperStyle: {
+    marginTop: "-5%",
+    marginBottom: "5%"
   },
-  addEventPlus: {
-    paddingTop: 20,
-    position: "absolute",
-    height: "47.46%",
-    width: "49.15%",
-    top: "28.2%",
-    right: "25.42%",
-    bottom: "25.42%",
-    left: "54.42%",
-    fontSize: 48,
-    lineHeight: 18,
-    fontFamily: "GearUp",
-    color: "#80ced7",
-    textAlign: "center",
-  },
-  framePressable: {
-    position: "absolute",
-    top: 0,
-    left: 158,
-    width: 59,
-    height: 59,
-  },
-  searchIcon: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    flexShrink: 0,
-    overflow: "hidden",
-  },
-  text4: {
-    position: "relative",
-    fontSize: 7,
-    lineHeight: 14,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "center",
-  },
-  iconAndText3: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -20,
-      },
-      {
-        translateX: -20.5,
-      },
-    ],
-    top: "50%",
-    left: "50%",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  singleTabPressable2: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.32%",
-    top: "17.65%",
-    right: "21.35%",
-    bottom: "0%",
-    left: "57.33%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  singleTabPressable3: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.33%",
-    top: "17.65%",
-    right: "78.67%",
-    bottom: "0%",
-    left: "0%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  footerView: {
-    position: "absolute",
-    top: Dimensions.get('window').height * 0.85,
-    left: 0,
-    width: Dimensions.get('window').width,
-    height: 68,
-  },
-  rectangleView: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    backgroundColor: "#00060a",
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height / 10,
-  },
+
+
+
+
+
+
+
   ellipseIcon1: {
     position: "absolute",
     top: 5,
@@ -931,19 +615,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#fff",
+    color: "#ffffff",
     textAlign: "left",
     width: 193,
     height: 16,
   },
-  text4: {
-    position: "relative",
-    fontSize: 7,
-    lineHeight: 14,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "center",
-  },
+
   text5: {
     position: "absolute",
     top: 677,
@@ -1140,7 +817,7 @@ const styles = StyleSheet.create({
     height: 14,
   },
   mainPageView: {
-    top: 50,
+    top: 0,
     position: "relative",
     backgroundColor: "#fff",
     flex: 1,
