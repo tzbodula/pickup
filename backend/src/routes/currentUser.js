@@ -15,6 +15,8 @@ router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     
+    console.log("Attempting to login from the backend!")
+
     const query = `SELECT account_id, account_username, email, account_password, games_joined, games_attended, rating, bio FROM accounts WHERE account_username = ?;`
 
     db.query(query, [username], (err, result) => {
