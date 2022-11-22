@@ -109,6 +109,8 @@ const styles = StyleSheet.create({
       },
     footerView: {
         position: "absolute",
+        borderTopWidth: 2,
+        borderTopColor: "#FFFFFF",
         paddingVertical: "2%",
         backgroundColor: "#00060a",
         marginTop: "12%",

@@ -160,6 +160,13 @@ const CreateEvent = () => {
   return (
     <SafeAreaView style={styles.createEventView}>
       <Text style={styles.createNewEvent}>Create New Event</Text>
+      <Pressable
+        style={styles.goBack}
+        onPress={() => navigation.navigate("MainPage")}
+      >
+        <Text style={styles.goBackText}>EXIT</Text>
+      </Pressable>
+
       <Text style={styles.eventNameText}>Event Name</Text>
 
       <Input containerStyle={{
@@ -350,6 +357,30 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: 275,
     height: 20,
+  },
+  goBack: {
+    position: "absolute",
+    top: "6%",
+    left: "77%",
+    borderRadius: 5,
+    borderColor: "#80ced7",
+    borderWidth: 3,
+    backgroundColor: "#00060a",
+    fontSize: 14,
+    lineHeight: 25,
+    fontFamily: "GearUp",
+    color: "#80ced7",
+    textAlign: "center",
+    width: "20%",
+    height: "4%",
+  },
+  goBackText: {
+    position: "absolute",
+    left: "24%",
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#80ced7",
   },
   locationPicker: {
 

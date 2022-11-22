@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         left: 0,
+        borderBottomWidth: 2,
+        borderBottomColor: "#FFFFFF",
         backgroundColor: "#00060a",
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height / 7,

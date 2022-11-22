@@ -59,7 +59,7 @@ const AccountRegistration = () => {
           resizeMode="cover"
           source={require("../assets/property1default.png")}
         >
-          <Text style={styles.pickUpText}>PickUp</Text>
+          <Image source={require("../assets/pickup-logo-wordmark.png")} style={{ width: "55%", height: "20%", position: "absolute", left: "22%", top: "1%" }} />
           <SafeAreaView style={styles.textFieldLastName}>
             <Image
               style={styles.trailingIcon}
@@ -67,59 +67,31 @@ const AccountRegistration = () => {
               source={require("../assets/trailing-icon.png")}
             />
             <SafeAreaView style={styles.iconText}>
-              <Image
-                style={styles.leadingIcon}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
+ 
               <TextInput style={styles.input} onChangeText={(e) => setLastName(e)}>Last Name</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText}>Last Name</Text>
           </SafeAreaView>
           <SafeAreaView style={styles.textFieldPassword}>
-            <Image
-              style={styles.trailingIcon1}
-              resizeMode="cover"
-              source={require("../assets/trailing-icon.png")}
-            />
+
             <SafeAreaView style={styles.iconText1}>
-              <Image
-                style={styles.leadingIcon1}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
+  
               <TextInput style={styles.input} onChangeText={(e) => setPassword(e)}>Password</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText1}>Enter your password</Text>
           </SafeAreaView>
           <SafeAreaView style={styles.textFieldPasswordConfirm}>
-            <Image
-              style={styles.trailingIcon2}
-              resizeMode="cover"
-              source={require("../assets/trailing-icon.png")}
-            />
+
             <SafeAreaView style={styles.iconText2}>
-              <Image
-                style={styles.leadingIcon2}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
+          
               <TextInput style={styles.input}>Password</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText2} onChangeText={(e) => setConfirmPassword(e)}>CONFIRM YOUR PASSWORD</Text>
           </SafeAreaView>
           <SafeAreaView style={styles.textFieldUsername}>
-            <Image
-              style={styles.trailingIcon3}
-              resizeMode="cover"
-              source={require("../assets/trailing-icon.png")}
-            />
+
             <SafeAreaView style={styles.iconText3}>
-              <Image
-                style={styles.leadingIcon3}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
+
               <TextInput style={styles.input} onChangeText={(e) => setUsername(e)}>Username</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText3}>Enter your username</Text>
@@ -129,11 +101,7 @@ const AccountRegistration = () => {
             onPress={() => navigation.navigate("MainPage")}
           >
             <SafeAreaView style={styles.iconAndText}>
-              <Image
-                style={styles.leadingIcon4}
-                resizeMode="cover"
-                source={require("../assets/leading-icon7.png")}
-              />
+
               <Button
                onPress={handleSubmit}
                 titleStyle={{
@@ -149,33 +117,17 @@ const AccountRegistration = () => {
             </SafeAreaView>
           </Pressable>
           <SafeAreaView style={styles.textFieldFirstName}>
-            <Image
-              style={styles.trailingIcon4}
-              resizeMode="cover"
-              source={require("../assets/trailing-icon.png")}
-            />
+
             <SafeAreaView style={styles.iconText4}>
-              <Image
-                style={styles.leadingIcon5}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
-              <TextInput style={styles.input} onChangeText={(e) => setFirstName(e)}>First Name</TextInput>
+
+              <TextInput style={styles.input} onChangeText={(e) => setFirstName(e)} placeholder="First Name">First Name</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText4}>First Name</Text>
           </SafeAreaView>
           <SafeAreaView style={styles.textFieldEmail}>
-            <Image
-              style={styles.trailingIcon5}
-              resizeMode="cover"
-              source={require("../assets/trailing-icon.png")}
-            />
+
             <SafeAreaView style={styles.iconText5}>
-              <Image
-                style={styles.leadingIcon6}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
+   
               <TextInput style={styles.input} onChangeText={(e) => setEmail(e)}>Email</TextInput>
             </SafeAreaView>
             <Text style={styles.labelText5}>Enter your email</Text>
