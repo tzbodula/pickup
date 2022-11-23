@@ -245,12 +245,13 @@ function getSportImage(sportName){
         }
         
         {
-        favoriteSports.map((sport) => {
+        favoriteSports.map((sport, index) => {
           sportEllipseAdjustment = sportEllipseAdjustment + 6
             let topPercentage = sportEllipseAdjustment + "%"
 
             return (
               <Image
+              key={index + 10}
               style={{position: "absolute",
               top: topPercentage,
               left: "4%",
@@ -264,19 +265,20 @@ function getSportImage(sportName){
         }
 
         {
-        favoriteSports.map((sport) => {
+        favoriteSports.map((sport, index) => {
           sportIconAdjustment = sportIconAdjustment + 6
             let topPercentage = sportIconAdjustment + "%"
 
             return (
             <Image
-                  style={{position: "absolute",
-                  top: topPercentage,
-                  left: "5.5%",
-                  width: 32,
-                  height: 30,}}
-                  resizeMode="cover"
-                  source={getSportImage(sport.sport_name)}
+              key={index+20}
+              style={{position: "absolute",
+              top: topPercentage,
+              left: "5.5%",
+              width: 32,
+              height: 30,}}
+              resizeMode="cover"
+              source={getSportImage(sport.sport_name)}
             />
           );
         })
