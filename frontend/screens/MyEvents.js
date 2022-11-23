@@ -289,7 +289,7 @@ const MyEvents = () => {
         {/*  End of displaying the event data */}
         <Header/>
         {/*  Footer */}
-        <Footer pageID={0} />
+        <Footer pageID={2} />
 
       </SafeAreaView>
     );
