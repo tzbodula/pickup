@@ -68,21 +68,25 @@ const MainPage = () => {
     console.log("Index is", index)
     return (
       <SafeAreaView style={styles.cardWrapperStyle}>
-        <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
+        <Pressable
+          onPress={() => navigation.navigate('EventDetails', {event_id: item.event_id})}
+        >
+          <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
 
-            <ImageBackground
-              style={styles.eventImage}
-              resizeMode="stretch"
-              source={item.sport_id == 1 ? require("../assets/soccer-banner.png") : item.sport_id == 2 ? require("../assets/football-banner.png") : item.sport_id == 3 ? require("../assets/basketball-banner.png") : require("../assets/chestnut1.png")}
-            />
+              <ImageBackground
+                style={styles.eventImage}
+                resizeMode="stretch"
+                source={item.sport_id == 1 ? require("../assets/soccer-banner.png") : item.sport_id == 2 ? require("../assets/football-banner.png") : item.sport_id == 3 ? require("../assets/basketball-banner.png") : require("../assets/chestnut1.png")}
+              />
 
-            <Text style={styles.eventTitle}>{item.event_name}</Text>
-            <Text style={styles.eventTime}>{item.event_time}</Text>
-            <Text style={styles.eventLocation}>{item.event_city + ", " + item.event_state} </Text>
-            <Text style={styles.eventHostName}>{item.account_username}</Text>
-            <Text style={styles.eventDate}>{item.event_date}</Text>
-            <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
-        </Card>
+              <Text style={styles.eventTitle}>{item.event_name}</Text>
+              <Text style={styles.eventTime}>{item.event_time}</Text>
+              <Text style={styles.eventLocation}>{item.event_city + ", " + item.event_state} </Text>
+              <Text style={styles.eventHostName}>{item.account_username}</Text>
+              <Text style={styles.eventDate}>{item.event_date}</Text>
+              <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
+          </Card>
+        </Pressable>
       </SafeAreaView>
 
     )
