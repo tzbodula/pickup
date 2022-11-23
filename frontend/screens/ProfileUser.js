@@ -9,6 +9,8 @@ import {LOCAL_IP} from '@env';
 
 import React, { useState, useEffect } from 'react'
 
+import Footer from "../components/Footer"
+
 let favoriteSportAdjustment = 10.75
 
 const ProfileUser = () => {
@@ -20,12 +22,10 @@ const ProfileUser = () => {
   const [bio, setBio] = useState("")
   const [email, setEmail] = useState("")
   const navigation = useNavigation();
+  let favoriteSportAdjustment = 35
+  let sportIconAdjustment = 34.75
+  let sportEllipseAdjustment = 33.75
 
-  useEffect(() => {
-    return () => {
-        favoriteSportAdjustment = 10.75
-    }
-}, [])
   const requestOnPageLoad = () => {
     console.log("")
     fetch(`http://${LOCAL_IP}:3000/user/`, {
@@ -46,12 +46,29 @@ const ProfileUser = () => {
         fetch(`http://${LOCAL_IP}:3000/sports/favorite`)
         .then((res) => {return res.json()})
         .then((res) => {
-          setSportInfo(res.data)
+          if(res.data != undefined){
+            setSportInfo(res.data)
+          }
         })
         .catch((e) => {console.log(e)})
       }).catch((e) => {console.log(e)})
     
   }
+
+// Dynamic fav sports icons
+// Needs to be updated if new sports are added
+function getSportImage(sportName){
+  switch (sportName) {
+    case "Football":
+      return require('../assets/football-6.png');
+    case "Soccer":
+      return require('../assets/soccer-ball-1.png');
+    case "Basketball":
+      return require('../assets/basketball-1.png');
+    default:
+      return require('../assets/football-6.png');
+  }
+}
 
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
   if(username == null || rating == null || gamesAttended == null || gamesJoined == null || bio == null) {
@@ -126,71 +143,7 @@ const ProfileUser = () => {
   } else {
     return (
       <SafeAreaView style={styles.profileUserView}>
-       <SafeAreaView style={styles.footerView}>
-        <Pressable
-            style={styles.singleTabPressable}
-            onPress={() => navigation.navigate("ProfileUser")}
-          >
-            <SafeAreaView style={styles.iconAndText}>
-              <Image
-                style={styles.homeIcon}
-                resizeMode="cover"
-                source={require("../assets/home3.png")}
-              />
-              <Text style={[styles.text, styles.mt2]}>Account</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable1}
-            onPress={() => navigation.navigate("Friends")}
-          >
-            <SafeAreaView style={styles.iconAndText1}>
-              <Image
-                style={styles.userIcon}
-                resizeMode="cover"
-                source={require("../assets/user.png")}
-              />
-              <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable2}
-            onPress={() => navigation.navigate("Map")}
-          >
-            <SafeAreaView style={styles.iconAndText2}>
-              <Image
-                style={styles.compassIcon}
-                resizeMode="cover"
-                source={require("../assets/compass.png")}
-              />
-              <Text style={[styles.text2, styles.mt2]}>Map</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.framePressable}
-            onPress={() => navigation.navigate("CreateEvent")}
-          >
-            <Image
-              style={styles.addEventCircle}
-              resizeMode="cover"
-              source={require("../assets/ellipse-1.png")}
-            />
-            <Text style={styles.addEventPlus}>+</Text>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable3}
-            onPress={() => navigation.navigate("MainPage")}
-          >
-            <SafeAreaView style={styles.iconAndText3}>
-              <Image
-                style={styles.searchIcon}
-                resizeMode="cover"
-                source={require("../assets/search4.png")}
-              />
-              <Text style={[styles.text4, styles.mt2]}>Events</Text>
-            </SafeAreaView>
-          </Pressable>
-        </SafeAreaView>
+        <Footer pageID={3}/>
         <Avatar
           containerStyle={{
             borderWidth: 3,
@@ -224,7 +177,8 @@ const ProfileUser = () => {
           onPress={() => navigation.navigate("EditSettings", {
             username: username,
             bio: bio,
-            email: email
+            email: email,
+            favoriteSports: favoriteSports,
           })}
         >
           <Image
@@ -254,28 +208,6 @@ const ProfileUser = () => {
             source={require("../assets/vector31.png")}
           />
         </Pressable>
-        <Image
-          style={styles.ellipseIcon2}
-          resizeMode="cover"
-          source={require("../assets/ellipse-193.png")}
-        />
-        <Image
-          style={styles.ellipseIcon3}
-          resizeMode="cover"
-          source={require("../assets/ellipse-193.png")}
-        />
-
-        <Image
-          style={styles.basketball1Icon}
-          resizeMode="cover"
-          source={require("../assets/basketball-1.png")}
-        />
-        <Image
-          style={styles.football1Icon}
-          resizeMode="cover"
-          source={require("../assets/soccer-ball-1.png")}
-        />
-
 
         
        {/*  <Text style={styles.footballText}>Football</Text>
@@ -295,17 +227,63 @@ const ProfileUser = () => {
         
         {
           //Please do your CSS magic Thomas to get these to align property thx
-          favoriteSports.length
-          ?
+          
           favoriteSports.map((sport) => {
             favoriteSportAdjustment = favoriteSportAdjustment + 6
             let topPercentage = favoriteSportAdjustment + "%"
 
-            return <Text style={{position: "absolute", top: topPercentage, left: 70, fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
+            return (<Text style={{position: "absolute", top: topPercentage, left: "16%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text>
+            /**
+            <Image
+                  style={{position: "absolute", height: "5%", width: "8%", right: "50.21%", bottom: "81.89%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
+                  resizeMode="cover"
+                  source={getSportImage(sport.sport_name)}
+            />
+            */
+          );
         })
-          :
-          <Text> empty </Text>
         }
+        
+        {
+        favoriteSports.map((sport, index) => {
+          sportEllipseAdjustment = sportEllipseAdjustment + 6
+            let topPercentage = sportEllipseAdjustment + "%"
+
+            return (
+              <Image
+              key={index + 10}
+              style={{position: "absolute",
+              top: topPercentage,
+              left: "4%",
+              width: 45,
+              height: 45,}}
+              resizeMode="cover"
+              source={require("../assets/ellipse-193.png")}
+            />
+          );
+        })
+        }
+
+        {
+        favoriteSports.map((sport, index) => {
+          sportIconAdjustment = sportIconAdjustment + 6
+            let topPercentage = sportIconAdjustment + "%"
+
+            return (
+            <Image
+              key={index+20}
+              style={{position: "absolute",
+              top: topPercentage,
+              left: "5.5%",
+              width: 32,
+              height: 30,}}
+              resizeMode="cover"
+              source={getSportImage(sport.sport_name)}
+            />
+          );
+        })
+        }
+        
         
         <SafeAreaView style={styles.lineView} />
       </SafeAreaView>

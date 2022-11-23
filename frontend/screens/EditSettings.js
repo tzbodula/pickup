@@ -2,9 +2,22 @@ import * as React from "react";
 import { Image, StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
-
+import {LOCAL_IP} from '@env';
 
 const EditSettings = ({route}) => {
+  const handleLogout = () => {
+    fetch(`http://${LOCAL_IP}:3000/user/logout`, {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          console.log(data)
+          if (data.status == 200) {
+            navigation.navigate("Login")
+        }
+      }).catch((e) => {console.log(e)})
+  }
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.editSettingsView}>
@@ -98,7 +111,7 @@ const EditSettings = ({route}) => {
       </SafeAreaView>
       <Pressable
         style={styles.buttonPressable}
-        onPress={() => navigation.navigate("Login")}
+        onPress={handleLogout}
       >
         <Image
           style={styles.leadingIcon1}
@@ -123,7 +136,7 @@ const EditSettings = ({route}) => {
       <Pressable
         style={styles.buttonPressable1}
         onPress={() => navigation.navigate("EditProfile", {username: route.params.username,
-          bio: route.params.bio})}
+          bio: route.params.bio, favoriteSports: route.params.favoriteSports})}
       >
         <Image
           style={styles.leadingIcon2}

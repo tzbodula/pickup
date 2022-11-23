@@ -26,7 +26,7 @@ import Header from '../components/Header';
 import Footer from "../components/Footer"
 
 let cardPosition = -16;
-const MainPage = () => {
+const MyEvents = () => {
   const navigation = useNavigation();
 
   const [currentEvents, setCurrentEvents] = useState([])
@@ -40,7 +40,7 @@ const MainPage = () => {
     cardPosition = -16
     setIsLoading(true)
     console.log("Attempting to get the ", currentPage, " page")
-    fetch(`http://${LOCAL_IP}:3000/events?page=${currentPage}&limit=10&mine=0`, {
+    fetch(`http://${LOCAL_IP}:3000/events?page=${currentPage}&limit=10&mine=1`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -830,4 +830,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainPage;
+export default MyEvents;

@@ -1,10 +1,90 @@
-import * as React from "react";
+import React, {useState} from 'react';
 import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import {Storage} from "expo-storage";
+import {LOCAL_IP} from "@env";
 
-const EventDetails = () => {
+import { Button } from "@rneui/themed";
+    
+const EventDetails = ({route}) => {
+  let margin = 0;
   const navigation = useNavigation();
+  const [eventDetails, setEventDetails] = useState({})
+  const [players, setPlayers] = useState([])
+  const [account_id, setAccountId] = useState(null)
+  const [stateChange, setStateChange] = useState(false)
 
+  const getCurrentAccountId = () => {
+    Storage.getItem({ key: `account_id` })
+    .then((data) => {setAccountId(data)})
+    
+  }
+
+  const checkIfPlayerInEvent = () => {
+    //console.log(players)
+    if (players.find(player => player.account_id == account_id)) {
+      return true
+    }
+
+    return false
+  }
+  const requestOnPageLoad = () => {
+    console.log("made api request");
+    // This makes sure that useFocusEffect() only calls this method once.
+      getCurrentAccountId();
+      fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
+      .then((res) => {return res.json()})
+      .then((data) => {
+        setEventDetails(data.data)}
+        )
+      .then(
+        fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/players`)
+        .then((res) => {return res.json()})
+        .then((data) => {setPlayers(data.data)})
+      )
+    
+  }
+
+  const testLog = () => {
+    console.log("pressed")
+  }
+
+  const joinEvent = () => {
+    console.log("test")
+    fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/join`, {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json'}})
+      .then((res) => {return res.json()})
+      .then((data) => {
+        if (data.status == 200) {
+          console.log("You should have joined the event...");
+          setStateChange(!stateChange)
+        }
+      })
+  }
+
+  const leaveEvent = () => {
+    fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/leave`, {
+      method: 'DELETE',
+      headers: {
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json'}})
+      .then((res) => {return res.json()})
+      .then((data) => {
+        if (data.status == 200) {
+          console.log("You should have left the event...");
+          setStateChange(!stateChange)
+        }
+      })
+  }
+
+  useFocusEffect((React.useCallback(requestOnPageLoad, [stateChange])))
+  console.log(eventDetails)
+  if (!eventDetails || !players || !account_id) { //There should always be at least 1 player in this array (the host)
+    return null
+  } else {
   return (
     <SafeAreaView style={styles.eventDetailsView}>
       <SafeAreaView style={styles.footerView}>
@@ -73,143 +153,53 @@ const EventDetails = () => {
           <Text style={[styles.text5, styles.mt2]}>Account</Text>
         </SafeAreaView>
       </Pressable>
-      <Image
-        style={styles.vectorIcon}
-        resizeMode="cover"
-        source={require("../assets/vector-3.png")}
-      />
+     
       <SafeAreaView style={styles.rectangleView} />
       <Pressable
         style={styles.vectorPressable}
         onPress={() => navigation.navigate("MainPage")}
       >
-        <Image
-          style={styles.icon}
-          resizeMode="cover"
-          source={require("../assets/vector6.png")}
-        />
+        
       </Pressable>
-      <Text style={styles.v3CASUALText}>3V3 CASUAL </Text>
+      <Text style={styles.v3CASUALText}> {eventDetails.event_name} </Text>
       <Text style={styles.playersText}>Players</Text>
-      <Image
-        style={styles.vectorIcon1}
-        resizeMode="cover"
-        source={require("../assets/vector-5.png")}
-      />
-      <SafeAreaView style={styles.rectangleView1} />
-      <Text style={styles.oPENCHATText}>OPEN CHAT</Text>
-      <Text style={styles.uREC400PMFOOTBALL}>UREC | 4:00 PM | FOOTBALL</Text>
-      <Text style={styles.bRUHMOMENTText}>BRUHMOMENT</Text>
-      <Text style={styles.mOSSMACHINEText}>MOSSMACHINE</Text>
-      <Text style={styles.wATCHYASELFText}>WATCHYASELF</Text>
-      <Text style={styles.sACKATTACKText}>SACKATTACK</Text>
-      <Text style={styles.hIGHLIGHTREEL2Text}>HIGHLIGHTREEL2</Text>
-      <Image
-        style={styles.image2Icon}
-        resizeMode="cover"
-        source={require("../assets/image-2.png")}
-      />
-      <Image
-        style={styles.ellipseIcon1}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon2}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon3}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon4}
-        resizeMode="cover"
-        source={require("../assets/ellipse-4.png")}
-      />
-      <Image
-        style={styles.ellipseIcon5}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon6}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon7}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon8}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon9}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.ellipseIcon10}
-        resizeMode="cover"
-        source={require("../assets/ellipse-10.png")}
-      />
-      <Image
-        style={styles.eye191545412801Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-1.png")}
-      />
-      <Image
-        style={styles.eye191545412802Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-1.png")}
-      />
-      <Image
-        style={styles.eye191545412805Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-7.png")}
-      />
-      <Pressable
-        style={styles.eye191545412806Pressable}
-        onPress={() => navigation.navigate("ProfileOfAnotherUser")}
-      >
-        <Image
-          style={styles.icon1}
-          resizeMode="cover"
-          source={require("../assets/eye1915454-1280-7.png")}
-        />
-      </Pressable>
-      <Image
-        style={styles.eye191545412807Icon}
-        resizeMode="cover"
-        source={require("../assets/eye1915454-1280-7.png")}
-      />
+      
+      <SafeAreaView/>
+      
+      <Text style={styles.uREC400PMFOOTBALL}>{eventDetails.event_city} | {eventDetails.event_time} | {eventDetails.sport_name}</Text>
+      
+      {/*
+      Important note: need to make these pressable eventually so we can view profile
+      */}
+      {
+        players.map((player => {
+          {margin += 40}
+          return (
+          <Text style={{
+            position: "absolute",
+            top: 218 + margin,
+            left: 47,
+            fontSize: 10,
+            lineHeight: 14,
+            fontFamily: "GearUp Soft",
+            color: "black",
+            textAlign: "center"
+          }}>{player.account_username}
+          </Text>
+         
+          )
 
-      <Image
-        style={styles.image1Icon}
-        resizeMode="cover"
-        source={require("../assets/image-1.png")}
-      />
+        }))
+      }
+
+
+     
       <Text
         style={styles.craverRdCharlotteNC28262}
-      >{`Craver Rd, Charlotte, NC 28262 `}</Text>
-      <SafeAreaView style={styles.rectangleView13} />
-      <Text style={styles.vSText}>VS</Text>
-      <Image
-        style={styles.vectorIcon2}
-        resizeMode="cover"
-        source={require("../assets/vector-4.png")}
-      />
-      <Image
-        style={styles.image3Icon}
-        resizeMode="cover"
-        source={require("../assets/image-3.png")}
-      />
+      >{eventDetails.event_location}</Text>
+      
+      
+      
       <Pressable
         style={styles.iconAndText5}
         onPress={() => navigation.navigate("Map")}
@@ -223,13 +213,29 @@ const EventDetails = () => {
           <Text style={[styles.text6, styles.mt2]}>Map</Text>
         </SafeAreaView>
       </Pressable>
+      <Pressable>
       <SafeAreaView style={styles.joinLeaveEventView}>
-        <SafeAreaView style={styles.rectangleView14} />
-        <Text style={styles.joinText}>join</Text>
-        <Text style={styles.pLAYER6Text}>PLAYER 6</Text>
+        <SafeAreaView/>
+        {(() => {
+
+          if (eventDetails.account_id == account_id) {
+            return (
+              <SafeAreaView>
+                <Button title="EDIT EVENT"></Button>
+              </SafeAreaView>
+            );
+          }
+
+          if (checkIfPlayerInEvent()) {
+            return <Button title="Leave Event" onPress={leaveEvent}></Button> 
+          }
+          return <Button title="Join" onPress={joinEvent}></Button>
+        })()}
       </SafeAreaView>
+      </Pressable>
     </SafeAreaView>
   );
+}
 };
 
 const styles = StyleSheet.create({
@@ -600,16 +606,6 @@ const styles = StyleSheet.create({
     width: 206,
     height: 57,
   },
-  oPENCHATText: {
-    position: "absolute",
-    top: 362,
-    left: 91,
-    fontSize: 24,
-    lineHeight: 50,
-    fontFamily: "GearUp",
-    color: "#000",
-    textAlign: "center",
-  },
   uREC400PMFOOTBALL: {
     paddingTop: "10%",
     position: "absolute",
@@ -628,7 +624,7 @@ const styles = StyleSheet.create({
   },
   bRUHMOMENTText: {
     position: "absolute",
-    top: 208,
+    top: 218,
     left: 47,
     fontSize: 10,
     lineHeight: 14,
@@ -658,8 +654,8 @@ const styles = StyleSheet.create({
   },
   sACKATTACKText: {
     position: "absolute",
-    top: 246,
-    left: 228,
+    top: "25%",
+    left: "%",
     fontSize: 10,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -800,7 +796,7 @@ const styles = StyleSheet.create({
   },
   craverRdCharlotteNC28262: {
     position: "absolute",
-    top: 442,
+    top: 500,
     left: 62,
     fontSize: 10,
     lineHeight: 14,
@@ -917,8 +913,8 @@ const styles = StyleSheet.create({
   },
   joinLeaveEventView: {
     position: "absolute",
-    top: 283,
-    left: 141,
+    top: 400,
+    left: 100,
     width: 178,
     height: 65,
   },

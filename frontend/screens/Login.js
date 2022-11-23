@@ -33,7 +33,7 @@ const Login = () => {
   }
 
   const handleSubmit = () => {
-    console.log("Attempting to Login")
+    console.log("Attempting to login from the frontend!")
     fetch(`http://${LOCAL_IP}:3000/user/login`, {
       method: 'POST',
       headers: {
@@ -124,7 +124,7 @@ const Login = () => {
               resizeMode="cover"
               source={require("../assets/leading-icon7.png")}
             />
-            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%"}} titleStyle={{fontFamily: 'GearUp'}} onPress={handleSubmit}></Button>
+            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%", }} titleStyle={{fontFamily: 'GearUp'}} onPress={handleSubmit}></Button>
           </SafeAreaView>
         </Pressable>
       </SafeAreaView>

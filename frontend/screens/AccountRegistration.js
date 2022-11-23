@@ -47,7 +47,7 @@ const AccountRegistration = () => {
       'Accept': 'application/json'},
       body: JSON.stringify(data)
     }).then((res) => {return res.json()})
-    .then((data) => {console.log(data.message)})
+    .then((data) => {if(data.status = 200) navigation.navigate('Login')})
     .then((e) => {console.log(e)})
   }
 

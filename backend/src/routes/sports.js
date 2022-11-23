@@ -1,5 +1,5 @@
 /**
- * This file is used for operations on OTHER users, NOT the current user.
+ * This file is used for sports.
  */
 const { Router } = require('express');
 const db = require('../config/databaseConfig')
@@ -8,7 +8,7 @@ const checkSession = require('../utils/sessionChecker')
 const router = Router();
 
 // Gets all sports 
-router.get('/', (req, res) => {
+router.get('/', checkSession, (req, res) => {
     const query = `SELECT * FROM sports`
 
     db.query(query, (err, result) => {
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 });
 
 // Sends the list of this player's favorite sport
-router.get('/favorite',  (req, res) => {
+router.get('/favorite',  checkSession, (req, res) => {
 
     const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
     JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
@@ -40,12 +40,11 @@ router.get('/favorite',  (req, res) => {
 });
 
 // Delete sport from user's favorite sports list
-router.delete('/favorite',  (req, res) => {
+router.delete('/favorite',  checkSession, (req, res) => {
 
     const query = `DELETE FROM player_sport_favorite WHERE account_id = ? AND sport_id = ?;`
 
     db.query(query, [req.session.account_id, req.body.sport_id], (err, result) => {
-        console.log(result)
         if (result === undefined || result.length == 0) {
             return res.status(400).send({message:"Error. User doesn't have this sport favorited.", status: 400})
         }
@@ -56,7 +55,7 @@ router.delete('/favorite',  (req, res) => {
 });
 
 // Adds sport to user's favorite sports list
-router.post('/favorite',  (req, res) => {
+router.post('/favorite',  checkSession, (req, res) => {
 
     const insertStatement =
         `INSERT INTO player_sport_favorite
@@ -64,8 +63,8 @@ router.post('/favorite',  (req, res) => {
             VALUES (?, ?) ;`;
 
     db.query(insertStatement, [req.session.account_id, req.body.sport_id], (err, result) => {
-        if (err) {
-            console.log(err)
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send({message:"Error. Cannot add same favorite sport twice.", status: 400})
         }
         return res.status(200).send({message: 'Favorite sport has been added!', status: 200});
     });

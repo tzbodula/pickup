@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { QueryClient, QueryClientProvider } from "react-query"
 
 //Import all of our Screens
 import MainPage from "./screens/MainPage";
@@ -19,6 +20,7 @@ import FriendProfile from "./screens/FriendProfile";
 import Friends from "./screens/Friends";
 import CreateEvent from "./screens/CreateEvent";
 import EventDetails from "./screens/EventDetails";
+import MyEvents from "./screens/MyEvents";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -66,24 +68,29 @@ export default function App() {
 
   const Stack = createNativeStackNavigator();
 
+  const queryClient = new QueryClient();
+
   return (
-    <View style={{flex: 1}} onLayout={onLayoutRootView}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName='Login'>
-          <Stack.Screen name="MainPage" component={MainPage} options={{ headerShown: false }} />
-          <Stack.Screen name="AccountRecovery" component={AccountRecovery} options={{ headerShown: false }} />
-          <Stack.Screen name="AccountRegistration" component={AccountRegistration} options={{ headerShown: false }} />
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
-          <Stack.Screen name="EditSettings" component={EditSettings} options={{ headerShown: false }} />
-          <Stack.Screen name="ProfileUser" component={ProfileUser} options={{ headerShown: false }} />
-          <Stack.Screen name="ProfileOfAnotherUser" component={ProfileOfAnotherUser} options={{ headerShown: false }} />
-          <Stack.Screen name="FriendProfile" component={FriendProfile} options={{ headerShown: false }} />
-          <Stack.Screen name="Friends" component={Friends} options={{ headerShown: false }} />
-          <Stack.Screen name="CreateEvent" component={CreateEvent} options={{ headerShown: false }} />
-          <Stack.Screen name="EventDetails" component={EventDetails} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <View style={{flex: 1}} onLayout={onLayoutRootView}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName='Login'>
+            <Stack.Screen name="MainPage" component={MainPage} options={{ headerShown: false }} />
+            <Stack.Screen name="AccountRecovery" component={AccountRecovery} options={{ headerShown: false }} />
+            <Stack.Screen name="AccountRegistration" component={AccountRegistration} options={{ headerShown: false }} />
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+            <Stack.Screen name="EditSettings" component={EditSettings} options={{ headerShown: false }} />
+            <Stack.Screen name="ProfileUser" component={ProfileUser} options={{ headerShown: false }} />
+            <Stack.Screen name="ProfileOfAnotherUser" component={ProfileOfAnotherUser} options={{ headerShown: false }} />
+            <Stack.Screen name="FriendProfile" component={FriendProfile} options={{ headerShown: false }} />
+            <Stack.Screen name="Friends" component={Friends} options={{ headerShown: false }} />
+            <Stack.Screen name="CreateEvent" component={CreateEvent} options={{ headerShown: false }} />
+            <Stack.Screen name="EventDetails" component={EventDetails} options={{ headerShown: false }} />
+            <Stack.Screen name="MyEvents" component={MyEvents} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
+    </QueryClientProvider>
   );
 }
