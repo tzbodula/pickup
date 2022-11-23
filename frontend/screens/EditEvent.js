@@ -11,6 +11,7 @@ import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 const EditEvent = ({route}) => {
+  console.log(route.params.dataProp)
   const colorScheme = 'dark'
   const [datePickerVisibility, setDatePickerVisibility] = useState(false)
 
@@ -117,9 +118,9 @@ const EditEvent = ({route}) => {
 
       let dateString = ""
       let timeString = ""
-
+      
       // if user selects a different date
-      if (selectedDate != null) {
+      if (selectedDate) {
         let month = selectedDate.getMonth() + 1
         let currentDate = selectedDate.getDate()
         let year = selectedDate.getFullYear()
@@ -132,6 +133,7 @@ const EditEvent = ({route}) => {
         };
         timeString = selectedDate.toLocaleString('en-US', options);
       } else {
+        console.log("test")
         dateString = route.params.dataProp.dateString;
         timeString = route.params.dataProp.timeString;
       }
@@ -142,23 +144,24 @@ const EditEvent = ({route}) => {
   
       console.log("Date string is", dateString)
       console.log("Time string is", timeString)
-      // fetch(`http://${LOCAL_IP}:3000/events`, {
-      //   method: 'POST',
-      //   headers: {
-      //   'Content-Type': 'application/json', 
-      //   'Accept': 'application/json'},
-      //   body: JSON.stringify({
-      //     "event_name": eventName,
-      //     "sport_id": sportID,
-      //     "total_players": eventTotalPlayers,
-      //     "location": fullAddress,
-      //     "date": dateString,
-      //     "time": timeString,
-      //     "city": city,
-      //     "state": state,
-      //   })
-      // }).then((res) => {return res.json()})
-      // .then((data) => {if(data.status == 200) {navigation.navigate('MainPage')}})
+      fetch(`http://${LOCAL_IP}:3000/events/${route.params.dataProp.event_id}/update`, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json'},
+        body: JSON.stringify({
+          "event_name": eventName,
+          "sport_id": sportID,
+          "maximum_players": eventTotalPlayers,
+          "event_location": fullAddress,
+          "event_date": dateString,
+          "event_time": timeString,
+          "event_city": city,
+          "event_state": state,
+          "place_id": placeID,
+        })
+      }).then((res) => {return res.json()})
+      .then((data) => {if(data.status == 200) {navigation.navigate('MainPage')}})
 
     }
 

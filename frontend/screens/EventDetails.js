@@ -91,7 +91,8 @@ const EventDetails = ({route}) => {
       eventLocation: eventDetails.event_location,
       placeID: eventDetails.place_id,
       dateString: eventDetails.event_date,
-      timeString: eventDetails.event_time
+      timeString: eventDetails.event_time,
+      event_id: eventDetails.event_id
     }
     navigation.navigate('EditEvent', {dataProp})
   }

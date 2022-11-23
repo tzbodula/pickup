@@ -35,7 +35,10 @@ router.get('/', checkSession, (req, res) => {
     const startIndex = (page - 1) * limit
     const endIndex = page * limit
 
-    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+    const query = `SELECT event_id, 
+    event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players,
+    current_players, event_location, event_date, event_time, event_city, event_state, place_id
+    account_username, sports.sport_name FROM pickup_events
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id;
     `
@@ -83,7 +86,8 @@ router.delete('/:id',  checkSession, (req, res, next) => {
 });
 
 router.get('/:id',  checkSession, (req, res) => {
-    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, 
+    event_location, event_date, event_time, event_city, event_state, pickup_events.place_id, account_username, sports.sport_name FROM pickup_events
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id
     WHERE event_id = ?;`
@@ -167,11 +171,17 @@ router.put('/:id/update', checkSession, (req, res, next) => {
         req.body.event_location,
         req.body.event_date,
         req.body.event_time,
+        req.body.event_city,
+        req.body.event_state,
+        req.body.place_id,
         req.params.id
     ]
+
+    console.log(eventToUpdate)
     const updateQuery = `UPDATE pickup_events 
-    SET event_name = ?, sport_id = ?, maximum_players = ?, event_location = ?, event_date = ?, event_time = ?
-    WHERE event_id = ?`
+    SET event_name = ?, sport_id = ?, maximum_players = ?, event_location = ?, 
+    event_date = ?, event_time = ?, event_city = ?, event_state = ?, place_id = ?
+    WHERE event_id = ?;`
 
     db.query(updateQuery, eventToUpdate, (err, result) => {
 
