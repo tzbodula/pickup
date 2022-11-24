@@ -3,6 +3,12 @@ import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "re
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Icon } from "@rneui/themed";
 import {LOCAL_IP} from "@env";
+import {Storage} from "expo-storage";
+import { Card, Chip } from '@rneui/themed';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { AirbnbRating } from 'react-native-ratings';
+import {Button} from 'react-native';
 
 const EventDetails = ({route}) => {
   let margin = 0;
@@ -109,7 +115,28 @@ const EventDetails = ({route}) => {
             </SafeAreaView>
           )
         })}
+        <SafeAreaView style={styles.joinLeaveEventView}>
+        <SafeAreaView/>
+        {(() => {
+
+          if (eventDetails.account_id == account_id) {
+            return (
+              <SafeAreaView>
+                <Button title="EDIT EVENT"></Button>
+              </SafeAreaView>
+            );
+          }
+
+          if (checkIfPlayerInEvent()) {
+            return <Button title="Leave Event" onPress={leaveEvent}></Button> 
+          }
+          return <Button title="Join" onPress={joinEvent}></Button>
+        })()}
+      </SafeAreaView>
       </Card>
+
+      
+
     </SafeAreaView>
     <Header/>
 
@@ -133,20 +160,20 @@ const styles = StyleSheet.create({
   },
   eventName: {
     fontFamily: "GearUp",
-    fontSize: "32",
+    fontSize: 32,
     textAlign: "center",
     color: "#FFFFFF",
   },
   eventDateTime: {
     fontFamily: "GearUp",
-    fontSize: "16",
+    fontSize: 16,
     textAlign: "center",
     color: "#FFFFFF",
   },
   eventLocation: {
     marginTop: "4%",
     fontFamily: "GearUp",
-    fontSize: "16",
+    fontSize: 16,
     textAlign: "center",
     color: "#FFFFFF",
   },
