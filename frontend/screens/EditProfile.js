@@ -146,6 +146,21 @@ const EditProfile = ({route}) => {
       }).catch((e) => {console.log(e)}) 
   }
 
+// Dynamic fav sports icons
+// Needs to be updated if new sports are added
+  function getSportImage(sportName){
+    switch (sportName) {
+      case "Football":
+        return require('../assets/football-6.png');
+      case "Soccer":
+        return require('../assets/soccer-ball-1.png');
+      case "Basketball":
+        return require('../assets/basketball-1.png');
+      default:
+        return require('../assets/football-6.png');
+    }
+  }
+
 
   //console.log(favoriteSports)
   if(updatedUsername == null || updatedBio == null || favoriteSports == null || options == null) {
@@ -373,30 +388,28 @@ const EditProfile = ({route}) => {
           favoriteSports.map((sport) => {
             favoriteSportAdjustment = favoriteSportAdjustment + 10
             let topPercentage = favoriteSportAdjustment + "%"
-            
-            // Tried to change sport image dynamically but couldn't get it to work
-            //let sportName = "../assets/" + sport.sport_name + "-1.png"
-            //console.log(sportName)
+          
             return (
               <Card key={sport.sport_id} containerStyle={{top: topPercentage, position: "absolute", left: "1%", width: "90%", height: "8%"}}>
                 <Text style={{top: "7%", left: "15%", height: "300%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
                 <Image
                   style={{position: "absolute", height: "47%", width: "15%", top: "-5%", right: "87.21%", bottom: "81.89%", left: "-2.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
                   resizeMode="cover"
-                  source={require("../assets/ellipse-18.png")}
+                  source={require("../assets/ellipse-193.png")}
                 />
                 <Image
                   style={{position: "absolute", height: "35%", width: "10%", top: "0%", right: "90.21%", bottom: "81.89%", left: "-0.29%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
                   resizeMode="cover"
-                  source={require("../assets/football-1.png")}
+                  source={getSportImage(sport.sport_name)}
                 />
-                <Pressable style={{position: "absolute", height: "100%", width: "15%", top: "-15%", right: "0%", bottom: "65.02%", left: "86%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}} 
+                <Pressable style={{position: "absolute", height: "50%", width: "100%", right: "0%", bottom: "55%", left: "35%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%"}} 
                  onPress={() => {
                     removeFavSport(sport.sport_id)
                     deleteSport(sport.sport_id)
                   }}>
                   <Image
-                    resizeMode="cover" 
+                    style={{position: "absolute", height: "50%", width: "100%", top: "22.5%", left: "12.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%", alignItems: 'center', justifyContent: 'center'}}
+                    resizeMode="center"
                     source={require("../assets/vector13.png")}
                   />
                 </Pressable>
@@ -452,7 +465,7 @@ const EditProfile = ({route}) => {
         />
       </Card>
       {
-      <Picker style ={{width: "45%", left: "32%", top: "105%"}} selectedValue={Enable} mode={"dialog"} onValueChange={(itemValue) => setEnable(itemValue)}>
+      <Picker style ={{width: "45%", left: "32%", top: "105%"}} selectedValue={Enable} onValueChange={(itemValue) => setEnable(itemValue)}>
       {
         options.length
         ?

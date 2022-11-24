@@ -22,12 +22,10 @@ const ProfileUser = () => {
   const [bio, setBio] = useState("")
   const [email, setEmail] = useState("")
   const navigation = useNavigation();
+  let favoriteSportAdjustment = 35
+  let sportIconAdjustment = 34.75
+  let sportEllipseAdjustment = 33.75
 
-  useEffect(() => {
-    return () => {
-        favoriteSportAdjustment = 10.75
-    }
-}, [])
   const requestOnPageLoad = () => {
     console.log("")
     fetch(`http://${LOCAL_IP}:3000/user/`, {
@@ -56,6 +54,21 @@ const ProfileUser = () => {
       }).catch((e) => {console.log(e)})
     
   }
+
+// Dynamic fav sports icons
+// Needs to be updated if new sports are added
+function getSportImage(sportName){
+  switch (sportName) {
+    case "Football":
+      return require('../assets/football-6.png');
+    case "Soccer":
+      return require('../assets/soccer-ball-1.png');
+    case "Basketball":
+      return require('../assets/basketball-1.png');
+    default:
+      return require('../assets/football-6.png');
+  }
+}
 
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
   if(username == null || rating == null || gamesAttended == null || gamesJoined == null || bio == null) {
@@ -195,28 +208,6 @@ const ProfileUser = () => {
             source={require("../assets/vector31.png")}
           />
         </Pressable>
-        <Image
-          style={styles.ellipseIcon2}
-          resizeMode="cover"
-          source={require("../assets/ellipse-193.png")}
-        />
-        <Image
-          style={styles.ellipseIcon3}
-          resizeMode="cover"
-          source={require("../assets/ellipse-193.png")}
-        />
-
-        <Image
-          style={styles.basketball1Icon}
-          resizeMode="cover"
-          source={require("../assets/basketball-1.png")}
-        />
-        <Image
-          style={styles.football1Icon}
-          resizeMode="cover"
-          source={require("../assets/soccer-ball-1.png")}
-        />
-
 
         
        {/*  <Text style={styles.footballText}>Football</Text>
@@ -241,9 +232,58 @@ const ProfileUser = () => {
             favoriteSportAdjustment = favoriteSportAdjustment + 6
             let topPercentage = favoriteSportAdjustment + "%"
 
-            return <Text style={{position: "absolute", top: topPercentage, left: 70, fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
+            return (<Text style={{position: "absolute", top: topPercentage, left: "16%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text>
+            /**
+            <Image
+                  style={{position: "absolute", height: "5%", width: "8%", right: "50.21%", bottom: "81.89%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
+                  resizeMode="cover"
+                  source={getSportImage(sport.sport_name)}
+            />
+            */
+          );
         })
         }
+        
+        {
+        favoriteSports.map((sport, index) => {
+          sportEllipseAdjustment = sportEllipseAdjustment + 6
+            let topPercentage = sportEllipseAdjustment + "%"
+
+            return (
+              <Image
+              key={index + 10}
+              style={{position: "absolute",
+              top: topPercentage,
+              left: "4%",
+              width: 45,
+              height: 45,}}
+              resizeMode="cover"
+              source={require("../assets/ellipse-193.png")}
+            />
+          );
+        })
+        }
+
+        {
+        favoriteSports.map((sport, index) => {
+          sportIconAdjustment = sportIconAdjustment + 6
+            let topPercentage = sportIconAdjustment + "%"
+
+            return (
+            <Image
+              key={index+20}
+              style={{position: "absolute",
+              top: topPercentage,
+              left: "5.5%",
+              width: 32,
+              height: 30,}}
+              resizeMode="cover"
+              source={getSportImage(sport.sport_name)}
+            />
+          );
+        })
+        }
+        
         
         <SafeAreaView style={styles.lineView} />
       </SafeAreaView>

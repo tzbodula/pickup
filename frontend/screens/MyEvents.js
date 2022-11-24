@@ -9,8 +9,7 @@ import {
   Pressable,
   ImageBackground,
   FlatList,
-  ActivityIndicator,
-  TouchableOpacity
+  ActivityIndicator
 
 } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -27,7 +26,7 @@ import Header from '../components/Header';
 import Footer from "../components/Footer"
 
 let cardPosition = -16;
-const MainPage = () => {
+const MyEvents = () => {
   const navigation = useNavigation();
 
   const [currentEvents, setCurrentEvents] = useState([])
@@ -41,7 +40,7 @@ const MainPage = () => {
     cardPosition = -16
     setIsLoading(true)
     console.log("Attempting to get the ", currentPage, " page")
-    fetch(`http://${LOCAL_IP}:3000/events?page=${currentPage}&limit=10&mine=0`, {
+    fetch(`http://${LOCAL_IP}:3000/events?page=${currentPage}&limit=10&mine=1`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -65,28 +64,36 @@ const MainPage = () => {
   )
 
   const renderEvents = ({ item, index }) => {
-    console.log("Index is", index)
+    console.log("testing render")
     return (
       <SafeAreaView style={styles.cardWrapperStyle}>
-        <Pressable
-          onPress={() => navigation.navigate('EventDetails', {event_id: item.event_id})}
-        >
-          <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
+        <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
+          <Pressable
+            onPress={() => navigation.navigate("EventDetails", {event_id: item.event_id})}
+          >
+            <ImageBackground
+              style={styles.eventImage}
+              resizeMode="cover"
+              source={require("../assets/chestnut1.png")}
+            />
+          </Pressable>
 
-              <ImageBackground
-                style={styles.eventImage}
-                resizeMode="stretch"
-                source={item.sport_id == 1 ? require("../assets/soccer-banner.png") : item.sport_id == 2 ? require("../assets/football-banner.png") : item.sport_id == 3 ? require("../assets/basketball-banner.png") : require("../assets/chestnut1.png")}
-              />
-
-              <Text style={styles.eventTitle}>{item.event_name}</Text>
-              <Text style={styles.eventTime}>{item.event_time}</Text>
-              <Text style={styles.eventLocation}>{item.event_city + ", " + item.event_state} </Text>
-              <Text style={styles.eventHostName}>{item.account_username}</Text>
-              <Text style={styles.eventDate}>{item.event_date}</Text>
-              <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
-          </Card>
-        </Pressable>
+          <Pressable
+            style={styles.rectanglePressable}
+            onPress={() => navigation.navigate("EventDetails", {event_id: item.event_id})}
+          />
+          <Text style={styles.eventTitle}>{item.event_name}</Text>
+          <Text style={styles.eventTime}>{item.event_time}</Text>
+          <Text style={styles.eventLocation}>{item.event_city + "," + item.event_state} </Text>
+          <Text style={styles.eventHostName}>{item.account_username}</Text>
+          <Text style={styles.eventDate}>{item.event_date}</Text>
+          <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
+          <ImageBackground
+            style={styles.crownIcon}
+            resizeMode="cover"
+            source={require("../assets/crown1.png")}
+          />
+        </Card>
       </SafeAreaView>
 
     )
@@ -270,19 +277,19 @@ const MainPage = () => {
 
         <FlatList
           data={currentEvents}
-          renderItem={(item, index) => renderEvents(item, index)}
+          renderItem={renderEvents}
           keyExtractor={item => item.event_id}
           ItemSeparatorComponent={() => <View style={{ height: 110 }} />}
           onEndReached={loadMoreItem}
           ListFooterComponent={renderLoader}
-          ListFooterComponentStyle={{borderColor: "#BE4025", borderBottomWidth: 4,}}
-          ListHeaderComponentStyle={{borderColor: "#BE4025", borderTopWidth: 4,}}
+          ListFooterComponentStyle={{borderColor: "#BE4025", borderTopWidth: 4,}}
+
         ></FlatList>
 
         {/*  End of displaying the event data */}
         <Header/>
         {/*  Footer */}
-        <Footer pageID={0} />
+        <Footer pageID={2} />
 
       </SafeAreaView>
     );
@@ -401,8 +408,8 @@ const styles = StyleSheet.create({
     top: 140,
     left: "28%",
     textAlign: 'center',
-    paddingTop: "7%",
-    fontSize: 18,
+    paddingTop: 17,
+    fontSize: 24,
     lineHeight: 14,
     fontFamily: "GearUp",
     color: "#fff",
@@ -546,12 +553,12 @@ const styles = StyleSheet.create({
   eventHostName: {
     position: "absolute",
     top: 216,
-    left: "56%",
+    left: 268,
     fontSize: 10,
     lineHeight: 14,
     fontFamily: "GearUp",
     color: "#80ced7",
-    textAlign: "right",
+    textAlign: "left",
     width: 180,
     height: 25,
   },
@@ -633,7 +640,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     paddingTop: 6,
     top: 166,
-    left: "40.75%",
+    left: 150,
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -815,7 +822,7 @@ const styles = StyleSheet.create({
   mainPageView: {
     top: 0,
     position: "relative",
-    backgroundColor: "#040C12",
+    backgroundColor: "#fff",
     flex: 1,
     width: "100%",
     height: 812,
@@ -823,4 +830,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainPage;
+export default MyEvents;

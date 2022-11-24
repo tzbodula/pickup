@@ -9,7 +9,7 @@ const router = Router();
 
 
 // Sends back list of events filtered by the sport entered in as query parameter
-router.get('/sport',  (req, res) => {
+router.get('/sport',  checkSession, (req, res) => {
     
     const query = `SELECT * FROM pickup_events WHERE sport_id = ? ;`
     db.query(query, [req.query.sport_id], (err, result) => {
@@ -27,27 +27,42 @@ router.get('/sport',  (req, res) => {
 
 });
 
-router.get('/',  (req, res) => {
+router.get('/', checkSession, (req, res) => {
 
     const page = req.query.page
     const limit = req.query.limit
-    
+    const mine = req.query.mine
+
     const startIndex = (page - 1) * limit
     const endIndex = page * limit
 
-    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+    let query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id;
     `
-    if(page != undefined && limit !=undefined) { //There's a page and limit specified, so let's filter our events.
-        db.query(query, [req.params.id], (err, result) => {
+    if(page != undefined && limit !=undefined && mine != undefined) { //There's a page and limit specified, so let's filter our events.
+        if(mine == 1){
+            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+            JOIN accounts ON pickup_events.account_id = accounts.account_id
+            JOIN sports ON pickup_events.sport_id = sports.sport_id
+            WHERE pickup_events.account_id = ?;
+            `
+        }
+        db.query(query, [req.session.account_id], (err, result) => {
             if (err) {
                 //handle errors
             }
             return res.status(200).send({data: result.slice(startIndex, endIndex), status: 200});
         });
     } else { //There's no filter specified, so return all events
-        db.query(query, [req.params.id], (err, result) => {
+        if(mine == 1){
+            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+            JOIN accounts ON pickup_events.account_id = accounts.account_id
+            JOIN sports ON pickup_events.sport_id = sports.sport_id
+            WHERE pickup_events.account_id = ?;
+            `
+        }
+        db.query(query, [req.session.account_id], (err, result) => {
             if (err) {
                 //handle errors
             }
@@ -60,35 +75,33 @@ router.get('/',  (req, res) => {
 
 
 // Event deletion
-router.delete('/:id',  (req, res) => {
+router.delete('/:id',  checkSession, (req, res, next) => {
 
-    // Validate
     const query = `SELECT * FROM pickup_events WHERE event_id = ?`
-
-    if (!req.session.account_id) {
-        return res.status(401).json({message: "unauthorized to make a delete", status: 401})
-    }
-
     db.query(query, [req.params.id], (err, result) => {
         // Make sure that the user requesting this deletion is the actual logged in user
         if (result === undefined || result.length == 0 || result[0].account_id != req.session.account_id) {
             return res.status(401).json({message: "unauthorized to make a delete", status: 401})
         }
-
-        const query = `DELETE FROM pickup_events WHERE event_id = ?`
-        db.query(query, [req.params.id], (err, result) => {
-            console.log(result)
-            if (result === undefined || result.length == 0) {
-                return res.status(400).send({message:"Error. Event cannot be found.", status: 400})
-            }
-            return res.status(200).send({message: "Event deleted.",status: 200});
-        });
+        next();
     })
     
+}, (req, res) => {
+    const query = `DELETE FROM pickup_events WHERE event_id = ?`
+    db.query(query, [req.params.id], (err, result) => {
+        console.log(result)
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send({message:"Error. Event cannot be found.", status: 400})
+        }
+        return res.status(200).send({message: "Event deleted.",status: 200});
+    });
 });
 
-router.get('/:id',  (req, res) => {
-    const query = `SELECT * FROM pickup_events WHERE event_id = ? ;`
+router.get('/:id',  checkSession, (req, res) => {
+    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+    JOIN accounts ON pickup_events.account_id = accounts.account_id
+    JOIN sports ON pickup_events.sport_id = sports.sport_id
+    WHERE event_id = ?;`
     db.query(query, [req.params.id], (err, result) => {
         //handle any errors
 
@@ -103,7 +116,7 @@ router.get('/:id',  (req, res) => {
 /**
  * This post route creates an event based on the currently logged in user
  */
-router.post('/',  (req, res) => {
+router.post('/',  checkSession, (req, res, next) => {
     const eventToAdd = [
         req.body.event_name,
         req.session.account_id, //This will always be the current session account_id
@@ -124,24 +137,23 @@ router.post('/',  (req, res) => {
     
     db.query(insertStatement, eventToAdd, (err, result) => {
         const event_id = result.insertId;
-        const insertStatement =  
-        `
-        INSERT INTO player_event
-            (account_id, event_id, is_leader)
-            VALUES (?, ?, ?);
-        `;
-    
-        db.query(insertStatement, [req.session.account_id, event_id, true], (err, result) => {
-            if (err) {
-                console.log(err)
-            }
-            return res.status(200).send({message: 'User has been added to the event!', status: 200});
-        });
+        res.locals.event_id = event_id;
+        next();
     })
     
-})
+}, (req, res) => {
+    console.log(res.locals.event_id)
+    const insertStatement =  `INSERT INTO player_event (account_id, event_id, is_leader) VALUES (?, ?, ?);`;
+    db.query(insertStatement, [req.session.account_id, res.locals.event_id, true], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        return res.status(200).send({message: 'User has been added to the event!', status: 200});
+    });
+}
+);
 
-router.put('/:id/update', (req, res) => {
+router.put('/:id/update', checkSession, (req, res, next) => {
 
     const query = `SELECT * FROM pickup_events WHERE event_id = ?`
     db.query(query, req.params.id, (err, result) => {
@@ -157,27 +169,31 @@ router.put('/:id/update', (req, res) => {
             return res.status(401).send({message:"Unauthorized", status:401})
         }
         
-        const eventToUpdate = [
-            req.body.event_name,
-            req.body.sport_id,
-            req.body.maximum_players,
-            req.body.event_location,
-            req.body.event_date,
-            req.body.event_time,
-            req.params.id
-        ]
-        const updateQuery = `UPDATE pickup_events 
-        SET event_name = ?, sport_id = ?, maximum_players = ?, event_location = ?, event_date = ?, event_time = ?
-        WHERE event_id = ?`
-
-        db.query(updateQuery, eventToUpdate, (err, result) => {
-
-            if (err) {
-                console.log(err)
-            }
-
-            return res.status(200).send({message:"Updated successfully", status:200})
-        })
+        next();
     })
-})
+}, (req, res) => {
+    const eventToUpdate = [
+        req.body.event_name,
+        req.body.sport_id,
+        req.body.maximum_players,
+        req.body.event_location,
+        req.body.event_date,
+        req.body.event_time,
+        req.params.id
+    ]
+    const updateQuery = `UPDATE pickup_events 
+    SET event_name = ?, sport_id = ?, maximum_players = ?, event_location = ?, event_date = ?, event_time = ?
+    WHERE event_id = ?`
+
+    db.query(updateQuery, eventToUpdate, (err, result) => {
+
+        if (err) {
+            console.log(err)
+        }
+
+        return res.status(200).send({message:"Updated successfully", status:200})
+    })
+} 
+
+);
 module.exports = router;
