@@ -36,6 +36,7 @@ const EventDetails = ({route}) => {
     console.log("made api request");
     // This makes sure that useFocusEffect() only calls this method once.
       getCurrentAccountId();
+      console.log("Route is", route)
       fetch(`http://${LOCAL_IP}:3000/events/${route.params.event_id}`)
       .then((res) => {return res.json()})
       .then((data) => {

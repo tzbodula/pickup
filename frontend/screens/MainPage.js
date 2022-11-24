@@ -10,18 +10,21 @@ import {
   ImageBackground,
   FlatList,
   ActivityIndicator,
-  TouchableOpacity
 
 } from "react-native";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation, useFocusEffect} from "@react-navigation/native";
 
 import { StatusBar } from 'expo-status-bar';
 
 import React, { useState, useEffect } from 'react'
 
+import { TouchableOpacity } from 'react-native';
+
 import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
-import { Card } from "@rneui/themed";
+import { Card, Chip } from "@rneui/themed";
+
+import { pure } from 'recompose';
 
 import Header from '../components/Header';
 import Footer from "../components/Footer"
@@ -37,8 +40,6 @@ const MainPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const requestOnPageLoad = () => {
-    console.log("Request on page load called")
-    cardPosition = -16
     setIsLoading(true)
     console.log("Attempting to get the ", currentPage, " page")
     fetch(`http://${LOCAL_IP}:3000/events?page=${currentPage}&limit=10&mine=0`, {
@@ -64,29 +65,29 @@ const MainPage = () => {
     React.useCallback(requestOnPageLoad, [currentPage])
   )
 
-  const renderEvents = ({ item, index }) => {
-    console.log("Index is", index)
+  const renderEvents = ({ item }) => {
     return (
       <SafeAreaView style={styles.cardWrapperStyle}>
-        <Pressable
-          onPress={() => navigation.navigate('EventDetails', {event_id: item.event_id})}
-        >
-          <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
+   
+            <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
+                    <Pressable onPress={() => navigation.navigate("EventDetails", {event_id: item.event_id})} style={styles.eventPressable}>
+    
+                        <ImageBackground
+                          style={styles.eventImage}
+                          resizeMode="stretch"
+                          source={item.sport_id == 1 ? require("../assets/soccer-banner.png") : item.sport_id == 2 ? require("../assets/football-banner.png") : item.sport_id == 3 ? require("../assets/basketball-banner.png") : require("../assets/chestnut1.png")}
+                        >
+                        </ImageBackground>
 
-              <ImageBackground
-                style={styles.eventImage}
-                resizeMode="stretch"
-                source={item.sport_id == 1 ? require("../assets/soccer-banner.png") : item.sport_id == 2 ? require("../assets/football-banner.png") : item.sport_id == 3 ? require("../assets/basketball-banner.png") : require("../assets/chestnut1.png")}
-              />
-
-              <Text style={styles.eventTitle}>{item.event_name}</Text>
-              <Text style={styles.eventTime}>{item.event_time}</Text>
-              <Text style={styles.eventLocation}>{item.event_city + ", " + item.event_state} </Text>
-              <Text style={styles.eventHostName}>{item.account_username}</Text>
-              <Text style={styles.eventDate}>{item.event_date}</Text>
-              <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
-          </Card>
-        </Pressable>
+                    </Pressable>
+                    <Text style={styles.eventTitle}>{item.event_name}</Text>
+                    <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
+                    <Text style={styles.eventTime}>{item.event_time}</Text>
+                    <Text style={styles.eventLocation}>{item.event_city + ", " + item.event_state} </Text>
+                    <Text style={styles.eventHostName}>{item.account_username}</Text>
+                    <Text style={styles.eventDate}>{item.event_date}</Text>
+            </Card>
+     
       </SafeAreaView>
 
     )
@@ -106,187 +107,24 @@ const MainPage = () => {
     console.log("Loading more!")
   }
 
-  if (currentEvents == null) {
-    return (
-      <SafeAreaView style={styles.mainPageView} >
-      <StatusBar
-        animated={true}
-        backgroundColor="#61dafb"
-        barStyle="dark-content"
-        showHideTransition="fade"
-        hidden={false} />
-      <SafeAreaView style={styles.footerView}>
-        <Pressable
-          style={styles.singleTabPressable}
-          onPress={() => navigation.navigate("ProfileUser")}
-        >
-          <SafeAreaView style={styles.iconAndText}>
-            <Image
-              style={styles.homeIcon}
-              resizeMode="cover"
-              source={require("../assets/home7.png")}
-            />
-            <Text style={[styles.text, styles.mt2]}>Account</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable1}
-          onPress={() => navigation.navigate("Friends")}
-        >
-          <SafeAreaView style={styles.iconAndText1}>
-            <Image
-              style={styles.userIcon}
-              resizeMode="cover"
-              source={require("../assets/user.png")}
-            />
-            <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable2}
-          onPress={() => navigation.navigate("Map")}
-        >
-          <SafeAreaView style={styles.iconAndText2}>
-            <Image
-              style={styles.compassIcon}
-              resizeMode="cover"
-              source={require("../assets/compass.png")}
-            />
-            <Text style={[styles.text2, styles.mt2]}>Map</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.framePressable}
-          onPress={() => navigation.navigate("CreateEvent")}
-        >
-          <Image
-            style={styles.addEventCircle}
-            resizeMode="cover"
-            source={require("../assets/ellipse-1.png")}
-          />
-          <Image style={styles.addEventPlus}>+</Image>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable3}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <SafeAreaView style={styles.iconAndText3}>
-            <Image
-              style={styles.searchIcon}
-              resizeMode="cover"
-              source={require("../assets/search.png")}
-            />
-            <Text style={[styles.text4, styles.mt2]}>Events</Text>
-          </SafeAreaView>
-        </Pressable>
-      </SafeAreaView>
-      <SafeAreaView style={styles.rectangleView} />
-      <Image
-        style={styles.ellipseIcon1}
-        resizeMode="cover"
-        source={require("../assets/ellipse-18.png")}
-      />
-      <Image
-        style={styles.ellipseIcon2}
-        resizeMode="cover"
-        source={require("../assets/ellipse-19.png")}
-      />
-      <Pressable
-        style={styles.ellipsePressable}
-        onPress={() => navigation.navigate("MainPageSoccer1")}
-      >
-        <Image
-          style={styles.icon}
-          resizeMode="cover"
-          source={require("../assets/ellipse-20.png")}
-        />
-      </Pressable>
-      <Image
-        style={styles.ellipseIcon3}
-        resizeMode="cover"
-        source={require("../assets/ellipse-19.png")}
-      />
-      <Image
-        style={styles.ellipseIcon4}
-        resizeMode="cover"
-        source={require("../assets/ellipse-22.png")}
-      />
-      <Pressable
-        style={styles.vectorPressable}
-        onPress={() => navigation.navigate("MainPage")}
-      >
-        <Image
-          style={styles.icon1}
-          resizeMode="cover"
-          source={require("../assets/vector.png")}
-        />
-      </Pressable>
+  return (
+    <SafeAreaView style={styles.mainPageView} >
 
-      <Text>Loading</Text>
+      <FlatList
+        data={currentEvents}
+        renderItem={(item) => renderEvents(item)}
+        keyExtractor={item => item.event_id}
+        ItemSeparatorComponent={() => <SafeAreaView/>}
+      ></FlatList>
 
-      <Image
-        style={styles.sportIcon}
-        resizeMode="cover"
-        source={require("../assets/football-1.png")}
-      />
-      <Image
-        style={styles.basketball1Icon}
-        resizeMode="cover"
-        source={require("../assets/basketball-1.png")}
-      />
-      <Image
-        style={styles.soccerBall1}
-        resizeMode="cover"
-        source={require("../assets/soccer-ball-1.png")}
-      />
-      <Image
-        style={styles.tennisRacket1}
-        resizeMode="cover"
-        source={require("../assets/tennis-racket-1.png")}
-      />
+      {/*  End of displaying the event data */}
+      <Header/>
+      {/*  Footer */}
+      <Footer pageID={0} />
 
-      <SafeAreaView style={styles.changeMilesView}>
-        <Text style={styles.mILESMAXText}>30 MILES MAX</Text>
-        <SafeAreaView style={styles.rectangleView1} />
-        <Image
-          style={styles.vectorIcon}
-          resizeMode="cover"
-          source={require("../assets/vector1.png")}
-        />
-        <SafeAreaView style={styles.rectangleView2} />
-        <Image
-          style={styles.vectorIcon1}
-          resizeMode="cover"
-          source={require("../assets/vector2.png")}
-        />
-      </SafeAreaView>
     </SafeAreaView>
-    )
-    
-  } else {
-    console.log("asd", currentEvents)
-    return (
-      <SafeAreaView style={styles.mainPageView} >
-
-        <FlatList
-          data={currentEvents}
-          renderItem={(item, index) => renderEvents(item, index)}
-          keyExtractor={item => item.event_id}
-          ItemSeparatorComponent={() => <View style={{ height: 110 }} />}
-          onEndReached={loadMoreItem}
-          ListFooterComponent={renderLoader}
-          ListFooterComponentStyle={{borderColor: "#BE4025", borderBottomWidth: 4,}}
-          ListHeaderComponentStyle={{borderColor: "#BE4025", borderTopWidth: 4,}}
-        ></FlatList>
-
-        {/*  End of displaying the event data */}
-        <Header/>
-        {/*  Footer */}
-        <Footer pageID={0} />
-
-      </SafeAreaView>
-    );
-  }
+  );
+  
 };
 
 const styles = StyleSheet.create({
@@ -294,21 +132,13 @@ const styles = StyleSheet.create({
 
 
   headerText: {
-    borderWidth: 2,
-    borderColor: "#E23418",
     color: "#000000",
   },
 
   cardWrapperStyle: {
     marginTop: "-5%",
-    marginBottom: "5%"
+    marginBottom: "35%",
   },
-
-
-
-
-
-
 
   ellipseIcon1: {
     position: "absolute",
@@ -362,12 +192,25 @@ const styles = StyleSheet.create({
     bottom: "95.69%",
   },
   eventImage: {
+    zIndex: -1,
     position: "absolute",
-    top: 99,
-    left: 10,
+    top: "45%",
+    left: "-17%",
     width: Dimensions.get('window').width * .95,
     height: 139,
   },
+  eventPressable: {
+    zIndex: 0.5,
+    position: "absolute",
+    top: 80,
+    borderWidth: 2,
+    borderColor: "#FF0000",
+    left: "15%",
+    textAlign: 'center',
+    paddingTop: "7%",
+    width: 300,
+    height: 55,
+},
   rectanglePressable: {
     position: "absolute",
     top: 108,
@@ -396,6 +239,7 @@ const styles = StyleSheet.create({
     width: 346,
     height: 126,
   },
+
   eventTitle: {
     position: "absolute",
     top: 140,
