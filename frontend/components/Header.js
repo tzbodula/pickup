@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
       },
       headerImageView: {
         position: "absolute",
-        top: "2.5%",
+        top: "-3%",
         left: "18%",
       },
 })

@@ -91,6 +91,8 @@ const EventDetails = ({route}) => {
     return null
   } else {
     return (
+      <>
+   
       <SafeAreaView style={styles.eventDetailsView}>
       <SafeAreaView style={styles.eventContent}>
         <Text style={styles.eventName}>{eventDetails.event_name}</Text>
@@ -139,10 +141,12 @@ const EventDetails = ({route}) => {
         
 
       </SafeAreaView>
+
+      </SafeAreaView>
       <Header/>
 
       <Footer pageID={0 } />
-      </SafeAreaView>
+      </>
     );
 }
 };
