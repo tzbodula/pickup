@@ -102,6 +102,7 @@ router.get('/:id',  checkSession, (req, res) => {
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id
     WHERE event_id = ?;`
+    console.log("Passed ID of ", req.params.id)
     db.query(query, [req.params.id], (err, result) => {
         //handle any errors
 

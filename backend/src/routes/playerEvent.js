@@ -78,7 +78,7 @@ router.delete('/:event_id/leave', checkSession, (req, res, next) => {
 
 router.get('/:event_id/players', checkSession, (req, res) => {
 
-    const query = `SELECT accounts.account_id, accounts.account_username, accounts.games_joined, accounts.games_attended, is_leader FROM player_event 
+    const query = `SELECT accounts.account_id, accounts.account_username, accounts.games_joined, accounts.rating, accounts.games_attended, is_leader FROM player_event 
     JOIN accounts ON player_event.account_id = accounts.account_id 
     WHERE event_id = ? ;`
 
