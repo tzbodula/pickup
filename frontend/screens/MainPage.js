@@ -25,8 +25,6 @@ import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import { Tile } from "@rneui/themed";
 
-import { pure } from 'recompose';
-
 import Header from '../components/Header';
 import Footer from "../components/Footer"
 import { BackgroundImage } from '@rneui/base';

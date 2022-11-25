@@ -183,20 +183,20 @@ const styles = StyleSheet.create({
   },
   eventName: {
     fontFamily: "GearUp",
-    fontSize: "32",
+    fontSize: 32,
     textAlign: "center",
     color: "#FFFFFF",
   },
   eventDateTime: {
     fontFamily: "GearUp",
-    fontSize: "16",
+    fontSize: 16,
     textAlign: "center",
     color: "#FFFFFF",
   },
   eventLocation: {
     marginTop: "4%",
     fontFamily: "GearUp",
-    fontSize: "16",
+    fontSize: 16,
     textAlign: "center",
     color: "#FFFFFF",
   },

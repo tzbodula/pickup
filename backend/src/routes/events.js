@@ -45,7 +45,7 @@ router.get('/', checkSession, (req, res) => {
     `
     if(page != undefined && limit !=undefined && mine != undefined) { //There's a page and limit specified, so let's filter our events.
         if(mine == 1){
-            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+            query = `SELECT event_id, event_name, pickup_events.place_id, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
             JOIN accounts ON pickup_events.account_id = accounts.account_id
             JOIN sports ON pickup_events.sport_id = sports.sport_id
             WHERE pickup_events.account_id = ?;
@@ -59,7 +59,7 @@ router.get('/', checkSession, (req, res) => {
         });
     } else { //There's no filter specified, so return all events
         if(mine == 1){
-            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+            query = `SELECT event_id, event_name, pickup_events.place_id, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
             JOIN accounts ON pickup_events.account_id = accounts.account_id
             JOIN sports ON pickup_events.sport_id = sports.sport_id
             WHERE pickup_events.account_id = ?;
