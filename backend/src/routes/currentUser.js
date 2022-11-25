@@ -113,7 +113,7 @@ router.delete('/', (req, res)=>{
     }
     db.query(query, req.session.account_id, (err, result) => {
         req.session.destroy();
-        return res.status(200).send({message: [usr] + 'account deleted', status: 200})
+        return res.status(200).send({message:'account deleted', status: 200})
     })
 })
 
