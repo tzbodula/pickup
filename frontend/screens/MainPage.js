@@ -25,13 +25,37 @@ import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import { Tile } from "@rneui/themed";
 
-import { pure } from 'recompose';
-
 import Header from '../components/Header';
 import Footer from "../components/Footer"
 import { BackgroundImage } from '@rneui/base';
 
 let cardPosition = -16;
+const MyComponent = ({item}) => {
+  const navigation = useNavigation();
+  return (
+    <SafeAreaView style={styles.cardWrapperStyle}>
+      <Pressable
+        onPress={() => navigation.navigate('EventDetails', {event_id: item.event_id})}
+      >
+        <Card containerStyle={{ marginLeft: "-3.6%", backgroundColor: 'rgba(52, 52, 52, 0)', borderWidth: 0 }}>
+
+            <ImageBackground
+              style={styles.eventImage}
+              resizeMode="stretch"
+              source={item.sport_id == 1 ? require("../assets/soccer-banner.png") : item.sport_id == 2 ? require("../assets/football-banner.png") : item.sport_id == 3 ? require("../assets/basketball-banner.png") : require("../assets/chestnut1.png")}
+            />
+
+            <Text style={styles.eventTitle}>{item.event_name}</Text>
+            <Text style={styles.eventTime}>{item.event_time}</Text>
+            <Text style={styles.eventLocation}>{item.event_city + ", " + item.event_state} </Text>
+            <Text style={styles.eventHostName}>{item.account_username}</Text>
+            <Text style={styles.eventDate}>{item.event_date}</Text>
+            <Text style={styles.eventPlayerCount}>{item.current_players}/{item.maximum_players} PLAYERS</Text>
+        </Card>
+      </Pressable>
+    </SafeAreaView>
+  )
+}
 const MainPage = () => {
   const navigation = useNavigation();
 
@@ -39,7 +63,7 @@ const MainPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const requestOnPageLoad = () => {
     setIsLoading(true)
@@ -52,19 +76,15 @@ const MainPage = () => {
     }).then((res) => { return res.json() })
       .then((retrieved) => {
         if (retrieved.status == 200) {
-          console.log("Retrieved Data is", retrieved.data)
           setCurrentEvents(retrieved.data)
           setIsLoading(false)
         }
       }).catch((e) => console.log(e))
-      .then(
-        fetch
-      )
-    console.log("Loading Status: ", isLoading)
+
   }
 
   useFocusEffect(
-    React.useCallback(requestOnPageLoad, [currentPage])
+    React.useCallback(requestOnPageLoad, [])
   )
 
   const renderEvents = ({ item }) => {
@@ -102,7 +122,6 @@ const MainPage = () => {
 
   const loadMoreItem = () => {
     // setCurrentPage(currentPage + 1) <- ERROR: This causes the app to bug out, calling useFocusEffect 4 times and swapping pages too fast
-    console.log("Loading more!")
   }
 
   return (
@@ -132,6 +151,8 @@ const MainPage = () => {
 const styles = StyleSheet.create({
 
   cardWrapperStyle: {
+    borderWidth: 2,
+borderColor: "#FF000",
     marginTop: "-5%",
     marginLeft: "2.5%",
     marginBottom: "10%",

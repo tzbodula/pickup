@@ -35,7 +35,6 @@ const Login = () => {
   }
 
   const handleSubmit = () => {
-    console.log("Attempting to login from the frontend!")
     fetch(`http://${LOCAL_IP}:3000/user/login`, {
       method: 'POST',
       headers: {

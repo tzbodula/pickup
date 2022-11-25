@@ -36,8 +36,7 @@
     "react-native-web": "~0.18.7",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
-    "react-query": "^3.39.2",
-    "recompose": "^0.30.0"
+    "react-query": "^3.39.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

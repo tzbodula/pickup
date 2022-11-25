@@ -36,32 +36,21 @@ router.get('/', checkSession, (req, res) => {
     const startIndex = (page - 1) * limit
     const endIndex = page * limit
 
-    let query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+    const query = `SELECT event_id, 
+    event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players,
+    current_players, event_location, event_date, event_time, event_city, event_state, place_id
+    account_username, sports.sport_name FROM pickup_events
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id;
     `
-    if(page != undefined && limit !=undefined && mine != undefined) { //There's a page and limit specified, so let's filter our events.
-        if(mine == 1){
-            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
-            JOIN accounts ON pickup_events.account_id = accounts.account_id
-            JOIN sports ON pickup_events.sport_id = sports.sport_id
-            WHERE pickup_events.account_id = ?;
-            `
-        }
+    if(page != undefined && limit !=undefined) { //There's a page and limit specified, so let's filter our events.
         db.query(query, [req.session.account_id], (err, result) => {
             if (err) {
                 //handle errors
             }
             return res.status(200).send({data: result.slice(startIndex, endIndex), status: 200});
         });
-    } else { //There's no filter specified, so return all events
-        if(mine == 1){
-            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
-            JOIN accounts ON pickup_events.account_id = accounts.account_id
-            JOIN sports ON pickup_events.sport_id = sports.sport_id
-            WHERE pickup_events.account_id = ?;
-            `
-        }
+    } else {
         db.query(query, [req.session.account_id], (err, result) => {
             if (err) {
                 //handle errors
@@ -69,8 +58,6 @@ router.get('/', checkSession, (req, res) => {
             return res.status(200).send({data: result, status: 200});
         });
     }
-
-
 });
 
 
@@ -98,7 +85,8 @@ router.delete('/:id',  checkSession, (req, res, next) => {
 });
 
 router.get('/:id',  checkSession, (req, res) => {
-    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+    const query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, 
+    event_location, event_date, event_time, event_city, event_state, pickup_events.place_id, account_username, sports.sport_name FROM pickup_events
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id
     WHERE event_id = ?;`
@@ -129,12 +117,15 @@ router.post('/',  checkSession, (req, res, next) => {
         req.body.city,
         req.body.state,
         1, //always at least 1
+        req.body.place_id
     ];
+
+    console.log(eventToAdd)
     
     const insertStatement =
         `INSERT INTO pickup_events
-            (event_name, account_id, sport_id, maximum_players, event_date, event_time, event_location, event_city, event_state, current_players)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;`;
+            (event_name, account_id, sport_id, maximum_players, event_date, event_time, event_location, event_city, event_state, current_players, place_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;`;
     
     db.query(insertStatement, eventToAdd, (err, result) => {
         const event_id = result.insertId;
@@ -180,11 +171,17 @@ router.put('/:id/update', checkSession, (req, res, next) => {
         req.body.event_location,
         req.body.event_date,
         req.body.event_time,
+        req.body.event_city,
+        req.body.event_state,
+        req.body.place_id,
         req.params.id
     ]
+
+    console.log(eventToUpdate)
     const updateQuery = `UPDATE pickup_events 
-    SET event_name = ?, sport_id = ?, maximum_players = ?, event_location = ?, event_date = ?, event_time = ?
-    WHERE event_id = ?`
+    SET event_name = ?, sport_id = ?, maximum_players = ?, event_location = ?, 
+    event_date = ?, event_time = ?, event_city = ?, event_state = ?, place_id = ?
+    WHERE event_id = ?;`
 
     db.query(updateQuery, eventToUpdate, (err, result) => {
 

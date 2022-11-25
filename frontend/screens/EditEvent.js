@@ -9,25 +9,23 @@ import { Input } from '@rneui/themed';
 import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
-console.log("API KEY IS ", GOOGLE_PLACES_API_KEY)
-const CreateEvent = () => {
-  const colorScheme = 'dark'
 
+const EditEvent = ({route}) => {
+  console.log(route.params.dataProp)
+  const colorScheme = 'dark'
   const [datePickerVisibility, setDatePickerVisibility] = useState(false)
 
   const [selectedDateLabel, setSelectedDateLabel] = useState("SELECT DATE AND TIME")
 
   const sports = ["Soccer", "Football", "Basketball"]
 
-  const [eventName, setEventName] = useState("Your Event Name")
+  const [eventName, setEventName] = useState(route.params.dataProp.eventName)
 
+  const [eventSport, setEventSport] = useState(route.params.dataProp.eventSport)
 
+  const [eventTotalPlayers, setEventTotalPlayers] = useState(route.params.dataProp.eventTotalPlayers)
 
-  const [eventSport, setEventSport] = useState("No Sport Selected")
-
-  const [eventTotalPlayers, setEventTotalPlayers] = useState("1")
-
-  const [placeID, setPlaceID] = useState("No Location Selected")
+  const [placeID, setPlaceID] = useState(route.params.dataProp.placeID)
 
   const [buttonMessage, setButtonMessage] = useState("Create Event")
 
@@ -37,7 +35,7 @@ const CreateEvent = () => {
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   useEffect(() => {
-    ref.current?.setAddressText('UREC');
+    ref.current?.setAddressText(route.params.dataProp.eventLocation);
   }, []);
 
   const onChange = (event, selectedDate) => {
@@ -85,7 +83,7 @@ const CreateEvent = () => {
   handleCreateEvent = async () => {
     console.log("")
     //Do any of the fields still have their default values?
-    if (eventName == "Your Event Name" || eventSport == "No Sport Selected" || eventTotalPlayers == "1" || placeID == "No Location Selected" || selectedDate == null) {
+    if (eventName == "Your Event Name" || eventSport == "No Sport Selected" || eventTotalPlayers == "1" || placeID == "No Location Selected") {
       setButtonMessage("FILL OUT ALL FIELDS!")
       await delay(3000)
       setButtonMessage("CREATE EVENT")
@@ -118,37 +116,49 @@ const CreateEvent = () => {
         sportID = 3
       }
 
-      let month = selectedDate.getMonth() + 1
-      let currentDate = selectedDate.getDate()
-      let year = selectedDate.getFullYear()
+      let dateString = ""
+      let timeString = ""
+      
+      // if user selects a different date
+      if (selectedDate) {
+        let month = selectedDate.getMonth() + 1
+        let currentDate = selectedDate.getDate()
+        let year = selectedDate.getFullYear()
+        dateString = month + "/" + currentDate + "/" + year
   
-      let dateString = month + "/" + currentDate + "/" + year
+        var options = {
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: true
+        };
+        timeString = selectedDate.toLocaleString('en-US', options);
+      } else {
+        console.log("test")
+        dateString = route.params.dataProp.dateString;
+        timeString = route.params.dataProp.timeString;
+      }
+      console.log("TESTING")
+      console.log(dateString)
+      console.log(timeString)
+      
   
-      var options = {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-      };
-      var timeString = selectedDate.toLocaleString('en-US', options);
-
-      console.log("place id is ", placeID)
       console.log("Date string is", dateString)
       console.log("Time string is", timeString)
-      fetch(`http://${LOCAL_IP}:3000/events`, {
-        method: 'POST',
+      fetch(`http://${LOCAL_IP}:3000/events/${route.params.dataProp.event_id}/update`, {
+        method: 'PUT',
         headers: {
         'Content-Type': 'application/json', 
         'Accept': 'application/json'},
         body: JSON.stringify({
           "event_name": eventName,
           "sport_id": sportID,
-          "total_players": eventTotalPlayers,
-          "location": fullAddress,
-          "date": dateString,
-          "time": timeString,
-          "city": city,
-          "state": state,
-          "place_id": placeID
+          "maximum_players": eventTotalPlayers,
+          "event_location": fullAddress,
+          "event_date": dateString,
+          "event_time": timeString,
+          "event_city": city,
+          "event_state": state,
+          "place_id": placeID,
         })
       }).then((res) => {return res.json()})
       .then((data) => {if(data.status == 200) {navigation.navigate('MainPage')}})
@@ -162,13 +172,6 @@ const CreateEvent = () => {
   return (
     <SafeAreaView style={styles.createEventView}>
       <Text style={styles.createNewEvent}>Create New Event</Text>
-      <Pressable
-        style={styles.goBack}
-        onPress={() => navigation.navigate("MainPage")}
-      >
-        <Text style={styles.goBackText}>EXIT</Text>
-      </Pressable>
-
       <Text style={styles.eventNameText}>Event Name</Text>
 
       <Input containerStyle={{
@@ -198,6 +201,7 @@ const CreateEvent = () => {
       <Text style={styles.sportText}>Sport</Text>
       <SelectDropdown
           data={sports}
+          defaultValue={eventSport}
           onSelect = {(selectedItem) => setEventSport(selectedItem)}
           defaultButtonText="Select a sport"
           buttonStyle={{
@@ -359,30 +363,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: 275,
     height: 20,
-  },
-  goBack: {
-    position: "absolute",
-    top: "6%",
-    left: "77%",
-    borderRadius: 5,
-    borderColor: "#80ced7",
-    borderWidth: 3,
-    backgroundColor: "#00060a",
-    fontSize: 14,
-    lineHeight: 25,
-    fontFamily: "GearUp",
-    color: "#80ced7",
-    textAlign: "center",
-    width: "20%",
-    height: "4%",
-  },
-  goBackText: {
-    position: "absolute",
-    left: "24%",
-    textAlign: "center",
-    fontSize: 14,
-    fontFamily: "GearUp",
-    color: "#80ced7",
   },
   locationPicker: {
 
@@ -678,4 +658,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateEvent;
+export default EditEvent;

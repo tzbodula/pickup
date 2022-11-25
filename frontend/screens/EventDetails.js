@@ -11,6 +11,7 @@ import { AirbnbRating } from 'react-native-ratings';
 import {Button} from 'react-native';
 
 const EventDetails = ({route}) => {
+
   let margin = 0;
   const navigation = useNavigation();
   const [eventDetails, setEventDetails] = useState({})
@@ -71,6 +72,7 @@ const EventDetails = ({route}) => {
   }
 
   const leaveEvent = () => {
+    console.log("")
     fetch(`http://${LOCAL_IP}:3000/event/${route.params.event_id}/leave`, {
       method: 'DELETE',
       headers: {
@@ -85,7 +87,23 @@ const EventDetails = ({route}) => {
       })
   }
 
+  const goToEventUpdate = () => {
+
+    const dataProp = {
+      eventName: eventDetails.event_name,
+      eventSport: eventDetails.sport_name,
+      eventTotalPlayers: eventDetails.maximum_players,
+      eventLocation: eventDetails.event_location,
+      placeID: eventDetails.place_id,
+      dateString: eventDetails.event_date,
+      timeString: eventDetails.event_time,
+      event_id: eventDetails.event_id
+    }
+    navigation.navigate('EditEvent', {dataProp})
+  }
+
   useFocusEffect((React.useCallback(requestOnPageLoad, [stateChange])))
+
   console.log(eventDetails)
   if (!eventDetails || !players || !account_id) { //There should always be at least 1 player in this array (the host)
     return null
@@ -122,13 +140,13 @@ const EventDetails = ({route}) => {
           <SafeAreaView/>
           {(() => {
 
-            if (eventDetails.account_id == account_id) {
-              return (
-                <SafeAreaView>
-                  <Button title="EDIT EVENT"></Button>
-                </SafeAreaView>
-              );
-            }
+          if (eventDetails.account_id == account_id) {
+            return (
+              <SafeAreaView>
+                <Button title="EDIT EVENT" onPress={goToEventUpdate}></Button>
+              </SafeAreaView>
+            );
+          }
 
             if (checkIfPlayerInEvent()) {
               return <Button title="Leave Event" onPress={leaveEvent}></Button> 
@@ -165,20 +183,20 @@ const styles = StyleSheet.create({
   },
   eventName: {
     fontFamily: "GearUp",
-    fontSize: "32",
+    fontSize: 32,
     textAlign: "center",
     color: "#FFFFFF",
   },
   eventDateTime: {
     fontFamily: "GearUp",
-    fontSize: "16",
+    fontSize: 16,
     textAlign: "center",
     color: "#FFFFFF",
   },
   eventLocation: {
     marginTop: "4%",
     fontFamily: "GearUp",
-    fontSize: "16",
+    fontSize: 16,
     textAlign: "center",
     color: "#FFFFFF",
   },
