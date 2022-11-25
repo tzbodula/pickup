@@ -9,7 +9,6 @@ import { Input } from '@rneui/themed';
 import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
-console.log("API KEY IS ", GOOGLE_PLACES_API_KEY)
 const CreateEvent = () => {
   const colorScheme = 'dark'
 
