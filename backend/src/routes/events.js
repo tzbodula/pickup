@@ -31,7 +31,8 @@ router.get('/', checkSession, (req, res) => {
 
     const page = req.query.page
     const limit = req.query.limit
-    
+    const mine = req.query.mine
+
     const startIndex = (page - 1) * limit
     const endIndex = page * limit
 
@@ -42,15 +43,29 @@ router.get('/', checkSession, (req, res) => {
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id;
     `
-    if(page != undefined && limit !=undefined) { //There's a page and limit specified, so let's filter our events.
-        db.query(query, [req.params.id], (err, result) => {
+    if(page != undefined && limit !=undefined && mine != undefined) { //There's a page and limit specified, so let's filter our events.
+        if(mine == 1){
+            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+            JOIN accounts ON pickup_events.account_id = accounts.account_id
+            JOIN sports ON pickup_events.sport_id = sports.sport_id
+            WHERE pickup_events.account_id = ?;
+            `
+        }
+        db.query(query, [req.session.account_id], (err, result) => {
             if (err) {
                 //handle errors
             }
             return res.status(200).send({data: result.slice(startIndex, endIndex), status: 200});
         });
     } else { //There's no filter specified, so return all events
-        db.query(query, [req.params.id], (err, result) => {
+        if(mine == 1){
+            query = `SELECT event_id, event_name, pickup_events.account_id, pickup_events.sport_id, maximum_players, current_players, event_location, event_date, event_time, event_city, event_state, account_username, sports.sport_name FROM pickup_events
+            JOIN accounts ON pickup_events.account_id = accounts.account_id
+            JOIN sports ON pickup_events.sport_id = sports.sport_id
+            WHERE pickup_events.account_id = ?;
+            `
+        }
+        db.query(query, [req.session.account_id], (err, result) => {
             if (err) {
                 //handle errors
             }
@@ -91,6 +106,7 @@ router.get('/:id',  checkSession, (req, res) => {
     JOIN accounts ON pickup_events.account_id = accounts.account_id
     JOIN sports ON pickup_events.sport_id = sports.sport_id
     WHERE event_id = ?;`
+    console.log("Passed ID of ", req.params.id)
     db.query(query, [req.params.id], (err, result) => {
         //handle any errors
 

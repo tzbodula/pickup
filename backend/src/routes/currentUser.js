@@ -105,6 +105,18 @@ router.get('/sports', checkSession, (req, res) => {
     })
 })
 
+router.post('/delete', (err, res)=>{
+    const query= 'DELETE FROM accounts WHERE account_id = ?;'
+    let usr = req.session.account_id
+    if (req.session.account_id == null) {
+        return res.status(200).send({status: 400, message: "Invalid operation"})
+    }
+    db.query(query, req.session.account_id, (err, result) => {
+        req.session.destroy();
+        return res.status(200).send({message: [usr] + 'account deleted', status: 200})
+    })
+})
+
 // Update user password
 router.put('/updatePassword', checkSession, (req, res, next) => {
     const query = `SELECT * FROM accounts WHERE account_id = ?;`

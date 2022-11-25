@@ -15,7 +15,7 @@ export default function Footer({pageID}) {
     const navigation = useNavigation();
     let isEvents = false;
     let isFriends = false;
-    let isMap = false;
+    let isMyEvents = false;
     let isAccount = false;
 
     switch (pageID) {
@@ -26,7 +26,7 @@ export default function Footer({pageID}) {
             isFriends = true;
             break;
         case 2:
-            isMap = true;
+            isMyEvents = true;
             break;
         case 3:
             isAccount = true;
@@ -64,15 +64,15 @@ export default function Footer({pageID}) {
             </Pressable>
             <Pressable
             style={styles.singleTabPressable2}
-            onPress={() => navigation.navigate("Map")}
+            onPress={() => navigation.navigate("MyEvents")}
             >
             <SafeAreaView style={styles.iconAndText2}>
                 <Image
                 style={styles.compassIcon}
                 resizeMode="cover"
-                source={isMap ? require("../assets/compass13.png") : require("../assets/compass.png")}
+                source={isMyEvents ? require("../assets/compass13.png") : require("../assets/compass.png")}
                 />
-                <Text style={[styles.text2, styles.mt2]}>Map</Text>
+                <Text style={[styles.text2, styles.mt2]}>My Events</Text>
             </SafeAreaView>
             </Pressable>
             <Pressable
@@ -109,6 +109,8 @@ const styles = StyleSheet.create({
       },
     footerView: {
         position: "absolute",
+        borderTopWidth: 2,
+        borderTopColor: "#FFFFFF",
         paddingVertical: "2%",
         backgroundColor: "#00060a",
         marginTop: "12%",
