@@ -8,7 +8,7 @@ const checkSession = require('../utils/sessionChecker')
 const router = Router();
 
 
-// Sends back list of events filtered by the sport entered in as query parameter
+// Sends back list of events filtered by the sport entered in as query parameter. May not be used due to time issues.
 router.get('/sport',  checkSession, (req, res) => {
     
     const query = `SELECT * FROM pickup_events WHERE sport_id = ? ;`

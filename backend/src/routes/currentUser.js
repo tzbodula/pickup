@@ -105,7 +105,7 @@ router.get('/sports', checkSession, (req, res) => {
     })
 })
 
-router.post('/delete', (err, res)=>{
+router.delete('/', (err, res)=>{
     const query= 'DELETE FROM accounts WHERE account_id = ?;'
     let usr = req.session.account_id
     if (req.session.account_id == null) {
