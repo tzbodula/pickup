@@ -9,6 +9,7 @@ import {LOCAL_IP} from '@env';
 
 import React, { useState, useEffect } from 'react'
 
+import Header from "../components/Header";
 import Footer from "../components/Footer"
 
 let favoriteSportAdjustment = 10.75
@@ -142,16 +143,20 @@ function getSportImage(sportName){
     );
   } else {
     return (
+
+      <>
+
       <SafeAreaView style={styles.profileUserView}>
-        <Footer pageID={3}/>
+
         <Avatar
           containerStyle={{
+            
             borderWidth: 3,
             borderColor: "#80ced7",
             borderStyle: "solid",
             position: "relative",
-            left: 30,
-            top: 10,
+            left: "3%",
+            top: "6%",
           }}
           size={"large"}
           imageProps={{
@@ -209,19 +214,7 @@ function getSportImage(sportName){
           />
         </Pressable>
 
-        
-       {/*  <Text style={styles.footballText}>Football</Text>
-        <Text style={styles.timESText}>timES</Text>
-        <Text style={styles.timESText1}>timES</Text>
-        <Text style={styles.timESText2}>timES</Text>
-        <Text style={styles.timESText3}>timES</Text>
-        <Text style={styles.tENNISText}>TENNIS</Text>
-        <Text style={styles.sOCCERText}>SOCCER</Text>
-        <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
-        <Text style={styles.text7}>25</Text>
-        <Text style={styles.text8}>3</Text>
-        <Text style={styles.text9}>1</Text>
-        <Text style={styles.text10}>1</Text> */}
+    
         
         <Text style={styles.aLLTIMESPORTSPLAYED}>Favorite Sports</Text>
         
@@ -232,7 +225,7 @@ function getSportImage(sportName){
             favoriteSportAdjustment = favoriteSportAdjustment + 6
             let topPercentage = favoriteSportAdjustment + "%"
 
-            return (<Text style={{position: "absolute", top: topPercentage, left: "16%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text>
+            return (<Text style={{position: "absolute", top: topPercentage, left: "16%", fontSize: 14, fontFamily: "GearUp", color: "#FFFFFF", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text>
             /**
             <Image
                   style={{position: "absolute", height: "5%", width: "8%", right: "50.21%", bottom: "81.89%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
@@ -287,6 +280,9 @@ function getSportImage(sportName){
         
         <SafeAreaView style={styles.lineView} />
       </SafeAreaView>
+      <Header/>
+      <Footer pageID={3}/>
+      </>
     );
   }
 
@@ -311,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#1eabbb",
+    color: "#FFFFFF",
     textAlign: "center",
   },
   iconAndText: {
@@ -564,12 +560,12 @@ const styles = StyleSheet.create({
   dOTUNIVERSITY4Text: {
     position: "absolute",
     paddingTop: "5%",
-    top: "9%",
-    left: 138,
+    top: "7%",
+    left: "25%",
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     width: 200,
     height: 30,
@@ -636,30 +632,30 @@ const styles = StyleSheet.create({
   },
   bioStyle: {
     position: "absolute",
-    top: "12.3%",
-    left: "34%",
+    top: "10.4%",
+    left: "25.5%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp Soft",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     width: 177,
   },
   userRating: {
-    color: "#34495e",
+    color: "#FFFFFF",
     position: "absolute",
-    left: "32%",
-    top: "21%",
+    left: "25%",
+    top: "13.25%",
   },
   text5: {
     position: "absolute",
     paddingTop: "18%",
-    top: 205,
+    top: "21%",
     left: 48,
     fontSize: 20,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 60,
     height: 25,
@@ -667,36 +663,36 @@ const styles = StyleSheet.create({
   text6: {
     position: "absolute",
     paddingTop: "18%",
-    top: 205,
+    top: "21%",
     left: 263,
     fontSize: 20,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 70,
     height: 25,
   },
   gamesPlayedText: {
     position: "absolute",
-    top: 228,
-    left: 21,
+    top: "25%",
+    left: "5.5%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 113,
     height: 23,
   },
   attendanceRateText: {
     position: "absolute",
-    top: 231,
-    left: 234,
+    top: "25%",
+    left: "57%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 113,
     height: 23,
@@ -728,8 +724,8 @@ const styles = StyleSheet.create({
   },
   buttonPressable: {
     position: "absolute",
-    top: "21%",
-    left: 272,
+    top: "10%",
+    left: "89%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -747,8 +743,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: "21.75%",
-    left: 276,
+    top: "10.75%",
+    left: "90%",
     width: 21,
     height: 19,
   },
@@ -952,7 +948,7 @@ const styles = StyleSheet.create({
     left: 15,
     fontSize: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   lineView: {
@@ -966,8 +962,9 @@ const styles = StyleSheet.create({
     height: 1,
   },
   profileUserView: {
+    marginTop: "30%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     width: "100%",
     height: 812,

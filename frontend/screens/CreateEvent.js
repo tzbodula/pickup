@@ -6,6 +6,9 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Input } from '@rneui/themed';
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -157,13 +160,15 @@ const CreateEvent = () => {
   const navigation = useNavigation();
 
   return (
+    <>
+
     <SafeAreaView style={styles.createEventView}>
       <Text style={styles.createNewEvent}>Create New Event</Text>
       <Pressable
         style={styles.goBack}
         onPress={() => navigation.navigate("MainPage")}
       >
-        <Text style={styles.goBackText}>EXIT</Text>
+        <Text style={styles.goBackText}>X</Text>
       </Pressable>
 
       <Text style={styles.eventNameText}>Event Name</Text>
@@ -171,6 +176,7 @@ const CreateEvent = () => {
       <Input containerStyle={{
         backgroundColor: "#00060a", 
         position: "relative",
+        top: "9%",
         marginTop: "12%",
         marginLeft: "2%",
         width: "75%",
@@ -182,7 +188,7 @@ const CreateEvent = () => {
       }} 
       inputStyle={{ 
         textTransform: "uppercase", 
-        color: "#80ced7", 
+        color: "#FFFFFF", 
         fontFamily: "GearUp", 
         fontSize: 16 
       }}
@@ -200,8 +206,9 @@ const CreateEvent = () => {
           buttonStyle={{
             position: "relative",
             left: "1%",
+            top: "16%",
             backgroundColor: "#00060a", 
-            marginTop: "12%",
+            marginTop: "14%",
             marginLeft: "5%",
             width: "65%", 
             height: "5%",
@@ -211,13 +218,13 @@ const CreateEvent = () => {
           }}
           buttonTextStyle={{
             textTransform: "uppercase", 
-            color: "#80ced7", 
+            color: "#FFFFFF", 
             fontFamily: "GearUp", 
             fontSize: 16 
           }}
           rowTextStyle={{
             textTransform: "uppercase", 
-            color: "#80ced7", 
+            color: "#FFFFFF", 
             fontFamily: "GearUp", 
             fontSize: 16 
           }}
@@ -230,7 +237,7 @@ const CreateEvent = () => {
 
       <Input containerStyle={{ 
         backgroundColor: "#00060a", 
-        marginTop: "12%",
+        marginTop: "34%",
         marginLeft: "2%",
         width: "35%", 
         height: "5%",
@@ -240,7 +247,7 @@ const CreateEvent = () => {
       }} 
       inputStyle={{ 
         textTransform: "uppercase", 
-        color: "#80ced7", 
+        color: "#FFFFFF", 
         fontFamily: "GearUp", 
         fontSize: 16
       }} 
@@ -268,10 +275,12 @@ const CreateEvent = () => {
             },
             textInput: {
               backgroundColor: '#00060a',
-              color: '#80ced7',
+              color: '#FFFFFF',
               fontFamily: 'GearUp',
               height: 44,
-              borderRadius: 5,
+              borderWidth: 2,
+              borderColor: "#80ced7",
+              borderRadius: 3,
               paddingVertical: 5,
               paddingHorizontal: 10,
               fontSize: 15,
@@ -286,18 +295,20 @@ const CreateEvent = () => {
               borderTopWidth: 0.5,
             },
             powered: {},
-            listView: { top: "18%" },
+            listView: { top: "-55%" },
             row: {
               backgroundColor: '#00060a',
+              
               padding: 13,
               height: 42,
               flexDirection: 'row',
             },
             separator: {
               height: 0.5,
+              
               backgroundColor: '#c8c7cc',
             },
-            description: { fontFamily: 'GearUp', fontSize: 10, color: '#80ced7', },
+            description: { fontFamily: 'GearUp', fontSize: 10, color: "#FFFFFF", },
             loader: {
               flexDirection: 'row',
               justifyContent: 'flex-end',
@@ -311,7 +322,7 @@ const CreateEvent = () => {
           InputComp: Input,
           errorStyle: { color: 'red' },
           containerStyle: styles.locationPicker,
-          labelStyle: { fontFamily: 'GearUp', fontSize: 12, color: "#000000" },
+          labelStyle: { fontFamily: 'GearUp', fontSize: 12, color: "#FFFFFF", paddingBottom: "2%" },
           label: "Select your location",
         }}
       />
@@ -320,16 +331,12 @@ const CreateEvent = () => {
         style={styles.createEventButton}
         onPress={() => handleCreateEvent()}
       >
-        <Pressable
-          style={styles.rectanglePressable}
-          onPress={() => handleCreateEvent()}
-        />
         <Text style={styles.createEventText}>{buttonMessage}</Text>
       </Pressable>
 
 
 
-      <Button containerStyle={{ position: "relative", bottom: "25%", width: "94%", marginLeft: "2.5%" }} titleStyle={{ fontFamily: "GearUp", color: "#80ced7", fontSize: 14 }} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
+      <Button containerStyle={{ position: "relative", bottom: "25%", width: "94%", marginLeft: "2.5%", borderWidth: 2, borderColor: "#80ced7", borderRadius: 3, }} titleStyle={{ fontFamily: "GearUp", color: "#FFFFFF", fontSize: 14 }} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
       <Text style={styles.dateTimeText}>PICK YOUR DATE AND TIME</Text>
       <DateTimePicker
         isVisible={datePickerVisibility}
@@ -339,6 +346,9 @@ const CreateEvent = () => {
         isDarkModeEnabled={colorScheme === 'dark'}
       />
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={0}/>
+    </>
 
   );
 };
@@ -359,32 +369,33 @@ const styles = StyleSheet.create({
   },
   goBack: {
     position: "absolute",
-    top: "6%",
-    left: "77%",
-    borderRadius: 5,
+    top: "17%",
+    left: "92%",
+    borderRadius: 3,
     borderColor: "#80ced7",
-    borderWidth: 3,
+    borderWidth: 1,
     backgroundColor: "#00060a",
     fontSize: 14,
     lineHeight: 25,
     fontFamily: "GearUp",
     color: "#80ced7",
     textAlign: "center",
-    width: "20%",
+    width: "7%",
     height: "4%",
   },
   goBackText: {
     position: "absolute",
+    top: "10%",
     left: "24%",
     textAlign: "center",
     fontSize: 14,
     fontFamily: "GearUp",
-    color: "#80ced7",
+    color: "#FFFFFF",
   },
   locationPicker: {
 
     position: "absolute",
-    paddingTop: "4%",
+    paddingTop: "12%",
     top: "25%"
   },
 
@@ -394,12 +405,12 @@ const styles = StyleSheet.create({
   },
   eventNameText: {
     position: "absolute",
-    top: "10%",
+    top: "19%",
     left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp Soft",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   rectangleView: {
@@ -428,33 +439,33 @@ const styles = StyleSheet.create({
   },
   sportText: {
     position: "absolute",
-    top: "21%",
+    top: "30%",
     left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
 
   dateTimeText: {
     position: "absolute",
-    top: "73.5%",
+    top: "72.5%",
     left: 12,
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   totalPlayersText: {
     position: "absolute",
-    top: "32%",
+    top: "44%",
     left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
 
@@ -604,7 +615,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    backgroundColor: "#00060a",
+    borderRadius: 2,
+    borderColor: "#80ced7",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     width: 321,
     height: 39,
   },
@@ -616,13 +629,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#80ced7",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   createEventButton: {
     position: "absolute",
-    top: 765,
-    left: 27,
+    top: "90%",
+    borderWidth: 2,
+    borderRadius: 3,
+    borderColor: "#80ced7",
+    backgroundColor: 'rgba(0, 0, 0, 1)',
+    left: "11%",
     width: 321,
     height: 39,
   },
@@ -667,7 +684,7 @@ const styles = StyleSheet.create({
   },
   createEventView: {
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     width: "100%",
     height: 812,

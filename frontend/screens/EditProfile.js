@@ -10,6 +10,9 @@ import { Card } from "@rneui/themed";
 import {Picker} from '@react-native-picker/picker';
 
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 const EditProfile = ({route}) => {
   const navigation = useNavigation();
   const [updatedUsername, setUsername] = useState(route.params.username)
@@ -235,6 +238,8 @@ const EditProfile = ({route}) => {
 }
   else{
     return(
+    <>
+  
     <SafeAreaView style={styles.editProfileView}>
       <SafeAreaView style={styles.footerView}>
         <Pressable
@@ -592,18 +597,10 @@ const EditProfile = ({route}) => {
         <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
       </SafeAreaView>
     **/}
-
-
-
-
-
-
-
-
-
-
-
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={3}/>
+    </>
     );
   }
 };
@@ -985,7 +982,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#292929",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "flex-end",
@@ -1338,9 +1335,9 @@ const styles = StyleSheet.create({
     height: 243,
   },
   editProfileView: {
-    top: "4%",
+    top: "13%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     overflow: "hidden",
     width: Dimensions.get('window').width,
