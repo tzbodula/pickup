@@ -4,6 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
 import {LOCAL_IP} from '@env';
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 const EditSettings = ({route}) => {
   const handleLogout = () => {
     fetch(`http://${LOCAL_IP}:3000/user/logout`, {
@@ -20,6 +23,7 @@ const EditSettings = ({route}) => {
   }
   const navigation = useNavigation();
   return (
+    <>
     <SafeAreaView style={styles.editSettingsView}>
       <SafeAreaView style={styles.footerView}>
       <Pressable
@@ -156,6 +160,9 @@ const EditSettings = ({route}) => {
         source={require("../assets/check.png")}
       />
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={3}/>
+    </>
   );
 };
 
@@ -445,7 +452,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#000000",
     textAlign: "left",
   },
   trailingIcon1: {
@@ -482,7 +489,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -496,7 +503,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -510,7 +517,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -524,7 +531,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#111",
+    color: "#FFFFFF",
     textAlign: "center",
     display: "flex",
     alignItems: "center",
@@ -539,7 +546,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     lineHeight: 10,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FF0000",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -553,7 +560,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 25,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     width: 250,
     height: 30,
@@ -610,9 +617,9 @@ const styles = StyleSheet.create({
     height: 16,
   },
   editSettingsView: {
-    top: "4%",
+    top: "14%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     overflow: "hidden",
     width: Dimensions.get('window').width,
