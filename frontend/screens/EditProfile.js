@@ -22,7 +22,7 @@ const EditProfile = ({route}) => {
   const [options, setOptions] = useState([])
   const [Enable , setEnable]  = useState(1);
 
-  let favoriteSportAdjustment = 26;
+  let favoriteSportAdjustment = 16;
 
   const updateUsername = (event) => {
     setHasChanged(true)
@@ -424,8 +424,8 @@ const EditProfile = ({route}) => {
     
 
     <SafeAreaView style={styles.addOrRemoveSportsView}>
-    <Text style={{left: "35%", top: "135%", fontSize: 13, fontFamily: "GearUp", color: "#000"}}>Add Sport</Text>
-      <Card key={10} containerStyle={{top: "140%", position: "absolute", left: "15%", width: "60%", height: "25%"}}>
+    <Text style={{left: "35%", top: "90%", fontSize: 13, fontFamily: "GearUp", color: "#fff"}}>Add Sport</Text>
+      <Card key={10} containerStyle={{top: "95%", position: "absolute", left: "15%", width: "60%", height: "25%"}}>
         <Pressable style={styles.addOrRemoveSportsView}
           onPress={() => {
             addFavSport(Enable)
@@ -470,7 +470,7 @@ const EditProfile = ({route}) => {
         />
       </Card>
       {
-      <Picker style ={{width: "45%", left: "32%", top: "105%"}} selectedValue={Enable} onValueChange={(itemValue) => setEnable(itemValue)}>
+      <Picker style ={{height: '15%', width: "45%", left: "33%", top: "97.5%", backgroundColor: '#fff', justifyContent: "center"}} selectedValue={Enable} onValueChange={(itemValue) => setEnable(itemValue)}>
       {
         options.length
         ?
