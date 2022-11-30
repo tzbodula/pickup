@@ -21,6 +21,19 @@ const EditSettings = ({route}) => {
         }
       }).catch((e) => {console.log(e)})
   }
+  const handleDeleteAccount = () => {
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+          method: 'DELETE',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          console.log(data)
+          if (data.status == 200) {
+            navigation.navigate("Login")
+        }
+      }).catch((e) => {console.log(e)})
+  }
   const navigation = useNavigation();
   return (
     <>
@@ -100,7 +113,9 @@ const EditSettings = ({route}) => {
           source={require("../assets/vector9.png")}
         />
       </Pressable>
-      <SafeAreaView style={styles.buttonView}>
+      <Pressable 
+      style={styles.buttonView}
+      onPress={handleDeleteAccount}>
         <Image
           style={styles.leadingIcon}
           resizeMode="cover"
@@ -112,7 +127,7 @@ const EditSettings = ({route}) => {
           resizeMode="cover"
           source={require("../assets/trailing-icon10.png")}
         />
-      </SafeAreaView>
+      </Pressable>
       <Pressable
         style={styles.buttonPressable}
         onPress={handleLogout}
