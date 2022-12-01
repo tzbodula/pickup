@@ -86,7 +86,18 @@ const EditEvent = ({route}) => {
   };
 
   handleDeleteEvent = () => {
-    console.log("Do your thing can")
+    fetch(`http://${LOCAL_IP}:3000/events/${route.params.dataProp.event_id}`, {
+      method : "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((res) => {return res.json()})
+    .then((data) => {
+      if(data.status == 200) {
+        navigation.navigate('MainPage')
+      } else {console.log("somethign went wrong")}
+    })
   }
   
   handleCreateEvent = async () => {
