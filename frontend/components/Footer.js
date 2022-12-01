@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
       },
       singleTabPressable2: {
         position: "absolute",
-        height: "82.35%",
+        height: "83.35%",
         width: "21.32%",
         top: "17.65%",
         right: "21.35%",

@@ -6,6 +6,9 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Input } from '@rneui/themed';
 
+import Header from "../components/Header";
+import Footer from "../components/Header";
+
 import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -27,7 +30,10 @@ const EditEvent = ({route}) => {
 
   const [placeID, setPlaceID] = useState(route.params.dataProp.placeID)
 
-  const [buttonMessage, setButtonMessage] = useState("Create Event")
+
+  const [buttonMessage, setButtonMessage] = useState("Edit Event")
+
+  const [deleteButtonMessage, setDeleteButtonMessage] = useState("Delete Event")
 
   const [selectedDate, setSelectedDate] = useState(null)
   const ref = useRef();
@@ -79,7 +85,10 @@ const EditEvent = ({route}) => {
     hideDateTimePicker()
   };
 
-
+  handleDeleteEvent = () => {
+    console.log("Do your thing can")
+  }
+  
   handleCreateEvent = async () => {
     console.log("")
     //Do any of the fields still have their default values?
@@ -170,13 +179,23 @@ const EditEvent = ({route}) => {
   const navigation = useNavigation();
 
   return (
+    <>
+
     <SafeAreaView style={styles.createEventView}>
       <Text style={styles.createNewEvent}>Create New Event</Text>
+      <Pressable
+        style={styles.goBack}
+        onPress={() => navigation.navigate("MainPage")}
+      >
+        <Text style={styles.goBackText}>X</Text>
+      </Pressable>
+
       <Text style={styles.eventNameText}>Event Name</Text>
 
       <Input containerStyle={{
         backgroundColor: "#00060a", 
         position: "relative",
+        top: "9%",
         marginTop: "12%",
         marginLeft: "2%",
         width: "75%",
@@ -188,7 +207,7 @@ const EditEvent = ({route}) => {
       }} 
       inputStyle={{ 
         textTransform: "uppercase", 
-        color: "#80ced7", 
+        color: "#FFFFFF", 
         fontFamily: "GearUp", 
         fontSize: 16 
       }}
@@ -207,8 +226,9 @@ const EditEvent = ({route}) => {
           buttonStyle={{
             position: "relative",
             left: "1%",
+            top: "16%",
             backgroundColor: "#00060a", 
-            marginTop: "12%",
+            marginTop: "14%",
             marginLeft: "5%",
             width: "65%", 
             height: "5%",
@@ -218,13 +238,13 @@ const EditEvent = ({route}) => {
           }}
           buttonTextStyle={{
             textTransform: "uppercase", 
-            color: "#80ced7", 
+            color: "#FFFFFF", 
             fontFamily: "GearUp", 
             fontSize: 16 
           }}
           rowTextStyle={{
             textTransform: "uppercase", 
-            color: "#80ced7", 
+            color: "#FFFFFF", 
             fontFamily: "GearUp", 
             fontSize: 16 
           }}
@@ -237,7 +257,7 @@ const EditEvent = ({route}) => {
 
       <Input containerStyle={{ 
         backgroundColor: "#00060a", 
-        marginTop: "12%",
+        marginTop: "34%",
         marginLeft: "2%",
         width: "35%", 
         height: "5%",
@@ -247,11 +267,11 @@ const EditEvent = ({route}) => {
       }} 
       inputStyle={{ 
         textTransform: "uppercase", 
-        color: "#80ced7", 
+        color: "#FFFFFF", 
         fontFamily: "GearUp", 
         fontSize: 16
       }} 
-        value={eventTotalPlayers}
+        value={eventTotalPlayers.toString()}
         keyboardType="numeric"
         onChangeText = {(eventTotalPlayers) => setEventTotalPlayers(eventTotalPlayers)}   
       >
@@ -275,10 +295,12 @@ const EditEvent = ({route}) => {
             },
             textInput: {
               backgroundColor: '#00060a',
-              color: '#80ced7',
+              color: '#FFFFFF',
               fontFamily: 'GearUp',
               height: 44,
-              borderRadius: 5,
+              borderWidth: 2,
+              borderColor: "#80ced7",
+              borderRadius: 3,
               paddingVertical: 5,
               paddingHorizontal: 10,
               fontSize: 15,
@@ -293,18 +315,20 @@ const EditEvent = ({route}) => {
               borderTopWidth: 0.5,
             },
             powered: {},
-            listView: { top: "18%" },
+            listView: { top: "-55%" },
             row: {
               backgroundColor: '#00060a',
+              
               padding: 13,
               height: 42,
               flexDirection: 'row',
             },
             separator: {
               height: 0.5,
+              
               backgroundColor: '#c8c7cc',
             },
-            description: { fontFamily: 'GearUp', fontSize: 10, color: '#80ced7', },
+            description: { fontFamily: 'GearUp', fontSize: 10, color: "#FFFFFF", },
             loader: {
               flexDirection: 'row',
               justifyContent: 'flex-end',
@@ -318,7 +342,7 @@ const EditEvent = ({route}) => {
           InputComp: Input,
           errorStyle: { color: 'red' },
           containerStyle: styles.locationPicker,
-          labelStyle: { fontFamily: 'GearUp', fontSize: 12, color: "#000000" },
+          labelStyle: { fontFamily: 'GearUp', fontSize: 12, color: "#FFFFFF", paddingBottom: "2%" },
           label: "Select your location",
         }}
       />
@@ -327,16 +351,18 @@ const EditEvent = ({route}) => {
         style={styles.createEventButton}
         onPress={() => handleCreateEvent()}
       >
-        <Pressable
-          style={styles.rectanglePressable}
-          onPress={() => handleCreateEvent()}
-        />
         <Text style={styles.createEventText}>{buttonMessage}</Text>
+      </Pressable>
+      <Pressable
+        style={styles.deleteEventButton}
+        onPress={() => handleDeleteEvent()}
+      >
+        <Text style={styles.deleteEventText}>{deleteButtonMessage}</Text>
       </Pressable>
 
 
 
-      <Button containerStyle={{ position: "relative", bottom: "25%", width: "94%", marginLeft: "2.5%" }} titleStyle={{ fontFamily: "GearUp", color: "#80ced7", fontSize: 14 }} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
+      <Button containerStyle={{ position: "relative", bottom: "25%", width: "94%", marginLeft: "2.5%", borderWidth: 2, borderColor: "#80ced7", borderRadius: 3, }} titleStyle={{ fontFamily: "GearUp", color: "#FFFFFF", fontSize: 14 }} color="#00060a" title={selectedDateLabel} onPress={showDateTimePicker} />
       <Text style={styles.dateTimeText}>PICK YOUR DATE AND TIME</Text>
       <DateTimePicker
         isVisible={datePickerVisibility}
@@ -346,6 +372,9 @@ const EditEvent = ({route}) => {
         isDarkModeEnabled={colorScheme === 'dark'}
       />
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={0}/>
+    </>
 
   );
 };
@@ -364,10 +393,35 @@ const styles = StyleSheet.create({
     width: 275,
     height: 20,
   },
+  goBack: {
+    position: "absolute",
+    top: "17%",
+    left: "92%",
+    borderRadius: 3,
+    borderColor: "#80ced7",
+    borderWidth: 1,
+    backgroundColor: "#00060a",
+    fontSize: 14,
+    lineHeight: 25,
+    fontFamily: "GearUp",
+    color: "#80ced7",
+    textAlign: "center",
+    width: "7%",
+    height: "4%",
+  },
+  goBackText: {
+    position: "absolute",
+    top: "10%",
+    left: "24%",
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#FFFFFF",
+  },
   locationPicker: {
 
     position: "absolute",
-    paddingTop: "4%",
+    paddingTop: "12%",
     top: "25%"
   },
 
@@ -377,12 +431,12 @@ const styles = StyleSheet.create({
   },
   eventNameText: {
     position: "absolute",
-    top: "10%",
+    top: "19%",
     left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp Soft",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   rectangleView: {
@@ -411,33 +465,33 @@ const styles = StyleSheet.create({
   },
   sportText: {
     position: "absolute",
-    top: "21%",
+    top: "30%",
     left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
 
   dateTimeText: {
     position: "absolute",
-    top: "73.5%",
+    top: "72.5%",
     left: 12,
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   totalPlayersText: {
     position: "absolute",
-    top: "32%",
+    top: "44%",
     left: "2.2%",
     fontSize: 11,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
 
@@ -587,7 +641,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    backgroundColor: "#00060a",
+    borderRadius: 2,
+    borderColor: "#80ced7",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     width: 321,
     height: 39,
   },
@@ -595,17 +651,43 @@ const styles = StyleSheet.create({
     position: "absolute",
     paddingTop: "2%",
     top: "25%",
-    left: "27.5%",
+    left: "32.5%",
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#80ced7",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   createEventButton: {
     position: "absolute",
-    top: 765,
-    left: 27,
+    top: "90%",
+    borderWidth: 2,
+    borderRadius: 3,
+    borderColor: "#80ced7",
+    backgroundColor: 'rgba(0, 0, 0, 1)',
+    left: "11%",
+    width: 321,
+    height: 39,
+  },
+  deleteEventText: {
+    position: "absolute",
+    paddingTop: "2%",
+    top: "25%",
+    left: "27.5%",
+    fontSize: 14,
+    lineHeight: 14,
+    fontFamily: "GearUp",
+    color: "#FFFFFF",
+    textAlign: "left",
+  },
+  deleteEventButton: {
+    position: "absolute",
+    top: "98%",
+    borderWidth: 2,
+    borderRadius: 3,
+    borderColor: "#FF0000",
+    backgroundColor: 'rgba(0, 0, 0, 1)',
+    left: "11%",
     width: 321,
     height: 39,
   },
@@ -650,7 +732,7 @@ const styles = StyleSheet.create({
   },
   createEventView: {
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     width: "100%",
     height: 812,
