@@ -12,7 +12,6 @@ import React, { useState, useEffect } from 'react'
 import Header from "../components/Header";
 import Footer from "../components/Footer"
 
-let favoriteSportAdjustment = 10.75
 
 const ProfileUser = () => {
   const [favoriteSports, setSportInfo] = useState([])
@@ -23,9 +22,9 @@ const ProfileUser = () => {
   const [bio, setBio] = useState("")
   const [email, setEmail] = useState("")
   const navigation = useNavigation();
-  let favoriteSportAdjustment = 35
-  let sportIconAdjustment = 34.75
-  let sportEllipseAdjustment = 33.75
+  let favoriteSportAdjustment = 38
+  let sportIconAdjustment = 37.75
+  let sportEllipseAdjustment = 36.75
 
   const requestOnPageLoad = () => {
     console.log("")
@@ -219,10 +218,9 @@ function getSportImage(sportName){
         <Text style={styles.aLLTIMESPORTSPLAYED}>Favorite Sports</Text>
         
         {
-          //Please do your CSS magic Thomas to get these to align property thx
           
           favoriteSports.map((sport) => {
-            favoriteSportAdjustment = favoriteSportAdjustment + 6
+            favoriteSportAdjustment = favoriteSportAdjustment + 7
             let topPercentage = favoriteSportAdjustment + "%"
 
             return (<Text style={{position: "absolute", top: topPercentage, left: "16%", fontSize: 14, fontFamily: "GearUp", color: "#FFFFFF", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text>
@@ -239,7 +237,7 @@ function getSportImage(sportName){
         
         {
         favoriteSports.map((sport, index) => {
-          sportEllipseAdjustment = sportEllipseAdjustment + 6
+          sportEllipseAdjustment = sportEllipseAdjustment + 7
             let topPercentage = sportEllipseAdjustment + "%"
 
             return (
@@ -259,7 +257,7 @@ function getSportImage(sportName){
 
         {
         favoriteSports.map((sport, index) => {
-          sportIconAdjustment = sportIconAdjustment + 6
+          sportIconAdjustment = sportIconAdjustment + 7
             let topPercentage = sportIconAdjustment + "%"
 
             return (
