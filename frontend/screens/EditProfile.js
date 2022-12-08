@@ -197,7 +197,7 @@ const EditProfile = ({route}) => {
 
 
   //console.log(favoriteSports)
-  if(updatedUsername == null || updatedBio == null || updatedPassword == null|| favoriteSports == null || options == null) {
+  if(updatedUsername == null || updatedBio == null || favoriteSports == null || options == null) {
   return (
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
