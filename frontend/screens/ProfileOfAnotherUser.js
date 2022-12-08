@@ -14,6 +14,7 @@ import Footer from "../components/Footer"
 
 
 const ProfileUser = ({route}) => {
+  console.log(route.params)
   const [favoriteSports, setSportInfo] = useState([])
   const [username, setUsername] = useState("")
   const [rating, setRating] = useState("")
@@ -27,7 +28,7 @@ const ProfileUser = ({route}) => {
 
   const requestOnPageLoad = () => {
     console.log("")
-    fetch(`http://${LOCAL_IP}:3000/users/${route.params.user_id}`, {
+    fetch(`http://${LOCAL_IP}:3000/users/${route.params.account_id}`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json'}
@@ -41,9 +42,10 @@ const ProfileUser = ({route}) => {
           setBio(retrieved.data.bio);
         }
       }).then(() => {
-        fetch(`http://${LOCAL_IP}:3000/users/${route.params.user_id}/sports`)
+        fetch(`http://${LOCAL_IP}:3000/users/${route.params.account_id}/sports`)
         .then((res) => {return res.json()})
         .then((res) => {
+          console.log(res)
           if(res.data != undefined){
             setSportInfo(res.data)
           }
