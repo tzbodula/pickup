@@ -172,12 +172,31 @@ const EditSettings = ({route}) => {
         onPress={() => navigation.navigate("EditProfile", {username: route.params.username,
           bio: route.params.bio, favoriteSports: route.params.favoriteSports})}
       >
+
         <Image
           style={styles.leadingIcon2}
           resizeMode="cover"
           source={require("../assets/leading-icon16.png")}
         />
         <Text style={[styles.mediumText2, styles.ml6]}>Edit Profile</Text>
+        <Image
+          style={[styles.trailingIcon2, styles.ml6]}
+          resizeMode="cover"
+          source={require("../assets/trailing-icon12.png")}
+        />
+      </Pressable>
+
+      <Pressable
+        style={styles.buttonPressablePW}
+        onPress={() => navigation.navigate("UpdatePassword")}
+      >
+
+        <Image
+          style={styles.leadingIcon2}
+          resizeMode="cover"
+          source={require("../assets/leading-icon16.png")}
+        />
+        <Text style={[styles.mediumText2, styles.ml6]}>Update Password</Text>
         <Image
           style={[styles.trailingIcon2, styles.ml6]}
           resizeMode="cover"
@@ -621,7 +640,26 @@ const styles = StyleSheet.create({
   },
   buttonPressable1: {
     position: "absolute",
-    top: 68,
+    top: 50,
+    left: 45,
+    borderRadius: 4,
+    backgroundColor: "#80ced7",
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderWidth: 2,
+    width: 150,
+    height: 29,
+    overflow: "hidden",
+    flexDirection: "row",
+    paddingHorizontal: 12,
+    paddingVertical: 0,
+    boxSizing: "border-box",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonPressablePW: {
+    position: "absolute",
+    top: 85,
     left: 45,
     borderRadius: 4,
     backgroundColor: "#80ced7",

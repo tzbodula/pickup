@@ -1,16 +1,57 @@
-import * as React from "react";
-import { Image, StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Image, StyleSheet, Text, TextInput, Pressable, SafeAreaView } from "react-native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
+import React, { useState } from 'react'
+import { Avatar } from "@rneui/base";
+import {LOCAL_IP} from '@env';
+import { Button } from "@rneui/themed";
+import { Storage } from 'expo-storage'
+import { Card } from "@rneui/themed";
+import {Picker} from '@react-native-picker/picker';
 
 
-const UpdatePassword = ({}) => {
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+const UpdatePassword = ({route}) => {
   const navigation = useNavigation();
 
-  return (
-    <SafeAreaView style={styles.updatePasswordView}>
+  const [password, setPassword] = useState("");
+  const updatePassword = (event) => {
+	setPassword(event.trim())
+    console.log(password);
+  }
+
+  const handlePasswordUpdates = () => {
+    console.log(password);
+    if(password != "") {
+      console.log("")
+        fetch(`http://${LOCAL_IP}:3000/user/updatePassword`, {
+          method: 'PUT',
+          headers: {
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json'},
+          body: JSON.stringify({
+            "password": password
+          })
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          if (data.status == 200) {
+              navigation.navigate("ProfileUser");
+          } else {
+            console.log(data)
+          }
+        }).catch((e) => {console.log(e)}) 
+    } else {
+        console.log("password empty");
+    }
+  }
+    return(
+    <>
+  
+    <SafeAreaView style={styles.editProfileView}>
       <SafeAreaView style={styles.footerView}>
-      <Pressable
+        <Pressable
           style={styles.singleTabPressable}
           onPress={() => navigation.navigate("ProfileUser")}
         >
@@ -74,6 +115,35 @@ const UpdatePassword = ({}) => {
           </SafeAreaView>
         </Pressable>
       </SafeAreaView>
+      <Image
+        style={styles.ellipseIcon1}
+        resizeMode="cover"
+        source={require("../assets/ellipse-121.png")}
+      />
+      <Image
+        style={styles.stockUserImageIcon}
+        resizeMode="cover"
+        source={require("../assets/stockuserimage.png")}
+      />
+      
+      <SafeAreaView style={styles.textFieldView2}>
+        <Image
+          style={styles.trailingIcon}
+          resizeMode="cover"
+          source={require("../assets/trailing-icon.png")}
+        />
+        <SafeAreaView style={styles.iconText}>
+        <TextInput style={styles.usernameText} onChangeText={updatePassword} maxLength={40}>{""}</TextInput>
+          <Image
+            style={[styles.leadingIcon, styles.ml8]}
+            resizeMode="cover"
+            source={require("../assets/leading-icon13.png")}
+          />
+        </SafeAreaView>
+        <Text style={styles.labelText}>Enter New Password Here</Text>
+      </SafeAreaView>
+      
+      <SafeAreaView style={styles.lineView} />
       <Pressable
         style={styles.vectorPressable}
         onPress={() => navigation.navigate("EditSettings")}
@@ -84,89 +154,151 @@ const UpdatePassword = ({}) => {
           source={require("../assets/vector9.png")}
         />
       </Pressable>
-      <SafeAreaView style={styles.textFieldPassword}>
-            <Image
-              style={styles.trailingIcon5}
-              resizeMode="cover"
-              source={require("../assets/trailing-icon.png")}
-            />
-            <SafeAreaView style={styles.iconText1}>
-              <Image
-                style={styles.leadingIcon5}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
-              <TextInput style={styles.input}>New Password</TextInput>
-            </SafeAreaView>
-            <Text style={styles.labelText1}>Enter new password</Text>
-        </SafeAreaView>
-        <SafeAreaView style={styles.textFieldPasswordConfirm}>
-            <Image
-              style={styles.trailingIcon4}
-              resizeMode="cover"
-              source={require("../assets/trailing-icon.png")}
-            />
-            <SafeAreaView style={styles.iconText2}>
-              <Image
-                style={styles.leadingIcon4}
-                resizeMode="cover"
-                source={require("../assets/leading-icon3.png")}
-              />
-              <TextInput style={styles.input}>New Password</TextInput>
-            </SafeAreaView>
-            <Text style={styles.labelText2}>CONFIRM NEW PASSWORD</Text>
-        </SafeAreaView>   
-           
-      <Pressable
-        style={styles.buttonPressable}
-        onPress={() => navigation.navigate("UpdatePassword")}
-      >
-        <Image
-          style={styles.leadingIcon1}
-          resizeMode="cover"
-          source={require("../assets/leading-icon15.png")}
-        />
-        <Text style={[styles.mediumText1, styles.ml6]}>Update Password</Text>
-        <Image
-          style={[styles.trailingIcon1, styles.ml6]}
-          resizeMode="cover"
-          source={require("../assets/trailing-icon11.png")}
-        />
-      </Pressable>
 
-      <Text style={styles.updatePasswordText}>Update Password</Text>
+      <SafeAreaView style={styles.loginView1}>
+        <Pressable
+          style={styles.leftButtonPressable}
+        >
+          <SafeAreaView style={styles.iconAndText4}>
+            <Image
+              style={styles.leadingIcon2}
+              resizeMode="cover"
+              source={require("../assets/leading-icon7.png")}
+            />
+            <Button color="#007EA7" containerStyle={{right: "27%", bottom: "12%"}} titleStyle={{fontFamily: 'GearUp', fontSize: 12}} onPress={handlePasswordUpdates}>Update</Button>
+          </SafeAreaView>
+        </Pressable>
+      </SafeAreaView>
+      
+    
+      
+    
 
-      <Pressable
-        style={styles.buttonPressable1}
-        onPress={() => navigation.navigate("EditSettings")}
-      >
+      
+
+      {/**
+      <SafeAreaView style={styles.addOrRemoveSportsView}>
+        <Text style={styles.addSportText}>Add Sport</Text>
         <Image
-          style={styles.leadingIcon2}
+          style={styles.vectorIcon}
           resizeMode="cover"
-          source={require("../assets/leading-icon16.png")}
+          source={require("../assets/vector10.png")}
         />
-        <Text style={[styles.mediumText2, styles.ml6]}>Account Settings</Text>
         <Image
-          style={[styles.trailingIcon2, styles.ml6]}
+          style={styles.vectorIcon1}
           resizeMode="cover"
-          source={require("../assets/trailing-icon12.png")}
+          source={require("../assets/vector11.png")}
         />
-      </Pressable>
-      <Image
-        style={styles.checkIcon}
-        resizeMode="cover"
-        source={require("../assets/check.png")}
-      />
+        <Image
+          style={styles.vectorIcon2}
+          resizeMode="cover"
+          source={require("../assets/vector12.png")}
+        />
+        <Image
+          style={styles.vectorIcon3}
+          resizeMode="cover"
+          source={require("../assets/vector13.png")}
+        />
+        <Image
+          style={styles.vectorIcon4}
+          resizeMode="cover"
+          source={require("../assets/vector13.png")}
+        />
+        <Image
+          style={styles.vectorIcon5}
+          resizeMode="cover"
+          source={require("../assets/vector13.png")}
+        />
+        <Image
+          style={styles.vectorIcon6}
+          resizeMode="cover"
+          source={require("../assets/vector13.png")}
+        />
+        <Image
+          style={styles.vectorIcon7}
+          resizeMode="cover"
+          source={require("../assets/vector17.png")}
+        />
+        <Image
+          style={styles.vectorIcon8}
+          resizeMode="cover"
+          source={require("../assets/vector17.png")}
+        />
+        <Image
+          style={styles.vectorIcon9}
+          resizeMode="cover"
+          source={require("../assets/vector17.png")}
+        />
+        <Image
+          style={styles.vectorIcon10}
+          resizeMode="cover"
+          source={require("../assets/vector17.png")}
+        />
+        <Image
+          style={styles.ellipseIcon2}
+          resizeMode="cover"
+          source={require("../assets/ellipse-18.png")}
+        />
+        <Image
+          style={styles.ellipseIcon3}
+          resizeMode="cover"
+          source={require("../assets/ellipse-22.png")}
+        />
+        <Image
+          style={styles.ellipseIcon4}
+          resizeMode="cover"
+          source={require("../assets/ellipse-201.png")}
+        />
+        <Image
+          style={styles.ellipseIcon5}
+          resizeMode="cover"
+          source={require("../assets/ellipse-22.png")}
+        />
+        <Image
+          style={styles.football2Icon}
+          resizeMode="cover"
+          source={require("../assets/football2.png")}
+        />
+        <Image
+          style={styles.basketball1Icon}
+          resizeMode="cover"
+          source={require("../assets/basketball-1.png")}
+        />
+        <Image
+          style={styles.soccerBall1}
+          resizeMode="cover"
+          source={require("../assets/soccer-ball-1.png")}
+        />
+        <Image
+          style={styles.tennisRacket1}
+          resizeMode="cover"
+          source={require("../assets/tennis-racket-1.png")}
+        />
+        <Image
+          style={styles.football1Icon}
+          resizeMode="cover"
+          source={require("../assets/football-1.png")}
+        />
+        <Text style={styles.footballText}>Football</Text>
+        <Text style={styles.tENNISText}>TENNIS</Text>
+        <Text style={styles.sOCCERText}>SOCCER</Text>
+        <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
+      </SafeAreaView>
+    **/}
     </SafeAreaView>
-  );
-};
+    <Header/>
+    <Footer pageID={3}/>
+    </>
+    );
+  }
+
 
 const styles = StyleSheet.create({
   mt2: {
     marginTop: 2,
   },
-  ml6: {
-    marginLeft: 6,
+  ml8: {
+    marginLeft: 8,
   },
   homeIcon: {
     position: "relative",
@@ -241,6 +373,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  singleTabPressable1: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.32%",
+    top: "17.65%",
+    right: "57.35%",
+    bottom: "0%",
+    left: "21.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
   compassIcon: {
     position: "relative",
     width: 24,
@@ -272,14 +415,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable1: {
+  singleTabPressable2: {
     position: "absolute",
     height: "82.35%",
     width: "21.32%",
     top: "17.65%",
-    right: "57.35%",
+    right: "21.35%",
     bottom: "0%",
-    left: "21.33%",
+    left: "57.33%",
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+  singleTabPressable3: {
+    position: "absolute",
+    height: "82.35%",
+    width: "21.33%",
+    top: "17.65%",
+    right: "78.67%",
+    bottom: "0%",
+    left: "0%",
     backgroundColor: "#fff",
     overflow: "hidden",
   },
@@ -306,7 +460,7 @@ const styles = StyleSheet.create({
     left: "53.42%",
     fontSize: 48,
     lineHeight: 18,
-    fontFamily: "GearUp",
+    fontFamily: "Arsenal",
     color: "#80ced7",
     textAlign: "center",
   },
@@ -348,27 +502,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  singleTabPressable2: {
+  iconAndText4: {
     position: "absolute",
-    height: "82.35%",
-    width: "21.32%",
-    top: "17.65%",
-    right: "21.35%",
-    bottom: "0%",
-    left: "57.33%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  singleTabPressable3: {
-    position: "absolute",
-    height: "82.35%",
-    width: "21.33%",
-    top: "17.65%",
-    right: "78.67%",
-    bottom: "0%",
-    left: "0%",
-    backgroundColor: "#fff",
-    overflow: "hidden",
+    transform: [
+      {
+        translateY: -9,
+      },
+      {
+        translateX: -32,
+      },
+    ],
+    top: "50%",
+    left: "50%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   footerView: {
     position: "absolute",
@@ -376,6 +524,76 @@ const styles = StyleSheet.create({
     left: 0,
     width: Dimensions.get('window').width,
     height: 68,
+  },
+  ellipseIcon1: {
+    position: "absolute",
+    top: 50,
+    right: 245,
+    bottom: 657,
+    left: 25,
+    borderRadius: 50,
+    maxWidth: "33%",
+    overflow: "hidden",
+    maxHeight: "33%",
+  },
+  stockUserImageIcon: {
+    position: "absolute",
+    top: 55,
+    left: 30,
+    width: 95,
+    height: 95,
+  },
+  usernameText: {
+    position: "relative",
+    fontSize: 10,
+    lineHeight: 15,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+    paddingRight: 2,
+    paddingTop: 15,
+  },
+  loginView1: {
+    position: "absolute",
+    top: 179,
+    left: 143,
+    borderStyle: "solid",
+    borderColor: "#80ced7",
+    borderWidth: 3,
+    width: 90,
+    height: 32,
+  },
+  leftButtonPressable: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    top: "0%",
+    right: "5%",
+    bottom: "13.04%",
+    left: "0%",
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
+    backgroundColor: "#007EA7",
+    overflow: "hidden",
+  },
+  mySportsText: {
+    position: "absolute",
+    top: 256,
+    left: 17,
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
+  lineView: {
+    position: "absolute",
+    top: 297.54,
+    left: 0,
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderTopWidth: 1,
+    width: Dimensions.get('window').width,
+    height: 1,
   },
   icon: {
     height: "2.46%",
@@ -391,6 +609,29 @@ const styles = StyleSheet.create({
     right: "91.73%",
     bottom: "94.33%",
   },
+  trailingIcon: {
+    position: "absolute",
+    transform: [
+      {
+        translateY: -8.5,
+      },
+    ],
+    top: "50%",
+    right: 12,
+    width: 18,
+    height: 18,
+    overflow: "hidden",
+    display: "none",
+  },
+  bioText: {
+    position: "relative",
+    fontSize: 7,
+    lineHeight: 12,
+    fontFamily: "GearUp",
+    color: "#9f9f9f",
+    textAlign: "left",
+    paddingRight: 2,
+  },
   leadingIcon: {
     position: "relative",
     width: 18,
@@ -398,280 +639,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     overflow: "hidden",
     display: "none",
-  },
-  mediumText: {
-    position: "relative",
-    fontSize: 8,
-    lineHeight: 18,
-    fontFamily: "GearUp",
-    color: "#000",
-    textAlign: "left",
-  },
-  trailingIcon: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  buttonView: {
-    position: "absolute",
-    top: 365,
-    left: 45,
-    borderRadius: 4,
-    backgroundColor: "#ff5858",
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderWidth: 2,
-    width: 128,
-    height: 24,
-    overflow: "hidden",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 0,
-    boxSizing: "border-box",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  leadingIcon1: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  mediumText1: {
-    position: "relative",
-    fontSize: 10,
-    lineHeight: 18,
-    fontFamily: "GearUp",
-    color: "#000",
-    textAlign: "left",
-  },
-  trailingIcon1: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  buttonPressable: {
-    position: "absolute",
-    top: 248,
-    left: 47,
-    borderRadius: 4,
-    backgroundColor: "#aaebff",
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderWidth: 2,
-    width: 128,
-    height: 24,
-    overflow: "hidden",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 0,
-    boxSizing: "border-box",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  trailingIcon5: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -9,
-      },
-    ],
-    top: "50%",
-    right: 12,
-    width: 18,
-    height: 18,
-    overflow: "hidden",
-    display: "none",
-  },
-  leadingIcon5: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  iconText1: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -9,
-      },
-    ],
-    top: "50%",
-    left: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  labelText1: {
-    position: "absolute",
-    top: -20,
-    right: 0,
-    left: 0,
-    fontSize: 10,
-    lineHeight: 16,
-    fontFamily: "GearUp",
-    color: "#9ad1d4",
-    textAlign: "left",
-    display: "flex",
-    alignItems: "flex-end",
-  },
-  textFieldPassword: {
-    position: "absolute",
-    top: 124,
-    left: "13%",
-    borderRadius: 4,
-    backgroundColor: "#fff",
-    borderStyle: "solid",
-    borderColor: "#9ad1d4",
-    borderWidth: 2,
-    width: 302,
-    height: 40,
-  },
-  trailingIcon4: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -9,
-      },
-    ],
-    top: "50%",
-    right: 12,
-    width: 18,
-    height: 18,
-    overflow: "hidden",
-    display: "none",
-  },
-  leadingIcon4: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  text2: {
-    position: "relative",
-    fontSize: 10,
-    lineHeight: 18,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "left",
-  },
-  iconText2: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -9,
-      },
-    ],
-    top: "50%",
-    left: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  labelText2: {
-    position: "absolute",
-    top: -20,
-    right: 0,
-    left: 0,
-    fontSize: 10,
-    lineHeight: 16,
-    fontFamily: "GearUp",
-    color: "#9ad1d4",
-    textAlign: "left",
-    display: "flex",
-    alignItems: "flex-end",
-  },
-  textFieldPasswordConfirm: {
-    position: "absolute",
-    top: 153,
-    left: "13%",
-    borderRadius: 4,
-    backgroundColor: "#fff",
-    borderStyle: "solid",
-    borderColor: "#80ced7",
-    borderWidth: 2,
-    width: 302,
-    height: 40,
-  },
-  trailingIcon3: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -9,
-      },
-    ],
-    top: 124,
-    right: 12,
-    width: 18,
-    height: 18,
-    overflow: "hidden",
-    display: "none",
-  },
-  leadingIcon3: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  text3: {
-    position: "relative",
-    fontSize: 10,
-    lineHeight: 18,
-    fontFamily: "GearUp",
-    color: "#111",
-    textAlign: "left",
-  },
-  iconText3: {
-    position: "absolute",
-    transform: [
-      {
-        translateY: -9,
-      },
-    ],
-    top: 124,
-    left: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  labelText3: {
-    position: "absolute",
-    top: -20,
-    right: 0,
-    left: 0,
-    fontSize: 10,
-    lineHeight: 16,
-    fontFamily: "GearUp",
-    color: "#9ad1d4",
-    textAlign: "left",
-    display: "flex",
-    alignItems: "flex-end",
-  },
-  updatePasswordText: {
-    position: "absolute",
-    top: 15,
-    left: 45,
-    fontSize: 15,
-    lineHeight: 25,
-    fontFamily: "GearUp",
-    color: "#000",
-    textAlign: "left",
-    width: 250,
-    height: 30,
   },
   leadingIcon2: {
     position: "relative",
@@ -681,53 +648,384 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     display: "none",
   },
-  mediumText2: {
-    position: "relative",
-    fontSize: 12,
-    lineHeight: 18,
+  iconText: {
+    position: "absolute",
+    transform: [
+      {
+        translateY: -26.5,
+      },
+    ],
+    top: "50%",
+    left: 6,
+    height: 52,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  labelText: {
+    position: "absolute",
+    top: -20,
+    right: 0,
+    left: 0,
+    fontSize: 7,
+    lineHeight: 16,
+    fontFamily: "GearUp",
+    color: "#FFFFFF",
+    textAlign: "left",
+    display: "flex",
+    alignItems: "flex-end",
+  },
+  textFieldView: {
+    position: "absolute",
+    top: 103,
+    left: 143,
+    borderRadius: 4,
+    backgroundColor: "#fff",
+    borderStyle: "solid",
+    borderColor: "#80ced7",
+    borderWidth: 2,
+    width: 221,
+    height: 63,
+  },
+  textFieldView2: {
+    position: "absolute",
+    top: 43,
+    left: 143,
+    borderRadius: 4,
+    backgroundColor: "#fff",
+    borderStyle: "solid",
+    borderColor: "#80ced7",
+    borderWidth: 2,
+    width: 221,
+    height: 32,
+  },
+  football2Icon: {
+    position: "absolute",
+    top: 496,
+    left: 99,
+    width: 16,
+    height: 15,
+  },
+  addSportText: {
+    position: "absolute",
+    height: "10.7%",
+    width: "36.92%",
+    top: "89.3%",
+    right: "47.67%",
+    bottom: "0%",
+    left: "15.41%",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  vectorIcon: {
+    position: "absolute",
+    height: "11.52%",
+    width: "8.14%",
+    top: "149.89%",
+    right: "89.83%",
+    bottom: "-0.41%",
+    left: "2.03%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon1: {
+    position: "absolute",
+    height: "6.58%",
+    width: "0.58%",
+    top: "152.36%",
+    right: "93.6%",
+    bottom: "2.06%",
+    left: "5.81%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon2: {
+    position: "absolute",
+    height: "0.82%",
+    width: "4.65%",
+    top: "155.24%",
+    right: "91.57%",
+    bottom: "4.94%",
+    left: "3.78%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon3: {
+    position: "absolute",
+    height: "9.88%",
+    width: "8.14%",
+    top: "4.53%",
+    right: "-0.29%",
+    bottom: "85.6%",
+    left: "92.15%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon4: {
+    position: "absolute",
+    height: "9.88%",
+    width: "8.14%",
+    top: "25.1%",
+    right: "-0.29%",
+    bottom: "65.02%",
+    left: "92.15%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon5: {
+    position: "absolute",
+    height: "9.88%",
+    width: "8.14%",
+    top: "45.68%",
+    right: "-0.29%",
+    bottom: "44.44%",
+    left: "92.15%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon6: {
+    position: "absolute",
+    height: "9.88%",
+    width: "8.14%",
+    top: "69.14%",
+    right: "-0.29%",
+    bottom: "20.99%",
+    left: "92.15%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon7: {
+    position: "absolute",
+    height: "0.82%",
+    width: "5.23%",
+    top: "9.05%",
+    right: "1.16%",
+    bottom: "90.12%",
+    left: "93.6%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon8: {
+    position: "absolute",
+    height: "0.82%",
+    width: "5.23%",
+    top: "29.63%",
+    right: "1.16%",
+    bottom: "69.55%",
+    left: "93.6%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon9: {
+    position: "absolute",
+    height: "0.82%",
+    width: "5.23%",
+    top: "50.21%",
+    right: "1.16%",
+    bottom: "48.97%",
+    left: "93.6%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  vectorIcon10: {
+    position: "absolute",
+    height: "0.82%",
+    width: "5.23%",
+    top: "73.66%",
+    right: "1.16%",
+    bottom: "25.51%",
+    left: "93.6%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  ellipseIcon2: {
+    position: "absolute",
+    height: "18.52%",
+    width: "13.08%",
+    top: "-0.41%",
+    right: "87.21%",
+    bottom: "81.89%",
+    left: "-0.29%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  ellipseIcon3: {
+    position: "absolute",
+    height: "17.7%",
+    width: "12.5%",
+    top: "21.4%",
+    right: "87.5%",
+    bottom: "60.91%",
+    left: "0%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  ellipseIcon4: {
+    position: "absolute",
+    height: "18.52%",
+    width: "13.08%",
+    top: "42.39%",
+    right: "86.92%",
+    bottom: "39.09%",
+    left: "0%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  ellipseIcon5: {
+    position: "absolute",
+    height: "17.7%",
+    width: "12.5%",
+    top: "65.43%",
+    right: "87.5%",
+    bottom: "16.87%",
+    left: "0%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  basketball1Icon: {
+    position: "absolute",
+    height: "13.58%",
+    width: "8.72%",
+    top: "23.46%",
+    right: "89.24%",
+    bottom: "62.96%",
+    left: "2.03%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  soccerBall1: {
+    position: "absolute",
+    height: "15.64%",
+    width: "10.17%",
+    top: "44.03%",
+    right: "88.37%",
+    bottom: "40.33%",
+    left: "1.45%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  tennisRacket1: {
+    position: "absolute",
+    height: "12.35%",
+    width: "8.72%",
+    top: "68.31%",
+    right: "89.53%",
+    bottom: "19.34%",
+    left: "1.74%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  football1Icon: {
+    position: "absolute",
+    height: "12.35%",
+    width: "9.3%",
+    top: "2.88%",
+    right: "89.24%",
+    bottom: "84.77%",
+    left: "1.45%",
+    maxWidth: "100%",
+    overflow: "hidden",
+    maxHeight: "100%",
+  },
+  footballText: {
+    position: "absolute",
+    height: "16.05%",
+    width: "29.94%",
+    top: "2.06%",
+    right: "53.78%",
+    bottom: "81.89%",
+    left: "16.28%",
+    fontSize: 14,
     fontFamily: "GearUp",
     color: "#000",
     textAlign: "left",
   },
-  trailingIcon2: {
-    position: "relative",
-    width: 18,
-    height: 18,
-    flexShrink: 0,
-    overflow: "hidden",
-    display: "none",
-  },
-  buttonPressable1: {
+  tENNISText: {
     position: "absolute",
-    top: 68,
-    left: 45,
-    borderRadius: 4,
-    backgroundColor: "#80ced7",
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderWidth: 2,
-    width: 150,
-    height: 29,
-    overflow: "hidden",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 0,
-    boxSizing: "border-box",
-    alignItems: "center",
-    justifyContent: "center",
+    height: "16.05%",
+    width: "19.77%",
+    top: "66.26%",
+    right: "63.08%",
+    bottom: "17.7%",
+    left: "17.15%",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
   },
-  checkIcon: {
+  sOCCERText: {
     position: "absolute",
-    top: 156,
-    left: 39,
-    borderRadius: 2,
-    width: 16,
-    height: 16,
+    height: "16.05%",
+    width: "23.55%",
+    top: "44.03%",
+    right: "59.88%",
+    bottom: "39.92%",
+    left: "16.57%",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
   },
-  updatePasswordView: {
-    top: "4%",
+  sportText: {
+    position: "absolute",
+    height: "16.05%",
+    width: "23.55%",
+    top: "44.03%",
+    right: "59.88%",
+    bottom: "39.92%",
+    left: "16.57%",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
+  bASKETBALLText: {
+    position: "absolute",
+    height: "16.05%",
+    width: "37.79%",
+    top: "22.22%",
+    right: "45.93%",
+    bottom: "61.73%",
+    left: "16.28%",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
+  addOrRemoveSportsView: {
+    position: "absolute",
+    top: 326,
+    left: "8%",
+    width: 344,
+    height: 243,
+  },
+  editProfileView: {
+    top: "13%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     overflow: "hidden",
     width: Dimensions.get('window').width,
