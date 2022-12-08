@@ -2,58 +2,76 @@ import { Image, StyleSheet, Text, SafeAreaView, Pressable, Dimensions } from "re
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { Avatar } from "@rneui/base";
+import { Storage } from 'expo-storage'
 
 import { AirbnbRating } from 'react-native-ratings';
 import {LOCAL_IP} from '@env';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-const ProfileOfAnotherUser = () => {
-  const [otherUserData, setProfileData] = useState({})
+import Header from "../components/Header";
+import Footer from "../components/Footer"
 
-  const success = false; 
-  const username = "";
-  const rating = 0;
-  const gamesJoined = 0;
-  const gamesAttended = 0;
-  const bio = "";
 
+const ProfileUser = () => {
   const [favoriteSports, setSportInfo] = useState([])
-
-
-
+  const [username, setUsername] = useState("")
+  const [rating, setRating] = useState("")
+  const [gamesJoined, setGamesJoined] = useState("")
+  const [gamesAttended, setGamesAttended] = useState("")
+  const [bio, setBio] = useState("")
+  const [email, setEmail] = useState("")
   const navigation = useNavigation();
-  
+  let favoriteSportAdjustment = 38
+  let sportIconAdjustment = 37.75
+  let sportEllipseAdjustment = 36.75
+
   const requestOnPageLoad = () => {
-    fetch(`http://${LOCAL_IP}:3000/users/id`, {
+    console.log("")
+    fetch(`http://${LOCAL_IP}:3000/users/${route.params.user_id}`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json'}
       }).then((res) => {return res.json()})
       .then((retrieved) => {
         if (retrieved.status == 200) {
-          success = true;
-          username = retrieved.data.account_username
-          rating = retrieved.data.rating
-          gamesJoined = retrieved.data.games_joined
-          gamesAttended = retrieved.data.games_attended;
-          bio = retrieved.data.bio;
+          setUsername(retrieved.data.account_username)
+          setRating(retrieved.data.rating)
+          setGamesJoined(retrieved.data.games_joined)
+          setGamesAttended(retrieved.data.games_attended);
+          setBio(retrieved.data.bio);
+          setEmail(retrieved.data.email)
         }
       }).then(() => {
-        fetch(`http://${LOCAL_IP}:3000/users/id/sports`)
+        fetch(`http://${LOCAL_IP}:3000/users/${route.params.user_id}/sports`)
         .then((res) => {return res.json()})
         .then((res) => {
-          setSportInfo(res.data)
-          console.log(res.data)
+          if(res.data != undefined){
+            setSportInfo(res.data)
+          }
         })
         .catch((e) => {console.log(e)})
-      })
-      .catch((e) => {console.log(e)})
+      }).catch((e) => {console.log(e)})
+    
   }
 
+// Dynamic fav sports icons
+// Needs to be updated if new sports are added
+function getSportImage(sportName){
+  switch (sportName) {
+    case "Football":
+      return require('../assets/football-6.png');
+    case "Soccer":
+      return require('../assets/soccer-ball-1.png');
+    case "Basketball":
+      return require('../assets/basketball-1.png');
+    default:
+      return require('../assets/football-6.png');
+  }
+}
+
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
-  
-  if(success == false) {
+  if(username == null || rating == null || gamesAttended == null || gamesJoined == null || bio == null) {
     return(
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
@@ -123,82 +141,21 @@ const ProfileOfAnotherUser = () => {
     </SafeAreaView>
     );
   } else {
-    console.log(typeof profileData)
     return (
+
+      <>
+
       <SafeAreaView style={styles.profileUserView}>
-       <SafeAreaView style={styles.footerView}>
-        <Pressable
-            style={styles.singleTabPressable}
-            onPress={() => navigation.navigate("ProfileOfAnotherUser")}
-          >
-            <SafeAreaView style={styles.iconAndText}>
-              <Image
-                style={styles.homeIcon}
-                resizeMode="cover"
-                source={require("../assets/home3.png")}
-              />
-              <Text style={[styles.text, styles.mt2]}>Account</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable1}
-            onPress={() => navigation.navigate("Friends")}
-          >
-            <SafeAreaView style={styles.iconAndText1}>
-              <Image
-                style={styles.userIcon}
-                resizeMode="cover"
-                source={require("../assets/user.png")}
-              />
-              <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable2}
-            onPress={() => navigation.navigate("Map")}
-          >
-            <SafeAreaView style={styles.iconAndText2}>
-              <Image
-                style={styles.compassIcon}
-                resizeMode="cover"
-                source={require("../assets/compass.png")}
-              />
-              <Text style={[styles.text2, styles.mt2]}>Map</Text>
-            </SafeAreaView>
-          </Pressable>
-          <Pressable
-            style={styles.framePressable}
-            onPress={() => navigation.navigate("CreateEvent")}
-          >
-            <Image
-              style={styles.addEventCircle}
-              resizeMode="cover"
-              source={require("../assets/ellipse-1.png")}
-            />
-            <Text style={styles.addEventPlus}>+</Text>
-          </Pressable>
-          <Pressable
-            style={styles.singleTabPressable3}
-            onPress={() => navigation.navigate("MainPage")}
-          >
-            <SafeAreaView style={styles.iconAndText3}>
-              <Image
-                style={styles.searchIcon}
-                resizeMode="cover"
-                source={require("../assets/search4.png")}
-              />
-              <Text style={[styles.text4, styles.mt2]}>Events</Text>
-            </SafeAreaView>
-          </Pressable>
-        </SafeAreaView>
+
         <Avatar
           containerStyle={{
+            
             borderWidth: 3,
             borderColor: "#80ced7",
             borderStyle: "solid",
             position: "relative",
-            left: 30,
-            top: 10,
+            left: "3%",
+            top: "6%",
           }}
           size={"large"}
           imageProps={{
@@ -219,22 +176,7 @@ const ProfileOfAnotherUser = () => {
         <Text style={styles.text6}>{(((1.0 * gamesAttended) / gamesJoined) * 100)}%</Text>
         <Text style={styles.gamesPlayedText}>Games Played</Text>
         <Text style={styles.attendanceRateText}>Attendance Rate</Text>
-        <Pressable
-          style={styles.buttonPressable}
-          onPress={() => navigation.navigate("EditSettings")}
-        >
-          <Image
-            style={styles.leadingIcon}
-            resizeMode="cover"
-            source={require("../assets/leading-icon17.png")}
-          />
-          <Text style={[styles.mediumText, styles.ml6]}>Edit Profile</Text>
-          <Image
-            style={[styles.trailingIcon, styles.ml6]}
-            resizeMode="cover"
-            source={require("../assets/trailing-icon13.png")}
-          />
-        </Pressable>
+        
         <Image
           style={styles.icon}
           resizeMode="cover"
@@ -250,76 +192,75 @@ const ProfileOfAnotherUser = () => {
             source={require("../assets/vector31.png")}
           />
         </Pressable>
-        <Image
-          style={styles.ellipseIcon2}
-          resizeMode="cover"
-          source={require("../assets/ellipse-181.png")}
-        />
-        <Image
-          style={styles.ellipseIcon3}
-          resizeMode="cover"
-          source={require("../assets/ellipse-193.png")}
-        />
-        <Image
-          style={styles.ellipseIcon4}
-          resizeMode="cover"
-          source={require("../assets/ellipse-201.png")}
-        />
-        <Image
-          style={styles.ellipseIcon5}
-          resizeMode="cover"
-          source={require("../assets/ellipse-193.png")}
-        />
-        <Image
-          style={styles.basketball1Icon}
-          resizeMode="cover"
-          source={require("../assets/basketball-1.png")}
-        />
-        <Image
-          style={styles.soccerBall1}
-          resizeMode="cover"
-          source={require("../assets/soccer-ball-1.png")}
-        />
-        <Image
-          style={styles.tennisRacket1}
-          resizeMode="cover"
-          source={require("../assets/tennis-racket-1.png")}
-        />
-        <Image
-          style={styles.football1Icon}
-          resizeMode="cover"
-          source={require("../assets/football-1.png")}
-        />
 
-        
-       {/*  <Text style={styles.footballText}>Football</Text>
-        <Text style={styles.timESText}>timES</Text>
-        <Text style={styles.timESText1}>timES</Text>
-        <Text style={styles.timESText2}>timES</Text>
-        <Text style={styles.timESText3}>timES</Text>
-        <Text style={styles.tENNISText}>TENNIS</Text>
-        <Text style={styles.sOCCERText}>SOCCER</Text>
-        <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
-        <Text style={styles.text7}>25</Text>
-        <Text style={styles.text8}>3</Text>
-        <Text style={styles.text9}>1</Text>
-        <Text style={styles.text10}>1</Text> */}
+    
         
         <Text style={styles.aLLTIMESPORTSPLAYED}>Favorite Sports</Text>
         
         {
-          //Please do your CSS magic Thomas to get these to align property thx
-          favoriteSports.length
-          ?
+          
           favoriteSports.map((sport) => {
-            return <Text key={sport.sport_id}> {sport.sport_name} </Text> 
+            favoriteSportAdjustment = favoriteSportAdjustment + 7
+            let topPercentage = favoriteSportAdjustment + "%"
+
+            return (<Text style={{position: "absolute", top: topPercentage, left: "16%", fontSize: 14, fontFamily: "GearUp", color: "#FFFFFF", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text>
+            /**
+            <Image
+                  style={{position: "absolute", height: "5%", width: "8%", right: "50.21%", bottom: "81.89%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
+                  resizeMode="cover"
+                  source={getSportImage(sport.sport_name)}
+            />
+            */
+          );
         })
-          :
-          <Text> empty </Text>
         }
+        
+        {
+        favoriteSports.map((sport, index) => {
+          sportEllipseAdjustment = sportEllipseAdjustment + 7
+            let topPercentage = sportEllipseAdjustment + "%"
+
+            return (
+              <Image
+              key={index + 10}
+              style={{position: "absolute",
+              top: topPercentage,
+              left: "4%",
+              width: 45,
+              height: 45,}}
+              resizeMode="cover"
+              source={require("../assets/ellipse-193.png")}
+            />
+          );
+        })
+        }
+
+        {
+        favoriteSports.map((sport, index) => {
+          sportIconAdjustment = sportIconAdjustment + 7
+            let topPercentage = sportIconAdjustment + "%"
+
+            return (
+            <Image
+              key={index+20}
+              style={{position: "absolute",
+              top: topPercentage,
+              left: "5.5%",
+              width: 32,
+              height: 30,}}
+              resizeMode="cover"
+              source={getSportImage(sport.sport_name)}
+            />
+          );
+        })
+        }
+        
         
         <SafeAreaView style={styles.lineView} />
       </SafeAreaView>
+      <Header/>
+      <Footer pageID={3}/>
+      </>
     );
   }
 
@@ -344,7 +285,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#1eabbb",
+    color: "#FFFFFF",
     textAlign: "center",
   },
   iconAndText: {
@@ -597,12 +538,12 @@ const styles = StyleSheet.create({
   dOTUNIVERSITY4Text: {
     position: "absolute",
     paddingTop: "5%",
-    top: "9%",
-    left: 138,
+    top: "7%",
+    left: "25%",
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     width: 200,
     height: 30,
@@ -669,30 +610,30 @@ const styles = StyleSheet.create({
   },
   bioStyle: {
     position: "absolute",
-    top: "12.3%",
-    left: "34%",
+    top: "10.4%",
+    left: "25.5%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp Soft",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     width: 177,
   },
   userRating: {
-    color: "#34495e",
+    color: "#FFFFFF",
     position: "absolute",
-    left: "32%",
-    top: "21%",
+    left: "25%",
+    top: "13.25%",
   },
   text5: {
     position: "absolute",
     paddingTop: "18%",
-    top: 205,
+    top: "21%",
     left: 48,
     fontSize: 20,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 60,
     height: 25,
@@ -700,36 +641,36 @@ const styles = StyleSheet.create({
   text6: {
     position: "absolute",
     paddingTop: "18%",
-    top: 205,
+    top: "21%",
     left: 263,
     fontSize: 20,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 70,
     height: 25,
   },
   gamesPlayedText: {
     position: "absolute",
-    top: 228,
-    left: 21,
+    top: "25%",
+    left: "5.5%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 113,
     height: 23,
   },
   attendanceRateText: {
     position: "absolute",
-    top: 231,
-    left: 234,
+    top: "25%",
+    left: "57%",
     fontSize: 8,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "center",
     width: 113,
     height: 23,
@@ -761,8 +702,8 @@ const styles = StyleSheet.create({
   },
   buttonPressable: {
     position: "absolute",
-    top: "21%",
-    left: 272,
+    top: "10%",
+    left: "89%",
     borderRadius: 4,
     backgroundColor: "#fff",
     borderStyle: "solid",
@@ -780,8 +721,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: "21.75%",
-    left: 276,
+    top: "10.75%",
+    left: "90%",
     width: 21,
     height: 19,
   },
@@ -985,7 +926,7 @@ const styles = StyleSheet.create({
     left: 15,
     fontSize: 14,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
   },
   lineView: {
@@ -999,8 +940,9 @@ const styles = StyleSheet.create({
     height: 1,
   },
   profileUserView: {
+    marginTop: "30%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     width: "100%",
     height: 812,
@@ -1010,4 +952,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileOfAnotherUser;
+export default ProfileUser;
