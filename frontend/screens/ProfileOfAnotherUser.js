@@ -13,7 +13,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer"
 
 
-const ProfileUser = () => {
+const ProfileUser = ({route}) => {
   const [favoriteSports, setSportInfo] = useState([])
   const [username, setUsername] = useState("")
   const [rating, setRating] = useState("")
@@ -51,9 +51,9 @@ const ProfileUser = () => {
         .catch((e) => {console.log(e)})
       }).catch((e) => {console.log(e)})
     
-  }
+  }0
 
-// Dynamic fav sports icons
+00// Dynamic fav sports icons
 // Needs to be updated if new sports are added
 function getSportImage(sportName){
   switch (sportName) {

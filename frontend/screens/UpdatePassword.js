@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
 
 
-const UpdatePassword = () => {
+const UpdatePassword = ({}) => {
   const navigation = useNavigation();
 
   return (
@@ -133,7 +133,9 @@ const UpdatePassword = () => {
           source={require("../assets/trailing-icon11.png")}
         />
       </Pressable>
+
       <Text style={styles.updatePasswordText}>Update Password</Text>
+
       <Pressable
         style={styles.buttonPressable1}
         onPress={() => navigation.navigate("EditSettings")}

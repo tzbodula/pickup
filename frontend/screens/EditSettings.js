@@ -115,6 +115,21 @@ const EditSettings = ({route}) => {
       </Pressable>
       <Pressable 
       style={styles.buttonView}
+      onPress={() => navigation.navigate("UpdatePassword")}>
+        <Image
+          style={styles.leadingIcon}
+          resizeMode="cover"
+          source={require("../assets/leading-icon14.png")}
+        />
+        <Text style={[styles.mediumText, styles.ml6]}>Update Password</Text>
+        <Image
+          style={[styles.trailingIcon, styles.ml6]}
+          resizeMode="cover"
+          source={require("../assets/trailing-icon10.png")}
+        />
+      </Pressable>
+      <Pressable 
+      style={styles.buttonView}
       onPress={handleDeleteAccount}>
         <Image
           style={styles.leadingIcon}
