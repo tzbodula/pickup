@@ -72,22 +72,5 @@ router.post('/favorite',  checkSession, (req, res) => {
     
 });
 
-// Sends the list of this player's favorite sport
-router.get('/:id/sports',  (req, res) => {
-
-    const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
-    JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
-    WHERE account_id = ? ;`
-
-    db.query(query, [req.params.id], (err, result) => {
-        if (result === undefined || result.length == 0) {
-            return res.status(400).send({message: "Not found", status: 400});
-        }
-
-        return res.status(200).send({data: result, status: 200});
-    });
-
-
-});
 
 module.exports = router;

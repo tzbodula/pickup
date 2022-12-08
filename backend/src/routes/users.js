@@ -45,13 +45,8 @@ router.post('/', (req, res, next) => {
     });
 });
 
-<<<<<<< HEAD
-// Gets the Profile Information of some other user
-router.get('/:id', (req, res) => {
-=======
 // Gets the ID of some other user
 router.get('/:id', checkSession, (req, res) => {
->>>>>>> 971be6a4f3dfe8400cc2d181a332b6dc6a4903f2
 
     const query = `SELECT account_username, bio, rating, games_joined, games_attended FROM accounts 
     WHERE accounts.account_id = ? ;`
@@ -67,5 +62,22 @@ router.get('/:id', checkSession, (req, res) => {
     
 });
 
+// Sends the list of this player's favorite sport
+router.get('/:id/sports',  (req, res) => {
+
+    const query = `SELECT sports.sport_name, sports.sport_id FROM player_sport_favorite 
+    JOIN sports ON player_sport_favorite.sport_id = sports.sport_id 
+    WHERE account_id = ? ;`
+
+    db.query(query, [req.params.id], (err, result) => {
+        if (result === undefined || result.length == 0) {
+            return res.status(400).send({message: "Not found", status: 400});
+        }
+
+        return res.status(200).send({data: result, status: 200});
+    });
+
+
+});
 
 module.exports = router;
