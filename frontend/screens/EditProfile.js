@@ -5,78 +5,168 @@ import React, { useState } from 'react'
 import { Avatar } from "@rneui/base";
 import {LOCAL_IP} from '@env';
 import { Button } from "@rneui/themed";
+import { Storage } from 'expo-storage'
+import { Card } from "@rneui/themed";
+import {Picker} from '@react-native-picker/picker';
 
-const EditProfile = () => {
+
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+const EditProfile = ({route}) => {
   const navigation = useNavigation();
-  const [profileData, setProfileData] = useState(null)
+  const [updatedUsername, setUsername] = useState(route.params.username)
+  const [updatedBio, setBio] = useState(route.params.bio)
+  const [favoriteSports, setSportInfo] = useState(route.params.favoriteSports)
+  const [hasChanged, setHasChanged] = useState(false)
+  const [options, setOptions] = useState([])
+  const [Enable , setEnable]  = useState(1);
 
-  let username = "Test";
-  let bio = "Example bio";
-  
-  const requestOnPageLoad = () => {
-    
-    fetch(`http://${LOCAL_IP}:3000/user/`, {
-      method: 'GET',
-      headers: {
-      'Content-Type': 'application/json'}
-    }).then((res) => {return res.json()})
-    .then((retrieved) => {
-      if (retrieved.status == 200) {
-        username = retrieved.data.account_username
-        bio = retrieved.data.bio
-        const retrievedData = {
-          username: username,
-          bio: bio,
-        }
+  let favoriteSportAdjustment = 16;
 
-        setProfileData(retrievedData)
+  const updateUsername = (event) => {
+    setHasChanged(true)
+    setUsername(event.trim())
+  }
+
+  const updateBio = (event) => {
+    setHasChanged(true)
+    setBio(event.trim())
+  }
+
+  const removeFavSport = (delID) => {
+    setSportInfo((newFavoriteSports) =>
+      newFavoriteSports.filter((sport) => sport.sport_id !== delID)
+    );
+  };
+
+  const addFavSport = (addID) => {
+    let newSport = ""
+    let alreadyFavorited = false
+    options.forEach((option) => {
+      if(option.sport_id == addID){
+        newSport = option
       }
-    }).catch((e) => {console.log(e)})
+    })
+    favoriteSports.forEach((fav) => {
+      if(fav.sport_id == addID){
+        alreadyFavorited = true
+      }
+    })
+    if(!alreadyFavorited){
+      setSportInfo(newFavoriteSports => [...newFavoriteSports, newSport])
+    }
+  };
+
+  const requestOnPageLoad = () => {
+   setBio(route.params.bio)
+   setUsername(route.params.username)
+   setSportInfo(route.params.favoriteSports)
+   if(options.length == 0){
+    pullSports()
+   }
   }
   useFocusEffect(React.useCallback(requestOnPageLoad, []))
 
 
-  const [updatedUsername, setUsername] = useState(username)
-  const [updatedBio, setBio] = useState(bio)
-
-  const updateUsername = (event) => {
-    setUsername(event)
-  }
-
-  const updateBio = (event) => {
-    setBio(event)
+  const pullSports = () => {
+    fetch(`http://${LOCAL_IP}:3000/sports`, {
+          method: 'GET',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          if (data.status == 200) {
+            setOptions(data.data)
+          }
+      }).catch((e) => {console.log(e)})
   }
 
   const handleUpdate = () => {
-    try {
-    fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
-      method: 'PUT',
-      headers: {
-      'Content-Type': 'application/json', 
-      'Accept': 'application/json'},
-      body: JSON.stringify({
-        "newUsername": updatedUsername,
-        "newBio": updatedBio
-      })
-    }).then((res) => {return res.json()})
-    .then((data) => {
-      if (data.status == 200) {
-        navigation.navigate("ProfileUser")
-      }
-      console.log(data)
-    })
-    
-  } catch(e) {
-    console.log(e)
+    if(hasChanged) {
+      console.log("")
+        fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
+          method: 'PUT',
+          headers: {
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json'},
+          body: JSON.stringify({
+            "newUsername": updatedUsername,
+            "newBio": updatedBio
+          })
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          if (data.status == 200) {
+              navigation.navigate("ProfileUser");
+          }      
+        }).catch((e) => {console.log(e)}) 
+    }
+    else{
+      navigation.navigate("ProfileUser")
+    }
   }
+
+
+  const deleteSport = (sportID) => {
+    console.log("")
+      fetch(`http://${LOCAL_IP}:3000/sports/favorite`, {
+        method: 'DELETE',
+        headers: {
+        'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          "sport_id": sportID,
+        })
+      }).then((res) => {return res.json()})
+      .then((data) => {
+        if (data.status == 200) {
+          navigation.navigate("EditProfile", {
+            username: updatedUsername,
+            bio: updatedBio,
+            favoriteSports: favoriteSports,
+          })
+        }      
+      }).catch((e) => {console.log(e)}) 
+  }
+
+  const addSport = (sportID) => {
+    console.log("")
+      fetch(`http://${LOCAL_IP}:3000/sports/favorite`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          "sport_id": sportID,
+        })
+      }).then((res) => {return res.json()})
+      .then((data) => {
+        if (data.status == 200) {
+          navigation.navigate("EditProfile", {
+            username: updatedUsername,
+            bio: updatedBio,
+            favoriteSports: favoriteSports,
+          })
+        }      
+      }).catch((e) => {console.log(e)}) 
+  }
+
+// Dynamic fav sports icons
+// Needs to be updated if new sports are added
+  function getSportImage(sportName){
+    switch (sportName) {
+      case "Football":
+        return require('../assets/football-6.png');
+      case "Soccer":
+        return require('../assets/soccer-ball-1.png');
+      case "Basketball":
+        return require('../assets/basketball-1.png');
+      default:
+        return require('../assets/football-6.png');
+    }
   }
 
 
-
-
-
-
-  if(profileData == null) {
+  //console.log(favoriteSports)
+  if(updatedUsername == null || updatedBio == null || favoriteSports == null || options == null) {
   return (
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
@@ -148,6 +238,8 @@ const EditProfile = () => {
 }
   else{
     return(
+    <>
+  
     <SafeAreaView style={styles.editProfileView}>
       <SafeAreaView style={styles.footerView}>
         <Pressable
@@ -232,7 +324,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40} placeholder="Enter new username"></TextInput>
+        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40}>{route.params.username}</TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
@@ -261,7 +353,7 @@ const EditProfile = () => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68} placeholder="Enter new bio"></TextInput>
+          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68}>{route.params.bio}</TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
@@ -296,11 +388,107 @@ const EditProfile = () => {
 
 
 
-      <Image
-        style={styles.football2Icon}
-        resizeMode="cover"
-        source={require("../assets/football2.png")}
-      />
+      {
+          
+          favoriteSports.map((sport) => {
+            favoriteSportAdjustment = favoriteSportAdjustment + 10
+            let topPercentage = favoriteSportAdjustment + "%"
+          
+            return (
+              <Card key={sport.sport_id} containerStyle={{top: topPercentage, position: "absolute", left: "1%", width: "90%", height: "8%"}}>
+                <Text style={{top: "7%", left: "15%", height: "300%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
+                <Image
+                  style={{position: "absolute", height: "47%", width: "15%", top: "-5%", right: "87.21%", bottom: "81.89%", left: "-2.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
+                  resizeMode="cover"
+                  source={require("../assets/ellipse-193.png")}
+                />
+                <Image
+                  style={{position: "absolute", height: "35%", width: "10%", top: "0%", right: "90.21%", bottom: "81.89%", left: "-0.29%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
+                  resizeMode="cover"
+                  source={getSportImage(sport.sport_name)}
+                />
+                <Pressable style={{position: "absolute", height: "50%", width: "100%", right: "0%", bottom: "55%", left: "35%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%"}} 
+                 onPress={() => {
+                    removeFavSport(sport.sport_id)
+                    deleteSport(sport.sport_id)
+                  }}>
+                  <Image
+                    style={{position: "absolute", height: "50%", width: "100%", top: "22.5%", left: "12.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%", alignItems: 'center', justifyContent: 'center'}}
+                    resizeMode="center"
+                    source={require("../assets/vector13.png")}
+                  />
+                </Pressable>
+              </Card>
+          )})
+        }
+    
+
+    <SafeAreaView style={styles.addOrRemoveSportsView}>
+    <Text style={{left: "35%", top: "90%", fontSize: 13, fontFamily: "GearUp", color: "#fff"}}>Add Sport</Text>
+      <Card key={10} containerStyle={{top: "95%", position: "absolute", left: "15%", width: "60%", height: "25%"}}>
+        <Pressable style={styles.addOrRemoveSportsView}
+          onPress={() => {
+            addFavSport(Enable)
+            addSport(Enable)
+          }}>
+          <Image
+          style={{position: "absolute",
+          height: "11.52%",
+          width: "8.25%",
+          top: "-133%",
+          left: "-5%",
+          maxWidth: "100%",
+          overflow: "hidden",
+          maxHeight: "100%",}}
+          resizeMode="cover"
+          source={require("../assets/vector10.png")}
+          />
+        </Pressable>
+        <Image
+          style={{
+          height: "80%",
+          width: "1.75%",
+          top: "37%",
+          left: "5.5%",
+          maxWidth: "100%",
+          overflow: "hidden",
+          maxHeight: "100%",}}
+          resizeMode="cover"
+          source={require("../assets/vector11.png")}
+        />
+        <Image
+          style={{position: "absolute",
+          height: "15%",
+          width: "10%",
+          top: "70%",
+          left: "1.5%",
+          maxWidth: "100%",
+          overflow: "hidden",
+          maxHeight: "100%",}}
+          resizeMode="cover"
+          source={require("../assets/vector12.png")}
+        />
+      </Card>
+      {
+      <Picker style ={{height: '15%', width: "45%", left: "33%", top: "97.5%", backgroundColor: '#fff', justifyContent: "center"}} selectedValue={Enable} onValueChange={(itemValue) => setEnable(itemValue)}>
+      {
+        options.length
+        ?
+        options.map((option) => {
+          return (
+            <Picker.Item key={option.sport_id} label={option.sport_name} value={option.sport_id} />
+        )})
+        :
+        <Picker.Item label="" value="" />
+      }
+      </Picker>
+    }
+    </SafeAreaView>
+    
+
+      
+
+      {/**
       <SafeAreaView style={styles.addOrRemoveSportsView}>
         <Text style={styles.addSportText}>Add Sport</Text>
         <Image
@@ -379,6 +567,11 @@ const EditProfile = () => {
           source={require("../assets/ellipse-22.png")}
         />
         <Image
+          style={styles.football2Icon}
+          resizeMode="cover"
+          source={require("../assets/football2.png")}
+        />
+        <Image
           style={styles.basketball1Icon}
           resizeMode="cover"
           source={require("../assets/basketball-1.png")}
@@ -403,7 +596,11 @@ const EditProfile = () => {
         <Text style={styles.sOCCERText}>SOCCER</Text>
         <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
       </SafeAreaView>
+    **/}
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={3}/>
+    </>
     );
   }
 };
@@ -785,7 +982,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#292929",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "flex-end",
@@ -841,7 +1038,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "11.52%",
     width: "8.14%",
-    top: "88.89%",
+    top: "149.89%",
     right: "89.83%",
     bottom: "-0.41%",
     left: "2.03%",
@@ -853,7 +1050,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "6.58%",
     width: "0.58%",
-    top: "91.36%",
+    top: "152.36%",
     right: "93.6%",
     bottom: "2.06%",
     left: "5.81%",
@@ -865,7 +1062,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "0.82%",
     width: "4.65%",
-    top: "94.24%",
+    top: "155.24%",
     right: "91.57%",
     bottom: "4.94%",
     left: "3.78%",
@@ -1104,6 +1301,19 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "left",
   },
+  sportText: {
+    position: "absolute",
+    height: "16.05%",
+    width: "23.55%",
+    top: "44.03%",
+    right: "59.88%",
+    bottom: "39.92%",
+    left: "16.57%",
+    fontSize: 14,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+  },
   bASKETBALLText: {
     position: "absolute",
     height: "16.05%",
@@ -1125,9 +1335,9 @@ const styles = StyleSheet.create({
     height: 243,
   },
   editProfileView: {
-    top: "4%",
+    top: "13%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     overflow: "hidden",
     width: Dimensions.get('window').width,

@@ -3,76 +3,14 @@ import { Image, StyleSheet, Text, SafeAreaView, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
 
+import Footer from "../components/Footer";
+
 const Friends = () => {
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.friendsView}>
-      <SafeAreaView style={styles.footerView}>
-        <Pressable
-          style={styles.singleTabPressable}
-          onPress={() => navigation.navigate("ProfileUser")}
-        >
-          <SafeAreaView style={styles.iconAndText}>
-            <Image
-              style={styles.homeIcon}
-              resizeMode="cover"
-              source={require("../assets/home7.png")}
-            />
-            <Text style={[styles.text, styles.mt2]}>Account</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable1}
-          onPress={() => navigation.navigate("Friends")}
-        >
-          <SafeAreaView style={styles.iconAndText1}>
-            <Image
-              style={styles.userIcon}
-              resizeMode="cover"
-              source={require("../assets/user8.png")}
-            />
-            <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable2}
-          onPress={() => navigation.navigate("Map")}
-        >
-          <SafeAreaView style={styles.iconAndText2}>
-            <Image
-              style={styles.compassIcon}
-              resizeMode="cover"
-              source={require("../assets/compass.png")}
-            />
-            <Text style={[styles.text2, styles.mt2]}>Map</Text>
-          </SafeAreaView>
-        </Pressable>
-        <Pressable
-          style={styles.framePressable}
-          onPress={() => navigation.navigate("CreateEvent")}
-        >
-          <Image
-            style={styles.addEventCircle}
-            resizeMode="cover"
-            source={require("../assets/ellipse-1.png")}
-          />
-          <Text style={styles.addEventPlus}>+</Text>
-        </Pressable>
-        <Pressable
-          style={styles.singleTabPressable3}
-          onPress={() => navigation.navigate("MainPage")}
-        >
-          <SafeAreaView style={styles.iconAndText3}>
-            <Image
-              style={styles.searchIcon}
-              resizeMode="cover"
-              source={require("../assets/search4.png")}
-            />
-            <Text style={[styles.text4, styles.mt2]}>Events</Text>
-          </SafeAreaView>
-        </Pressable>
-      </SafeAreaView>
+      <Footer pageID={1}/>
       <Image
         style={styles.ellipseIcon1}
         resizeMode="cover"
