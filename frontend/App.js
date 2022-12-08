@@ -22,7 +22,7 @@ import CreateEvent from "./screens/CreateEvent";
 import EventDetails from "./screens/EventDetails";
 import MyEvents from "./screens/MyEvents";
 import EditEvent from "./screens/EditEvent"
-
+import UpdatePassword from "./screens/UpdatePassword"
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
@@ -90,6 +90,7 @@ export default function App() {
             <Stack.Screen name="EventDetails" component={EventDetails} options={{ headerShown: false }} />
             <Stack.Screen name="MyEvents" component={MyEvents} options={{ headerShown: false }} />
             <Stack.Screen name="EditEvent" component={EditEvent} options={{ headerShown: false }} />
+            <Stack.Screen name="UpdatePassword" component={UpdatePassword} options={{headerShown : false}} />
 
           </Stack.Navigator>
         </NavigationContainer>
