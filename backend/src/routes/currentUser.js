@@ -129,11 +129,12 @@ router.put('/updatePassword', checkSession, (req, res, next) => {
         if  (result === undefined || result.length == 0) {
             return res.status(400).send({message: 'User not found', status:400});
         }
+        res.locals.hashed_password = hash_password
         next();
     });
 }, (req, res) => {
     const updateStatement =`UPDATE accounts SET account_password = ? WHERE account_id = ?;`
-    db.query(updateStatement, [hash_password, req.session.account_id], (err, result) => {
+    db.query(updateStatement, [res.locals.hashed_password, req.session.account_id], (err, result) => {
         //Handle any errors
         return res.status(200).send({message:'Update Successful', status:200});
     });

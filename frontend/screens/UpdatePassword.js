@@ -1,3 +1,15 @@
+
+
+//   <SafeAreaView style={styles.iconText}>
+//         <TextInput style={styles.passwordText} onChangeText={updatePassword} maxLength={40}>{route.params.password}</TextInput>
+//           <Image
+//             style={[styles.leadingIcon, styles.ml8]}
+//             resizeMode="cover"
+//             source={require("../assets/leading-icon13.png")}
+//           />
+//         </SafeAreaView>
+
+
 import { Image, StyleSheet, Text, TextInput, Pressable, SafeAreaView } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
@@ -13,230 +25,39 @@ import {Picker} from '@react-native-picker/picker';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const EditProfile = ({route}) => {
+const UpdatePassword = ({route}) => {
   const navigation = useNavigation();
-  const [updatedUsername, setUsername] = useState(route.params.username)
-  const [updatedBio, setBio] = useState(route.params.bio)
-  const [favoriteSports, setSportInfo] = useState(route.params.favoriteSports)
-  const [hasChanged, setHasChanged] = useState(false)
-  const [options, setOptions] = useState([])
-  const [Enable , setEnable]  = useState(1);
 
-  let favoriteSportAdjustment = 16;
-
-  const updateUsername = (event) => {
-    setHasChanged(true)
-    setUsername(event.trim())
+  const [password, setPassword] = useState("");
+  const updatePassword = (event) => {
+	setPassword(event.trim())
+    console.log(password);
   }
 
-  const updateBio = (event) => {
-    setHasChanged(true)
-    setBio(event.trim())
-  }
-
-  const removeFavSport = (delID) => {
-    setSportInfo((newFavoriteSports) =>
-      newFavoriteSports.filter((sport) => sport.sport_id !== delID)
-    );
-  };
-
-  const addFavSport = (addID) => {
-    let newSport = ""
-    let alreadyFavorited = false
-    options.forEach((option) => {
-      if(option.sport_id == addID){
-        newSport = option
-      }
-    })
-    favoriteSports.forEach((fav) => {
-      if(fav.sport_id == addID){
-        alreadyFavorited = true
-      }
-    })
-    if(!alreadyFavorited){
-      setSportInfo(newFavoriteSports => [...newFavoriteSports, newSport])
-    }
-  };
-
-  const requestOnPageLoad = () => {
-   setBio(route.params.bio)
-   setUsername(route.params.username)
-   setSportInfo(route.params.favoriteSports)
-   if(options.length == 0){
-    pullSports()
-   }
-  }
-  useFocusEffect(React.useCallback(requestOnPageLoad, []))
-
-
-  const pullSports = () => {
-    fetch(`http://${LOCAL_IP}:3000/sports`, {
-          method: 'GET',
-          headers: {
-          'Content-Type': 'application/json'}, 
-        }).then((res) => {return res.json()})
-        .then((data) => {
-          if (data.status == 200) {
-            setOptions(data.data)
-          }
-      }).catch((e) => {console.log(e)})
-  }
-
-  const handleUpdate = () => {
-    if(hasChanged) {
+  const handlePasswordUpdates = () => {
+    console.log(password);
+    if(password != "") {
       console.log("")
-        fetch(`http://${LOCAL_IP}:3000/user/updateProfile`, {
+        fetch(`http://${LOCAL_IP}:3000/user/updatePassword`, {
           method: 'PUT',
           headers: {
           'Content-Type': 'application/json', 
           'Accept': 'application/json'},
           body: JSON.stringify({
-            "newUsername": updatedUsername,
-            "newBio": updatedBio
+            "password": password
           })
         }).then((res) => {return res.json()})
         .then((data) => {
           if (data.status == 200) {
               navigation.navigate("ProfileUser");
-          }      
+          } else {
+            console.log(data)
+          }
         }).catch((e) => {console.log(e)}) 
-    }
-    else{
-      navigation.navigate("ProfileUser")
-    }
-  }
-
-
-  const deleteSport = (sportID) => {
-    console.log("")
-      fetch(`http://${LOCAL_IP}:3000/sports/favorite`, {
-        method: 'DELETE',
-        headers: {
-        'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          "sport_id": sportID,
-        })
-      }).then((res) => {return res.json()})
-      .then((data) => {
-        if (data.status == 200) {
-          navigation.navigate("EditProfile", {
-            username: updatedUsername,
-            bio: updatedBio,
-            favoriteSports: favoriteSports,
-          })
-        }      
-      }).catch((e) => {console.log(e)}) 
-  }
-
-  const addSport = (sportID) => {
-    console.log("")
-      fetch(`http://${LOCAL_IP}:3000/sports/favorite`, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          "sport_id": sportID,
-        })
-      }).then((res) => {return res.json()})
-      .then((data) => {
-        if (data.status == 200) {
-          navigation.navigate("EditProfile", {
-            username: updatedUsername,
-            bio: updatedBio,
-            favoriteSports: favoriteSports,
-          })
-        }      
-      }).catch((e) => {console.log(e)}) 
-  }
-
-// Dynamic fav sports icons
-// Needs to be updated if new sports are added
-  function getSportImage(sportName){
-    switch (sportName) {
-      case "Football":
-        return require('../assets/football-6.png');
-      case "Soccer":
-        return require('../assets/soccer-ball-1.png');
-      case "Basketball":
-        return require('../assets/basketball-1.png');
-      default:
-        return require('../assets/football-6.png');
+    } else {
+        console.log("password empty");
     }
   }
-
-
-  //console.log(favoriteSports)
-  if(updatedUsername == null || updatedBio == null || favoriteSports == null || options == null) {
-  return (
-    <SafeAreaView style={styles.footerView}>
-    <Text>Not rendered!</Text>
-    <Pressable
-        style={styles.singleTabPressable}
-        onPress={() => navigation.navigate("ProfileUser")}
-      >
-        <SafeAreaView style={styles.iconAndText}>
-          <Image
-            style={styles.homeIcon}
-            resizeMode="cover"
-            source={require("../assets/home3.png")}
-          />
-          <Text style={[styles.text, styles.mt2]}>Account</Text>
-        </SafeAreaView>
-      </Pressable>
-      <Pressable
-        style={styles.singleTabPressable1}
-        onPress={() => navigation.navigate("Friends")}
-      >
-        <SafeAreaView style={styles.iconAndText1}>
-          <Image
-            style={styles.userIcon}
-            resizeMode="cover"
-            source={require("../assets/user.png")}
-          />
-          <Text style={[styles.text1, styles.mt2]}>Friends</Text>
-        </SafeAreaView>
-      </Pressable>
-      <Pressable
-        style={styles.singleTabPressable2}
-        onPress={() => navigation.navigate("Map")}
-      >
-        <SafeAreaView style={styles.iconAndText2}>
-          <Image
-            style={styles.compassIcon}
-            resizeMode="cover"
-            source={require("../assets/compass.png")}
-          />
-          <Text style={[styles.text2, styles.mt2]}>Map</Text>
-        </SafeAreaView>
-      </Pressable>
-      <Pressable
-        style={styles.framePressable}
-        onPress={() => navigation.navigate("CreateEvent")}
-      >
-        <Image
-          style={styles.addEventCircle}
-          resizeMode="cover"
-          source={require("../assets/ellipse-1.png")}
-        />
-        <Text style={styles.addEventPlus}>+</Text>
-      </Pressable>
-      <Pressable
-        style={styles.singleTabPressable3}
-        onPress={() => navigation.navigate("MainPage")}
-      >
-        <SafeAreaView style={styles.iconAndText3}>
-          <Image
-            style={styles.searchIcon}
-            resizeMode="cover"
-            source={require("../assets/search4.png")}
-          />
-          <Text style={[styles.text4, styles.mt2]}>Events</Text>
-        </SafeAreaView>
-      </Pressable>
-    </SafeAreaView>
-  );
-}
-  else{
     return(
     <>
   
@@ -324,17 +145,16 @@ const EditProfile = ({route}) => {
           source={require("../assets/trailing-icon.png")}
         />
         <SafeAreaView style={styles.iconText}>
-        <TextInput style={styles.usernameText} onChangeText={updateUsername} maxLength={40}>{route.params.username}</TextInput>
+        <TextInput style={styles.usernameText} onChangeText={updatePassword} maxLength={40}>{""}</TextInput>
           <Image
             style={[styles.leadingIcon, styles.ml8]}
             resizeMode="cover"
             source={require("../assets/leading-icon13.png")}
           />
         </SafeAreaView>
-        <Text style={styles.labelText}>Username</Text>
+        <Text style={styles.labelText}>Enter New Password Here</Text>
       </SafeAreaView>
       
-      <Text style={styles.mySportsText}>My Sports</Text>
       <SafeAreaView style={styles.lineView} />
       <Pressable
         style={styles.vectorPressable}
@@ -346,27 +166,6 @@ const EditProfile = ({route}) => {
           source={require("../assets/vector9.png")}
         />
       </Pressable>
-      <SafeAreaView style={styles.textFieldView}>
-        <Image
-          style={styles.trailingIcon}
-          resizeMode="cover"
-          source={require("../assets/trailing-icon.png")}
-        />
-        <SafeAreaView style={styles.iconText}>
-          <TextInput style={styles.bioText} onChangeText={updateBio} multiline={true} maxLength={68}>{route.params.bio}</TextInput>
-          <Image
-            style={[styles.leadingIcon, styles.ml8]}
-            resizeMode="cover"
-            source={require("../assets/leading-icon13.png")}
-          />
-        </SafeAreaView>
-        <Text style={styles.labelText}>Bio</Text>
-      </SafeAreaView>
-      
-
-
-
-
 
       <SafeAreaView style={styles.loginView1}>
         <Pressable
@@ -378,112 +177,13 @@ const EditProfile = ({route}) => {
               resizeMode="cover"
               source={require("../assets/leading-icon7.png")}
             />
-            <Button color="#007EA7" containerStyle={{right: "27%", bottom: "12%"}} titleStyle={{fontFamily: 'GearUp', fontSize: 12}} onPress={handleUpdate}>Update</Button>
+            <Button color="#007EA7" containerStyle={{right: "27%", bottom: "12%"}} titleStyle={{fontFamily: 'GearUp', fontSize: 12}} onPress={handlePasswordUpdates}>Update</Button>
           </SafeAreaView>
         </Pressable>
       </SafeAreaView>
-
-
-
-
-
-
-      {
-          
-          favoriteSports.map((sport) => {
-            favoriteSportAdjustment = favoriteSportAdjustment + 10
-            let topPercentage = favoriteSportAdjustment + "%"
-          
-            return (
-              <Card key={sport.sport_id} containerStyle={{top: topPercentage, position: "absolute", left: "1%", width: "90%", height: "8%"}}>
-                <Text style={{top: "7%", left: "15%", height: "300%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
-                <Image
-                  style={{position: "absolute", height: "47%", width: "15%", top: "-5%", right: "87.21%", bottom: "81.89%", left: "-2.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
-                  resizeMode="cover"
-                  source={require("../assets/ellipse-193.png")}
-                />
-                <Image
-                  style={{position: "absolute", height: "35%", width: "10%", top: "0%", right: "90.21%", bottom: "81.89%", left: "-0.29%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
-                  resizeMode="cover"
-                  source={getSportImage(sport.sport_name)}
-                />
-                <Pressable style={{position: "absolute", height: "50%", width: "100%", right: "0%", bottom: "55%", left: "35%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%"}} 
-                 onPress={() => {
-                    removeFavSport(sport.sport_id)
-                    deleteSport(sport.sport_id)
-                  }}>
-                  <Image
-                    style={{position: "absolute", height: "50%", width: "100%", top: "22.5%", left: "12.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%", alignItems: 'center', justifyContent: 'center'}}
-                    resizeMode="center"
-                    source={require("../assets/vector13.png")}
-                  />
-                </Pressable>
-              </Card>
-          )})
-        }
+      
     
-
-    <SafeAreaView style={styles.addOrRemoveSportsView}>
-    <Text style={{left: "35%", top: "90%", fontSize: 13, fontFamily: "GearUp", color: "#fff"}}>Add Sport</Text>
-      <Card key={10} containerStyle={{top: "95%", position: "absolute", left: "15%", width: "60%", height: "25%"}}>
-        <Pressable style={styles.addOrRemoveSportsView}
-          onPress={() => {
-            addFavSport(Enable)
-            addSport(Enable)
-          }}>
-          <Image
-          style={{position: "absolute",
-          height: "11.52%",
-          width: "8.25%",
-          top: "-133%",
-          left: "-5%",
-          maxWidth: "100%",
-          overflow: "hidden",
-          maxHeight: "100%",}}
-          resizeMode="cover"
-          source={require("../assets/vector10.png")}
-          />
-        </Pressable>
-        <Image
-          style={{
-          height: "80%",
-          width: "1.75%",
-          top: "37%",
-          left: "5.5%",
-          maxWidth: "100%",
-          overflow: "hidden",
-          maxHeight: "100%",}}
-          resizeMode="cover"
-          source={require("../assets/vector11.png")}
-        />
-        <Image
-          style={{position: "absolute",
-          height: "15%",
-          width: "10%",
-          top: "70%",
-          left: "1.5%",
-          maxWidth: "100%",
-          overflow: "hidden",
-          maxHeight: "100%",}}
-          resizeMode="cover"
-          source={require("../assets/vector12.png")}
-        />
-      </Card>
-      {
-      <Picker style ={{height: '15%', width: "45%", left: "33%", top: "97.5%", backgroundColor: '#fff', justifyContent: "center"}} selectedValue={Enable} onValueChange={(itemValue) => setEnable(itemValue)}>
-      {
-        options.length
-        ?
-        options.map((option) => {
-          return (
-            <Picker.Item key={option.sport_id} label={option.sport_name} value={option.sport_id} />
-        )})
-        :
-        <Picker.Item label="" value="" />
-      }
-      </Picker>
-    }
-    </SafeAreaView>
+      
     
 
       
@@ -603,7 +303,7 @@ const EditProfile = ({route}) => {
     </>
     );
   }
-};
+
 
 const styles = StyleSheet.create({
   mt2: {
@@ -1345,4 +1045,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditProfile;
+export default UpdatePassword;
