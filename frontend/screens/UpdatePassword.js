@@ -1,15 +1,3 @@
-
-
-//   <SafeAreaView style={styles.iconText}>
-//         <TextInput style={styles.passwordText} onChangeText={updatePassword} maxLength={40}>{route.params.password}</TextInput>
-//           <Image
-//             style={[styles.leadingIcon, styles.ml8]}
-//             resizeMode="cover"
-//             source={require("../assets/leading-icon13.png")}
-//           />
-//         </SafeAreaView>
-
-
 import { Image, StyleSheet, Text, TextInput, Pressable, SafeAreaView } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
