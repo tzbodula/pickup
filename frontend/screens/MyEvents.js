@@ -142,7 +142,7 @@ const MainPage = () => {
       </SafeAreaView>
       
       <Header/>
-      <Footer pageID={0} />
+      <Footer pageID={2} />
     </>
   );
   
