@@ -51,9 +51,9 @@ const ProfileUser = ({route}) => {
         .catch((e) => {console.log(e)})
       }).catch((e) => {console.log(e)})
     
-  }0
+  }
 
-00// Dynamic fav sports icons
+// Dynamic fav sports icons
 // Needs to be updated if new sports are added
 function getSportImage(sportName){
   switch (sportName) {
