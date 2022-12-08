@@ -10,16 +10,21 @@ import { Card } from "@rneui/themed";
 import {Picker} from '@react-native-picker/picker';
 
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 const EditProfile = ({route}) => {
   const navigation = useNavigation();
   const [updatedUsername, setUsername] = useState(route.params.username)
+  const [updatedPassword, setPassword] = useState(route.params.password)
   const [updatedBio, setBio] = useState(route.params.bio)
   const [favoriteSports, setSportInfo] = useState(route.params.favoriteSports)
   const [hasChanged, setHasChanged] = useState(false)
+  const [hasChangedPassword, setHasChangedPassword] = useState(false)
   const [options, setOptions] = useState([])
   const [Enable , setEnable]  = useState(1);
 
-  let favoriteSportAdjustment = 26;
+  let favoriteSportAdjustment = 16;
 
   const updateUsername = (event) => {
     setHasChanged(true)
@@ -29,6 +34,11 @@ const EditProfile = ({route}) => {
   const updateBio = (event) => {
     setHasChanged(true)
     setBio(event.trim())
+  }
+
+  const updatePassword = (event) => {
+	setHasChangedPassword(true)
+	setPassword(event.trim())
   }
 
   const removeFavSport = (delID) => {
@@ -58,6 +68,7 @@ const EditProfile = ({route}) => {
   const requestOnPageLoad = () => {
    setBio(route.params.bio)
    setUsername(route.params.username)
+   setPassword(route.params.password)
    setSportInfo(route.params.favoriteSports)
    if(options.length == 0){
     pullSports()
@@ -89,7 +100,30 @@ const EditProfile = ({route}) => {
           'Accept': 'application/json'},
           body: JSON.stringify({
             "newUsername": updatedUsername,
-            "newBio": updatedBio
+            "newBio": updatedBio,
+          })
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          if (data.status == 200) {
+              navigation.navigate("ProfileUser");
+          }      
+        }).catch((e) => {console.log(e)}) 
+    }
+    else{
+      navigation.navigate("ProfileUser")
+    }
+  }
+
+  const handlePasswordUpdates = () => {
+    if(hasChangedPassword) {
+      console.log("")
+        fetch(`http://${LOCAL_IP}:3000/user/updatePassword`, {
+          method: 'PUT',
+          headers: {
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json'},
+          body: JSON.stringify({
+            "password": updatedPassword,
           })
         }).then((res) => {return res.json()})
         .then((data) => {
@@ -146,9 +180,24 @@ const EditProfile = ({route}) => {
       }).catch((e) => {console.log(e)}) 
   }
 
+// Dynamic fav sports icons
+// Needs to be updated if new sports are added
+  function getSportImage(sportName){
+    switch (sportName) {
+      case "Football":
+        return require('../assets/football-6.png');
+      case "Soccer":
+        return require('../assets/soccer-ball-1.png');
+      case "Basketball":
+        return require('../assets/basketball-1.png');
+      default:
+        return require('../assets/football-6.png');
+    }
+  }
+
 
   //console.log(favoriteSports)
-  if(updatedUsername == null || updatedBio == null || favoriteSports == null || options == null) {
+  if(updatedUsername == null || updatedBio == null || updatedPassword == null|| favoriteSports == null || options == null) {
   return (
     <SafeAreaView style={styles.footerView}>
     <Text>Not rendered!</Text>
@@ -220,6 +269,8 @@ const EditProfile = ({route}) => {
 }
   else{
     return(
+    <>
+  
     <SafeAreaView style={styles.editProfileView}>
       <SafeAreaView style={styles.footerView}>
         <Pressable
@@ -313,6 +364,38 @@ const EditProfile = ({route}) => {
         </SafeAreaView>
         <Text style={styles.labelText}>Username</Text>
       </SafeAreaView>
+
+	  <SafeAreaView style={styles.loginView1}>
+        <Pressable
+          style={styles.leftButtonPressable}
+        >
+          <SafeAreaView style={styles.iconAndText4}>
+            <Image
+              style={styles.leadingIcon2}
+              resizeMode="cover"
+              source={require("../assets/leading-icon7.png")}
+            />
+            <Button color="#007EA7" containerStyle={{right: "27%", bottom: "12%"}} titleStyle={{fontFamily: 'GearUp', fontSize: 12}} onPress={handlePasswordUpdates}>Update Password</Button>
+          </SafeAreaView>
+        </Pressable>
+      </SafeAreaView>
+
+	  <SafeAreaView style={styles.textFieldView2}>
+        <Image
+          style={styles.trailingIcon}
+          resizeMode="cover"
+          source={require("../assets/trailing-icon.png")}
+        />
+        <SafeAreaView style={styles.iconText}>
+        <TextInput style={styles.passwordText} onChangeText={updatePassword} maxLength={40}>{route.params.password}</TextInput>
+          <Image
+            style={[styles.leadingIcon, styles.ml8]}
+            resizeMode="cover"
+            source={require("../assets/leading-icon13.png")}
+          />
+        </SafeAreaView>
+        <Text style={styles.labelText}>Password</Text>
+      </SafeAreaView>
       
       <Text style={styles.mySportsText}>My Sports</Text>
       <SafeAreaView style={styles.lineView} />
@@ -373,30 +456,28 @@ const EditProfile = ({route}) => {
           favoriteSports.map((sport) => {
             favoriteSportAdjustment = favoriteSportAdjustment + 10
             let topPercentage = favoriteSportAdjustment + "%"
-            
-            // Tried to change sport image dynamically but couldn't get it to work
-            //let sportName = "../assets/" + sport.sport_name + "-1.png"
-            //console.log(sportName)
+          
             return (
               <Card key={sport.sport_id} containerStyle={{top: topPercentage, position: "absolute", left: "1%", width: "90%", height: "8%"}}>
                 <Text style={{top: "7%", left: "15%", height: "300%", fontSize: 14, fontFamily: "GearUp", color: "#000", textAlign: "left"}} key={sport.sport_id}> {sport.sport_name} </Text> 
                 <Image
                   style={{position: "absolute", height: "47%", width: "15%", top: "-5%", right: "87.21%", bottom: "81.89%", left: "-2.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
                   resizeMode="cover"
-                  source={require("../assets/ellipse-18.png")}
+                  source={require("../assets/ellipse-193.png")}
                 />
                 <Image
                   style={{position: "absolute", height: "35%", width: "10%", top: "0%", right: "90.21%", bottom: "81.89%", left: "-0.29%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}}
                   resizeMode="cover"
-                  source={require("../assets/football-1.png")}
+                  source={getSportImage(sport.sport_name)}
                 />
-                <Pressable style={{position: "absolute", height: "100%", width: "15%", top: "-15%", right: "0%", bottom: "65.02%", left: "86%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%",}} 
+                <Pressable style={{position: "absolute", height: "50%", width: "100%", right: "0%", bottom: "55%", left: "35%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%"}} 
                  onPress={() => {
                     removeFavSport(sport.sport_id)
                     deleteSport(sport.sport_id)
                   }}>
                   <Image
-                    resizeMode="cover" 
+                    style={{position: "absolute", height: "50%", width: "100%", top: "22.5%", left: "12.5%", maxWidth: "100%", overflow: "hidden", maxHeight: "100%", alignItems: 'center', justifyContent: 'center'}}
+                    resizeMode="center"
                     source={require("../assets/vector13.png")}
                   />
                 </Pressable>
@@ -406,8 +487,8 @@ const EditProfile = ({route}) => {
     
 
     <SafeAreaView style={styles.addOrRemoveSportsView}>
-    <Text style={{left: "35%", top: "135%", fontSize: 13, fontFamily: "GearUp", color: "#000"}}>Add Sport</Text>
-      <Card key={10} containerStyle={{top: "140%", position: "absolute", left: "15%", width: "60%", height: "25%"}}>
+    <Text style={{left: "35%", top: "90%", fontSize: 13, fontFamily: "GearUp", color: "#fff"}}>Add Sport</Text>
+      <Card key={10} containerStyle={{top: "95%", position: "absolute", left: "15%", width: "60%", height: "25%"}}>
         <Pressable style={styles.addOrRemoveSportsView}
           onPress={() => {
             addFavSport(Enable)
@@ -452,7 +533,7 @@ const EditProfile = ({route}) => {
         />
       </Card>
       {
-      <Picker style ={{width: "45%", left: "32%", top: "105%"}} selectedValue={Enable} mode={"dialog"} onValueChange={(itemValue) => setEnable(itemValue)}>
+      <Picker style ={{height: '15%', width: "45%", left: "33%", top: "97.5%", backgroundColor: '#fff', justifyContent: "center"}} selectedValue={Enable} onValueChange={(itemValue) => setEnable(itemValue)}>
       {
         options.length
         ?
@@ -579,18 +660,10 @@ const EditProfile = ({route}) => {
         <Text style={styles.bASKETBALLText}>BASKETBALL</Text>
       </SafeAreaView>
     **/}
-
-
-
-
-
-
-
-
-
-
-
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={3}/>
+    </>
     );
   }
 };
@@ -855,6 +928,16 @@ const styles = StyleSheet.create({
     paddingRight: 2,
     paddingTop: 15,
   },
+  passwordText: {
+    position: "relative",
+    fontSize: 10,
+    lineHeight: 15,
+    fontFamily: "GearUp",
+    color: "#000",
+    textAlign: "left",
+    paddingRight: 2,
+    paddingTop: 15,
+  },
   loginView1: {
     position: "absolute",
     top: 179,
@@ -972,7 +1055,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     lineHeight: 16,
     fontFamily: "GearUp",
-    color: "#292929",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "flex-end",
@@ -1325,9 +1408,9 @@ const styles = StyleSheet.create({
     height: 243,
   },
   editProfileView: {
-    top: "4%",
+    top: "13%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     overflow: "hidden",
     width: Dimensions.get('window').width,
