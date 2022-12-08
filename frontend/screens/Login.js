@@ -14,6 +14,8 @@ import {
 import { Button } from "@rneui/themed";
 import { Storage } from 'expo-storage'
 
+import { Video, AVPlaybackStatus } from 'expo-av';
+
 
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {LOCAL_IP} from '@env';
@@ -33,7 +35,6 @@ const Login = () => {
   }
 
   const handleSubmit = () => {
-    console.log("Attempting to Login")
     fetch(`http://${LOCAL_IP}:3000/user/login`, {
       method: 'POST',
       headers: {
@@ -55,14 +56,18 @@ const Login = () => {
     }).catch((e) => console.log(e))
 
   }
+
+
   return (
     <SafeAreaView style={styles.loginView2}>
       <SafeAreaView style={styles.loginView}>
-        <ImageBackground
-          style={styles.property1DefaultIcon}
-          resizeMode="cover"
-          source={require("../assets/property1default1.png")}
-        >
+        <Video
+            source={require('../assets/pickup-trailer1.mp4')}
+            style={styles.property1DefaultIcon}
+            resizeMode="stretch"
+            shouldPlay
+            isLooping
+        />
           <Pressable
             style={styles.forgotPasswordPressable}
             onPress={() => navigation.navigate("AccountRecovery")}
@@ -75,7 +80,7 @@ const Login = () => {
           >
             <Text style={styles.createNewAccount}>Create new account</Text>
           </Pressable>
-          <Text style={styles.pickUpText}>PickUp</Text>
+          <Image source={require("../assets/pickup-logo-wordmark.png")} style={{ width: "55%", height: "20%", position: "absolute", left: "22%", top: "1%" }} />
           <Text style={styles.loginToYourAccount}>Login to your account</Text>
           <SafeAreaView style={styles.emailInputLogin1}>
             <SafeAreaView style={styles.emailInputLogin}>
@@ -90,7 +95,7 @@ const Login = () => {
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <TextInput style={[styles.text, styles.ml8]} onChangeText={updateUsername} maxLength={40}>Email or username</TextInput>
+                <TextInput style={[styles.text, styles.ml8]} onChangeText={updateUsername} maxLength={40} placeholder="Email or username" placeholderTextColor="#000000"></TextInput>
               </SafeAreaView>
             </SafeAreaView>
           </SafeAreaView>
@@ -107,25 +112,19 @@ const Login = () => {
                   resizeMode="cover"
                   source={require("../assets/leading-icon2.png")}
                 />
-                <TextInput style={[styles.text1, styles.ml8]} onChangeText={updatePassword} maxLength={30}>Password</TextInput>
+                <TextInput style={[styles.text1, styles.ml8]} onChangeText={updatePassword} maxLength={30} placeholder="Password" placeholderTextColor="#000000"></TextInput>
               </SafeAreaView>
             </SafeAreaView>
           </SafeAreaView>
-        </ImageBackground>
+
       </SafeAreaView>
 
       <SafeAreaView style={styles.loginView1}>
         <Pressable
           style={styles.leftButtonPressable}
+          onPress={handleSubmit}
         >
-          <SafeAreaView style={styles.iconAndText}>
-            <Image
-              style={styles.leadingIcon2}
-              resizeMode="cover"
-              source={require("../assets/leading-icon7.png")}
-            />
-            <Button title="Login" color="#00060a" containerStyle={{right: "27%", bottom: "15%", }} titleStyle={{fontFamily: 'GearUp'}} onPress={handleSubmit}></Button>
-          </SafeAreaView>
+          <Text style={{color: "#000000", fontFamily: "GearUp", fontSize: 20, position: "absolute", left: "23%", top: "10%"}}>Login</Text>
         </Pressable>
       </SafeAreaView>
       <Image
@@ -183,7 +182,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "15%",
     left: "30%",
-    fontSize: 10,
+    fontSize: 9,
+    fontStyle: "italic",
     lineHeight: 18,
     fontFamily: "GearUp",
     color: "#fff",
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 14,
     fontFamily: "GearUp",
-    color: "#111",
+    color: "#000000",
     textAlign: "left",
   },
   iconText: {
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     bottom: "0%",
     left: "5%",
     borderRadius: 4,
-    backgroundColor: "#fff",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderStyle: "solid",
     borderColor: "#80ced7",
     borderWidth: 2,
@@ -331,12 +331,13 @@ const styles = StyleSheet.create({
     bottom: "0%",
     left: "5%",
     borderRadius: 4,
-    backgroundColor: "#fff",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderStyle: "solid",
     borderColor: "#80ced7",
     borderWidth: 2,
   },
   passwordLoginInput1: {
+    
     position: "absolute",
     top: 217,
     left: 41,
@@ -1760,18 +1761,16 @@ const styles = StyleSheet.create({
     right: "5%",
     bottom: "13.04%",
     left: "0%",
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4,
-    backgroundColor: "#0b0b0b",
+    borderColor: "#80ced7",
+    borderWidth: 3,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     overflow: "hidden",
   },
   loginView1: {
     position: "absolute",
     top: 309,
     left: 128,
-    borderStyle: "solid",
-    borderColor: "#80ced7",
-    borderWidth: 3,
     width: 150,
     height: 46,
   },

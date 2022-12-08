@@ -2,11 +2,41 @@ import * as React from "react";
 import { Image, StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
+import {LOCAL_IP} from '@env';
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const EditSettings = ({route}) => {
+  const handleLogout = () => {
+    fetch(`http://${LOCAL_IP}:3000/user/logout`, {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          console.log(data)
+          if (data.status == 200) {
+            navigation.navigate("Login")
+        }
+      }).catch((e) => {console.log(e)})
+  }
+  const handleDeleteAccount = () => {
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+          method: 'DELETE',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          console.log(data)
+          if (data.status == 200) {
+            navigation.navigate("Login")
+        }
+      }).catch((e) => {console.log(e)})
+  }
   const navigation = useNavigation();
   return (
+    <>
     <SafeAreaView style={styles.editSettingsView}>
       <SafeAreaView style={styles.footerView}>
       <Pressable
@@ -83,7 +113,9 @@ const EditSettings = ({route}) => {
           source={require("../assets/vector9.png")}
         />
       </Pressable>
-      <SafeAreaView style={styles.buttonView}>
+      <Pressable 
+      style={styles.buttonView}
+      onPress={handleDeleteAccount}>
         <Image
           style={styles.leadingIcon}
           resizeMode="cover"
@@ -95,10 +127,10 @@ const EditSettings = ({route}) => {
           resizeMode="cover"
           source={require("../assets/trailing-icon10.png")}
         />
-      </SafeAreaView>
+      </Pressable>
       <Pressable
         style={styles.buttonPressable}
-        onPress={() => navigation.navigate("Login")}
+        onPress={handleLogout}
       >
         <Image
           style={styles.leadingIcon1}
@@ -143,6 +175,9 @@ const EditSettings = ({route}) => {
         source={require("../assets/check.png")}
       />
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={3}/>
+    </>
   );
 };
 
@@ -432,7 +467,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#000000",
     textAlign: "left",
   },
   trailingIcon1: {
@@ -469,7 +504,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -483,7 +518,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -497,7 +532,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -511,7 +546,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#111",
+    color: "#FFFFFF",
     textAlign: "center",
     display: "flex",
     alignItems: "center",
@@ -526,7 +561,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     lineHeight: 10,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FF0000",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -540,7 +575,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 25,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     width: 250,
     height: 30,
@@ -597,9 +632,9 @@ const styles = StyleSheet.create({
     height: 16,
   },
   editSettingsView: {
-    top: "4%",
+    top: "14%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     overflow: "hidden",
     width: Dimensions.get('window').width,
