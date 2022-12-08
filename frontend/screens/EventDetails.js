@@ -130,10 +130,15 @@ const EventDetails = ({route}) => {
           <Card.Divider/>
           {players.map((player, index)=> {
             return(
-              <SafeAreaView key={index} style={styles.userList}>
-                <Text style={styles.username}>{player.account_username} </Text>
-                <AirbnbRating size={20} defaultRating={player.rating} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
-              </SafeAreaView>
+              <Pressable
+                style={styles.singleTabPressable2}
+                onPress={() => navigation.navigate("ProfileOfAnotherUser", {account_id: player.account_id})}
+              >
+                <SafeAreaView key={index} style={styles.userList}>
+                  <Text style={styles.username}>{player.account_username} </Text>
+                  <AirbnbRating size={20} defaultRating={player.rating} isDisabled={true} showRating={false} ratingContainerStyle={styles.userRating} selectedColor="#80ced7" />
+                </SafeAreaView>
+              </Pressable>
             )
           })}
           <SafeAreaView style={styles.joinLeaveEventView}>

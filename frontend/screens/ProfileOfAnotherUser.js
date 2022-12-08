@@ -20,7 +20,6 @@ const ProfileUser = () => {
   const [gamesJoined, setGamesJoined] = useState("")
   const [gamesAttended, setGamesAttended] = useState("")
   const [bio, setBio] = useState("")
-  const [email, setEmail] = useState("")
   const navigation = useNavigation();
   let favoriteSportAdjustment = 38
   let sportIconAdjustment = 37.75
@@ -40,7 +39,6 @@ const ProfileUser = () => {
           setGamesJoined(retrieved.data.games_joined)
           setGamesAttended(retrieved.data.games_attended);
           setBio(retrieved.data.bio);
-          setEmail(retrieved.data.email)
         }
       }).then(() => {
         fetch(`http://${LOCAL_IP}:3000/users/${route.params.user_id}/sports`)
