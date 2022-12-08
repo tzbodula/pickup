@@ -52,10 +52,10 @@ router.post('/', (req, res) => {
     });
 });
 
-// Gets the ID of some other user
+// Gets the Profile Information of some other user
 router.get('/:id', (req, res) => {
 
-    const query = `SELECT account_username, account_id, first_name, last_name FROM accounts 
+    const query = `SELECT account_username, bio, rating, games_joined, games_attended FROM accounts 
     WHERE accounts.account_id = ? ;`
 
     db.query(query, [req.params.id], (err, result) => {
