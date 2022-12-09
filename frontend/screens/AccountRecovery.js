@@ -9,6 +9,10 @@ import {
   Dimensions,
   TextInput,
 } from "react-native";
+
+
+import { Video, AVPlaybackStatus } from 'expo-av';
+
 import { useNavigation } from "@react-navigation/native";
 
 const AccountRecovery = () => {
@@ -16,14 +20,15 @@ const AccountRecovery = () => {
 
   return (
     <SafeAreaView style={styles.accountRecoveryView}>
-      <ImageBackground
-        style={styles.accountRecoveryIcon}
-        resizeMode="cover"
-        source={require("../assets/accountrecovery.png")}
-      >
-        <Text style={styles.forgotYourPassword}>Forgot your password?</Text>
-        <Text style={styles.pickUpText}>PickUp</Text>
-      </ImageBackground>
+      <Video
+          source={require('../assets/pickup-trailer2.mp4')}
+          style={styles.property1DefaultIcon}
+          resizeMode="stretch"
+          shouldPlay
+          isLooping
+      />
+      <Text style={styles.forgotYourPassword}>Forgot your password?</Text>
+      <Image source={require("../assets/pickup-logo-wordmark.png")} style={{ width: "55%", height: "20%", position: "absolute", left: "22%", top: "3%" }} />
       <Pressable
         style={styles.bACKTOLOGIN1}
         onPress={() => navigation.navigate("Login")}
@@ -31,24 +36,9 @@ const AccountRecovery = () => {
         <Text style={styles.bACKTOLOGIN}>BACK TO LOGIN</Text>
       </Pressable>
       <SafeAreaView style={styles.recoveryEmailSentView}>
-        <SafeAreaView style={styles.leftButtonView}>
-          <SafeAreaView style={styles.iconAndText}>
-            <Image
-              style={styles.leadingIcon}
-              resizeMode="cover"
-              source={require("../assets/leading-icon.png")}
-            />
-            <Text style={[styles.text, styles.ml4]}>Left Medium</Text>
-          </SafeAreaView>
-        </SafeAreaView>
-        <SafeAreaView style={styles.iconAndText1}>
-          <Image
-            style={styles.leadingIcon1}
-            resizeMode="cover"
-            source={require("../assets/leading-icon1.png")}
-          />
+        <Pressable style={styles.iconAndText1}>
           <Text style={[styles.text1, styles.ml4]}>Reset Password</Text>
-        </SafeAreaView>
+        </Pressable>
       </SafeAreaView>
       <SafeAreaView style={styles.emailInputRecovery}>
         <SafeAreaView style={styles.textFieldView}>
@@ -63,7 +53,7 @@ const AccountRecovery = () => {
               resizeMode="cover"
               source={require("../assets/leading-icon2.png")}
             />
-            <TextInput style={[styles.text2, styles.ml8]}>Email</TextInput>
+            <TextInput style={[styles.text2, styles.ml8]} placeholder="Email" placeholderTextColor="#000000">Email</TextInput>
           </SafeAreaView>
           <Text style={styles.labelText}>
             ENTER the EMAIL ATTACHED TO YOUR ACCOUNT
@@ -80,6 +70,14 @@ const styles = StyleSheet.create({
   },
   ml8: {
     marginLeft: 8,
+  },
+  property1DefaultIcon: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    overflow: "hidden",
   },
   forgotYourPassword: {
     paddingLeft: 31,
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "300",
     fontFamily: "Be Vietnam Pro",
-    color: "#000",
+    color: "#00000",
     textAlign: "center",
   },
   zView: {
@@ -1542,7 +1540,7 @@ const styles = StyleSheet.create({
     right: "10%",
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#fff",
+    color: "#000000",
     textAlign: "left",
   },
   iconAndText1: {
@@ -1557,6 +1555,7 @@ const styles = StyleSheet.create({
     ],
     top: "50%",
     left: "52%",
+    color: "#000000",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
@@ -1565,6 +1564,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "31%",
     left: "31%",
+    color: "#000000",
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderStyle: "solid",
     borderColor: "#80ced7",
     borderWidth: 3,
@@ -1637,9 +1639,9 @@ const styles = StyleSheet.create({
     bottom: "0%",
     left: "0%",
     borderRadius: 4,
-    backgroundColor: "#fff",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderStyle: "solid",
-    borderColor: "#aaa",
+    borderColor: "#80ced7",
     borderWidth: 2,
   },
   emailInputRecovery: {

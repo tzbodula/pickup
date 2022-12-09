@@ -2,11 +2,41 @@ import * as React from "react";
 import { Image, StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from 'react-native';
+import {LOCAL_IP} from '@env';
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const EditSettings = ({route}) => {
+  const handleLogout = () => {
+    fetch(`http://${LOCAL_IP}:3000/user/logout`, {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          console.log(data)
+          if (data.status == 200) {
+            navigation.navigate("Login")
+        }
+      }).catch((e) => {console.log(e)})
+  }
+  const handleDeleteAccount = () => {
+    fetch(`http://${LOCAL_IP}:3000/user/`, {
+          method: 'DELETE',
+          headers: {
+          'Content-Type': 'application/json'}, 
+        }).then((res) => {return res.json()})
+        .then((data) => {
+          console.log(data)
+          if (data.status == 200) {
+            navigation.navigate("Login")
+        }
+      }).catch((e) => {console.log(e)})
+  }
   const navigation = useNavigation();
   return (
+    <>
     <SafeAreaView style={styles.editSettingsView}>
       <SafeAreaView style={styles.footerView}>
       <Pressable
@@ -83,7 +113,24 @@ const EditSettings = ({route}) => {
           source={require("../assets/vector9.png")}
         />
       </Pressable>
-      <SafeAreaView style={styles.buttonView}>
+      <Pressable 
+      style={styles.buttonView}
+      onPress={() => navigation.navigate("UpdatePassword")}>
+        <Image
+          style={styles.leadingIcon}
+          resizeMode="cover"
+          source={require("../assets/leading-icon14.png")}
+        />
+        <Text style={[styles.mediumText, styles.ml6]}>Update Password</Text>
+        <Image
+          style={[styles.trailingIcon, styles.ml6]}
+          resizeMode="cover"
+          source={require("../assets/trailing-icon10.png")}
+        />
+      </Pressable>
+      <Pressable 
+      style={styles.buttonView}
+      onPress={handleDeleteAccount}>
         <Image
           style={styles.leadingIcon}
           resizeMode="cover"
@@ -95,10 +142,10 @@ const EditSettings = ({route}) => {
           resizeMode="cover"
           source={require("../assets/trailing-icon10.png")}
         />
-      </SafeAreaView>
+      </Pressable>
       <Pressable
         style={styles.buttonPressable}
-        onPress={() => navigation.navigate("Login")}
+        onPress={handleLogout}
       >
         <Image
           style={styles.leadingIcon1}
@@ -125,6 +172,7 @@ const EditSettings = ({route}) => {
         onPress={() => navigation.navigate("EditProfile", {username: route.params.username,
           bio: route.params.bio, favoriteSports: route.params.favoriteSports})}
       >
+
         <Image
           style={styles.leadingIcon2}
           resizeMode="cover"
@@ -137,12 +185,33 @@ const EditSettings = ({route}) => {
           source={require("../assets/trailing-icon12.png")}
         />
       </Pressable>
+
+      <Pressable
+        style={styles.buttonPressablePW}
+        onPress={() => navigation.navigate("UpdatePassword")}
+      >
+
+        <Image
+          style={styles.leadingIcon2}
+          resizeMode="cover"
+          source={require("../assets/leading-icon16.png")}
+        />
+        <Text style={[styles.mediumText2, styles.ml6]}>Update Password</Text>
+        <Image
+          style={[styles.trailingIcon2, styles.ml6]}
+          resizeMode="cover"
+          source={require("../assets/trailing-icon12.png")}
+        />
+      </Pressable>
       <Image
         style={styles.checkIcon}
         resizeMode="cover"
         source={require("../assets/check.png")}
       />
     </SafeAreaView>
+    <Header/>
+    <Footer pageID={3}/>
+    </>
   );
 };
 
@@ -432,7 +501,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#000000",
     textAlign: "left",
   },
   trailingIcon1: {
@@ -469,7 +538,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -483,7 +552,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -497,7 +566,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -511,7 +580,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
     lineHeight: 18,
     fontFamily: "GearUp",
-    color: "#111",
+    color: "#FFFFFF",
     textAlign: "center",
     display: "flex",
     alignItems: "center",
@@ -526,7 +595,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     lineHeight: 10,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FF0000",
     textAlign: "left",
     display: "flex",
     alignItems: "center",
@@ -540,7 +609,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 25,
     fontFamily: "GearUp",
-    color: "#000",
+    color: "#FFFFFF",
     textAlign: "left",
     width: 250,
     height: 30,
@@ -571,7 +640,26 @@ const styles = StyleSheet.create({
   },
   buttonPressable1: {
     position: "absolute",
-    top: 68,
+    top: 50,
+    left: 45,
+    borderRadius: 4,
+    backgroundColor: "#80ced7",
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderWidth: 2,
+    width: 150,
+    height: 29,
+    overflow: "hidden",
+    flexDirection: "row",
+    paddingHorizontal: 12,
+    paddingVertical: 0,
+    boxSizing: "border-box",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonPressablePW: {
+    position: "absolute",
+    top: 85,
     left: 45,
     borderRadius: 4,
     backgroundColor: "#80ced7",
@@ -597,9 +685,9 @@ const styles = StyleSheet.create({
     height: 16,
   },
   editSettingsView: {
-    top: "4%",
+    top: "14%",
     position: "relative",
-    backgroundColor: "#fff",
+    backgroundColor: "#040C12",
     flex: 1,
     overflow: "hidden",
     width: Dimensions.get('window').width,

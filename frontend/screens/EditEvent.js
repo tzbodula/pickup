@@ -7,31 +7,33 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Input } from '@rneui/themed';
 
 import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Footer from "../components/Header";
 
 import { LOCAL_IP, GOOGLE_PLACES_API_KEY } from '@env';
 
 import DateTimePicker from "react-native-modal-datetime-picker";
-const CreateEvent = () => {
-  const colorScheme = 'dark'
 
+const EditEvent = ({route}) => {
+  console.log(route.params.dataProp)
+  const colorScheme = 'dark'
   const [datePickerVisibility, setDatePickerVisibility] = useState(false)
 
   const [selectedDateLabel, setSelectedDateLabel] = useState("SELECT DATE AND TIME")
 
   const sports = ["Soccer", "Football", "Basketball"]
 
-  const [eventName, setEventName] = useState("Your Event Name")
+  const [eventName, setEventName] = useState(route.params.dataProp.eventName)
+
+  const [eventSport, setEventSport] = useState(route.params.dataProp.eventSport)
+
+  const [eventTotalPlayers, setEventTotalPlayers] = useState(route.params.dataProp.eventTotalPlayers)
+
+  const [placeID, setPlaceID] = useState(route.params.dataProp.placeID)
 
 
+  const [buttonMessage, setButtonMessage] = useState("Edit Event")
 
-  const [eventSport, setEventSport] = useState("No Sport Selected")
-
-  const [eventTotalPlayers, setEventTotalPlayers] = useState("1")
-
-  const [placeID, setPlaceID] = useState("No Location Selected")
-
-  const [buttonMessage, setButtonMessage] = useState("Create Event")
+  const [deleteButtonMessage, setDeleteButtonMessage] = useState("Delete Event")
 
   const [selectedDate, setSelectedDate] = useState(null)
   const ref = useRef();
@@ -39,7 +41,7 @@ const CreateEvent = () => {
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   useEffect(() => {
-    ref.current?.setAddressText('UREC');
+    ref.current?.setAddressText(route.params.dataProp.eventLocation);
   }, []);
 
   const onChange = (event, selectedDate) => {
@@ -83,11 +85,25 @@ const CreateEvent = () => {
     hideDateTimePicker()
   };
 
-
+  handleDeleteEvent = () => {
+    fetch(`http://${LOCAL_IP}:3000/events/${route.params.dataProp.event_id}`, {
+      method : "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((res) => {return res.json()})
+    .then((data) => {
+      if(data.status == 200) {
+        navigation.navigate('MainPage')
+      } else {console.log("somethign went wrong")}
+    })
+  }
+  
   handleCreateEvent = async () => {
     console.log("")
     //Do any of the fields still have their default values?
-    if (eventName == "Your Event Name" || eventSport == "No Sport Selected" || eventTotalPlayers == "1" || placeID == "No Location Selected" || selectedDate == null) {
+    if (eventName == "Your Event Name" || eventSport == "No Sport Selected" || eventTotalPlayers == "1" || placeID == "No Location Selected") {
       setButtonMessage("FILL OUT ALL FIELDS!")
       await delay(3000)
       setButtonMessage("CREATE EVENT")
@@ -120,37 +136,49 @@ const CreateEvent = () => {
         sportID = 3
       }
 
-      let month = selectedDate.getMonth() + 1
-      let currentDate = selectedDate.getDate()
-      let year = selectedDate.getFullYear()
+      let dateString = ""
+      let timeString = ""
+      
+      // if user selects a different date
+      if (selectedDate) {
+        let month = selectedDate.getMonth() + 1
+        let currentDate = selectedDate.getDate()
+        let year = selectedDate.getFullYear()
+        dateString = month + "/" + currentDate + "/" + year
   
-      let dateString = month + "/" + currentDate + "/" + year
+        var options = {
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: true
+        };
+        timeString = selectedDate.toLocaleString('en-US', options);
+      } else {
+        console.log("test")
+        dateString = route.params.dataProp.dateString;
+        timeString = route.params.dataProp.timeString;
+      }
+      console.log("TESTING")
+      console.log(dateString)
+      console.log(timeString)
+      
   
-      var options = {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-      };
-      var timeString = selectedDate.toLocaleString('en-US', options);
-
-      console.log("place id is ", placeID)
       console.log("Date string is", dateString)
       console.log("Time string is", timeString)
-      fetch(`http://${LOCAL_IP}:3000/events`, {
-        method: 'POST',
+      fetch(`http://${LOCAL_IP}:3000/events/${route.params.dataProp.event_id}/update`, {
+        method: 'PUT',
         headers: {
         'Content-Type': 'application/json', 
         'Accept': 'application/json'},
         body: JSON.stringify({
           "event_name": eventName,
           "sport_id": sportID,
-          "total_players": eventTotalPlayers,
-          "location": fullAddress,
-          "date": dateString,
-          "time": timeString,
-          "city": city,
-          "state": state,
-          "place_id": placeID
+          "maximum_players": eventTotalPlayers,
+          "event_location": fullAddress,
+          "event_date": dateString,
+          "event_time": timeString,
+          "event_city": city,
+          "event_state": state,
+          "place_id": placeID,
         })
       }).then((res) => {return res.json()})
       .then((data) => {if(data.status == 200) {navigation.navigate('MainPage')}})
@@ -203,6 +231,7 @@ const CreateEvent = () => {
       <Text style={styles.sportText}>Sport</Text>
       <SelectDropdown
           data={sports}
+          defaultValue={eventSport}
           onSelect = {(selectedItem) => setEventSport(selectedItem)}
           defaultButtonText="Select a sport"
           buttonStyle={{
@@ -253,7 +282,7 @@ const CreateEvent = () => {
         fontFamily: "GearUp", 
         fontSize: 16
       }} 
-        value={eventTotalPlayers}
+        value={eventTotalPlayers.toString()}
         keyboardType="numeric"
         onChangeText = {(eventTotalPlayers) => setEventTotalPlayers(eventTotalPlayers)}   
       >
@@ -334,6 +363,12 @@ const CreateEvent = () => {
         onPress={() => handleCreateEvent()}
       >
         <Text style={styles.createEventText}>{buttonMessage}</Text>
+      </Pressable>
+      <Pressable
+        style={styles.deleteEventButton}
+        onPress={() => handleDeleteEvent()}
+      >
+        <Text style={styles.deleteEventText}>{deleteButtonMessage}</Text>
       </Pressable>
 
 
@@ -627,7 +662,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     paddingTop: "2%",
     top: "25%",
-    left: "27.5%",
+    left: "32.5%",
     fontSize: 14,
     lineHeight: 14,
     fontFamily: "GearUp",
@@ -640,6 +675,28 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 3,
     borderColor: "#80ced7",
+    backgroundColor: 'rgba(0, 0, 0, 1)',
+    left: "11%",
+    width: 321,
+    height: 39,
+  },
+  deleteEventText: {
+    position: "absolute",
+    paddingTop: "2%",
+    top: "25%",
+    left: "27.5%",
+    fontSize: 14,
+    lineHeight: 14,
+    fontFamily: "GearUp",
+    color: "#FFFFFF",
+    textAlign: "left",
+  },
+  deleteEventButton: {
+    position: "absolute",
+    top: "98%",
+    borderWidth: 2,
+    borderRadius: 3,
+    borderColor: "#FF0000",
     backgroundColor: 'rgba(0, 0, 0, 1)',
     left: "11%",
     width: 321,
@@ -694,4 +751,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateEvent;
+export default EditEvent;
